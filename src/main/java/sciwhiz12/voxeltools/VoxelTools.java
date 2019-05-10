@@ -3,7 +3,6 @@ package sciwhiz12.voxeltools;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -32,9 +31,5 @@ public class VoxelTools {
 
 	@Mod.EventBusSubscriber(bus = Bus.MOD)
 	public static class RegistryEvents {
-	}
-
-	@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Bus.MOD)
-	public static class ClientRegistryEvents {
 	}
 }
