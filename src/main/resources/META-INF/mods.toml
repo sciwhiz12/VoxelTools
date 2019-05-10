@@ -1,0 +1,23 @@
+modLoader="javafml"
+loaderVersion="[24,)"
+
+[[mods]]
+modId="voxeltools"
+version="${file.jarVersion}"
+displayName="Voxel Tools"
+authors="sciwhiz12" #optional
+description='''
+Adds powerful tools from the Voxel Box.
+'''
+
+[[dependencies.voxeltools]]
+    modId="forge"
+    mandatory=true
+    versionRange="[24,)"
+    side="BOTH"
+    
+[[dependencies.voxeltools]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.13.2]"
+    side="BOTH"
