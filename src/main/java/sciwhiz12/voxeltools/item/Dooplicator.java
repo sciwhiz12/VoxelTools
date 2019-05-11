@@ -27,8 +27,9 @@ public class Dooplicator extends BaseItem {
 								.sendMessage(new TextComponentTranslation("voxeltools.dooplicator.dooped",
 										new TextComponentString(String.valueOf(stack.getMaxStackSize()))
 												.applyTextStyle(TextFormatting.DARK_PURPLE),
-										state.getBlock().getNameTextComponent().applyTextStyle(TextFormatting.GREEN))
-												.applyTextStyle(TextFormatting.BLUE));
+										new TextComponentTranslation(state.getBlock().getTranslationKey())
+												.applyTextStyle(TextFormatting.GREEN))
+														.applyTextStyle(TextFormatting.BLUE));
 				}
 			}
 			return EnumActionResult.SUCCESS;
