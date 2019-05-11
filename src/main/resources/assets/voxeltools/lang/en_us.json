@@ -6,5 +6,6 @@
 	"item.voxeltools.jackhammer": "Pneumatic Jackhammer",
 	"item.voxeltools.dooplicator": "Dooplicator",
 	"voxeltools.dooplicator.dooped": "Dooped %s of %s",
-	"item.voxeltools.sledge": "Graviton Sledge"
+	"item.voxeltools.sledge": "Graviton Sledge",
+	"item.voxeltools.pliers": "Torquemadic Pliers"
 }
