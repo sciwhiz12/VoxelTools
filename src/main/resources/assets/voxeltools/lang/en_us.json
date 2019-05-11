@@ -7,5 +7,12 @@
 	"item.voxeltools.dooplicator": "Dooplicator",
 	"voxeltools.dooplicator.dooped": "Dooped %s of %s",
 	"item.voxeltools.sledge": "Graviton Sledge",
-	"item.voxeltools.pliers": "Torquemadic Pliers"
+	"item.voxeltools.pliers": "Torquemadic Pliers",
+	"item.voxeltools.paintbrush": "Magical Paintbrush",
+	"tooltip.voxeltools.paintbrush.blockname": "Block: %s",
+	"tooltip.voxeltools.paintbrush.blockstate": "State: %s",
+	"tooltip.voxeltools.paintbrush.sneak": "Sneak to see block state",
+	"status.voxeltools.paintbrush.saved": "%s saved into pallete",
+	"status.voxeltools.paintbrush.clear": "Pallete cleared",
+	"status.voxeltools.paintbrush.current": "Current pallete: %s"
 }
