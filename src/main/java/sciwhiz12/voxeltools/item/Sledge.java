@@ -16,7 +16,7 @@ public class Sledge extends BaseItem {
 	public Result onLeftClickBlock(EntityPlayer player, BlockPos pos, EnumFacing face) {
 		if (!player.world.isRemote) {
 			BlockPos target = pos.offset(face, -1);
-			if (MoveUtil.moveBlock(player, pos, target, player.isSneaking(), true, MoveUtil.Target.ONLY_AIR)) {
+			if (MoveUtil.moveBlock(player, pos, target, player.isSneaking(), true)) {
 				return Result.DENY;
 			}
 		}
@@ -27,8 +27,7 @@ public class Sledge extends BaseItem {
 		if (!context.getWorld().isRemote) {
 			EntityPlayer player = context.getPlayer();
 			BlockPos target = context.getPos().offset(context.getFace());
-			if (MoveUtil.moveBlock(player, context.getPos(), target, player.isSneaking(), true,
-					MoveUtil.Target.ONLY_AIR)) {
+			if (MoveUtil.moveBlock(player, context.getPos(), target, player.isSneaking(), true)) {
 				return EnumActionResult.SUCCESS;
 			}
 		}
