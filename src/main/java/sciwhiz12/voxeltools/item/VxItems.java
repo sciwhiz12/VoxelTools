@@ -16,8 +16,11 @@ public class VxItems {
 
 	@ObjectHolder("dooplicator")
 	public static final BaseItem dooplicator = null;
+	
+	@ObjectHolder("sledge")
+	public static final BaseItem sledge = null;
 
 	public static void registerItems(RegistryEvent.Register<Item> event) {
-		event.getRegistry().registerAll(new TestItem(), new Jackhammer(), new Dooplicator());
+		event.getRegistry().registerAll(new TestItem(), new Jackhammer(), new Dooplicator(), new Sledge());
 	}
 }
