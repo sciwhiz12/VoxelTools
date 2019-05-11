@@ -13,11 +13,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.eventbus.api.Event.Result;
+import sciwhiz12.voxeltools.VoxelTools;
 
 public class BaseItem extends Item {
-	public BaseItem(Properties props) {
+	public BaseItem(Properties props, String regname) {
 		super(props.setNoRepair().addToolType(ToolType.PICKAXE, ItemTier.DIAMOND.getHarvestLevel()).defaultMaxDamage(0)
 				.maxStackSize(1));
+		this.setRegistryName(VoxelTools.MODID, regname);
 	}
 
 	// used when left-clicked on a block

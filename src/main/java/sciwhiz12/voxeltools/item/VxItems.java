@@ -11,7 +11,10 @@ public class VxItems {
 	@ObjectHolder("test_item")
 	public static final BaseItem test_item = null;
 
+	@ObjectHolder("jackhammer")
+	public static final BaseItem jackhammer = null;
+
 	public static void registerItems(RegistryEvent.Register<Item> event) {
-		event.getRegistry().register(new TestItem());
+		event.getRegistry().registerAll(new TestItem(), new Jackhammer());
 	}
 }

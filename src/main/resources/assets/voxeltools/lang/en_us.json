@@ -2,5 +2,6 @@
 	"item.voxeltools.test_item": "Testing Item",
 	"voxeltools.test_item.rightblock": "Right-clicked on a block!",
 	"voxeltools.test_item.rightitem": "Right-clicked on air!",
-	"voxeltools.test_item.leftblock": "Left-clicked on a block!"
+	"voxeltools.test_item.leftblock": "Left-clicked on a block!",
+	"item.voxeltools.jackhammer": "Pneumatic Jackhammer"
 }

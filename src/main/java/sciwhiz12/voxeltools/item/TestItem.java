@@ -13,12 +13,10 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.eventbus.api.Event.Result;
-import sciwhiz12.voxeltools.VoxelTools;
 
 public class TestItem extends BaseItem {
 	public TestItem() {
-		super(new Properties());
-		this.setRegistryName(VoxelTools.MODID, "test_item");
+		super(new Properties(), "test_item");
 	}
 
 	public Result onLeftClickBlock(EntityPlayer player, BlockPos pos, EnumFacing face) {
