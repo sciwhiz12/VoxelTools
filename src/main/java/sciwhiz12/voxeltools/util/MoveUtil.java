@@ -26,7 +26,7 @@ public class MoveUtil {
 	
 	public static boolean moveBlock(EntityPlayer player, BlockPos originPos, BlockPos targetPos, boolean noPhys,
 			boolean deleteOrigin) {
-		MoveUtil.moveBlock(player, originPos, targetPos, noPhys, deleteOrigin, player.isSneaking() ? MoveUtil.Target.ALWAYS : MoveUtil.Target.ONLY_AIR)
+		return MoveUtil.moveBlock(player, originPos, targetPos, noPhys, deleteOrigin, player.isSneaking() ? MoveUtil.Target.ALWAYS : MoveUtil.Target.ONLY_AIR);
 	}
 
 	public enum Target {
