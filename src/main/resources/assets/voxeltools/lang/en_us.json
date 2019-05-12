@@ -14,5 +14,6 @@
 	"tooltip.voxeltools.paintbrush.sneak": "Sneak to see block state",
 	"status.voxeltools.paintbrush.saved": "%s saved into pallete",
 	"status.voxeltools.paintbrush.clear": "Pallete cleared",
-	"status.voxeltools.paintbrush.current": "Current pallete: %s"
+	"status.voxeltools.paintbrush.current": "Current pallete: %s",
+	"item.voxeltools.shovel": "Auto-Shoveller 9001"
 }
