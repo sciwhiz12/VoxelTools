@@ -87,7 +87,9 @@ public class Paintbrush extends BaseItem {
 			if (stack.getItem() != this)
 				stack = player.getHeldItemOffhand();
 			if (!player.isSneaking()) {
-				RayTraceResult trace = ForgeHooks.rayTraceEyes(player, 16);
+				double reach = player.getAttribute(EntityPlayer.REACH_DISTANCE).getValue();
+				RayTraceResult trace = ForgeHooks.rayTraceEyes(player,
+						Math.max(VxConfig.SERVER.paintbrushRange.get(), reach));
 				if (trace != null && trace.type == Type.BLOCK) {
 					IBlockState state = getBlockState(stack.getOrCreateTag());
 					BlockPos pos = trace.getBlockPos();

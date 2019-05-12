@@ -17,5 +17,7 @@
 	"status.voxeltools.paintbrush.current": "Current pallete: %s",
 	"item.voxeltools.shovel": "Auto-Shoveller 9001",
 	"voxeltools.config.allowItemUse": "Allow Use of VoxelTools",
-	"voxeltools.config.allowItemUse.tooltip": "Enables/disables the functionality of all items."
+	"voxeltools.config.allowItemUse.tooltip": "Enables/disables the functionality of all items.",
+	"voxeltools.config.paintbrushRange": "Magical Paintbrush's Remote Painting Radius",
+	"voxeltools.config.paintbrushRange.tooltip": "The range of the Magical Paintbrush when remotely painting a block.\nAnything below the player's reach distance (default 5) will disable remote painting."
 }
