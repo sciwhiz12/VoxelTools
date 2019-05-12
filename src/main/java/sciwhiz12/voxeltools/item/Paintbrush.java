@@ -34,6 +34,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.eventbus.api.Event.Result;
+import sciwhiz12.voxeltools.VxConfig;
 
 public class Paintbrush extends BaseItem {
 	public Paintbrush() {
@@ -60,7 +61,7 @@ public class Paintbrush extends BaseItem {
 	}
 
 	public Result onLeftClickBlock(EntityPlayer player, BlockPos pos, EnumFacing face) {
-		if (!player.world.isRemote) {
+		if (VxConfig.SERVER.allowItemUse.get() && !player.world.isRemote) {
 			ItemStack stack = player.getHeldItemMainhand();
 			if (stack.getItem() != this)
 				stack = player.getHeldItemOffhand();
@@ -81,7 +82,7 @@ public class Paintbrush extends BaseItem {
 	}
 
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		if (!world.isRemote) {
+		if (VxConfig.SERVER.allowItemUse.get() && !world.isRemote) {
 			ItemStack stack = player.getHeldItemMainhand();
 			if (stack.getItem() != this)
 				stack = player.getHeldItemOffhand();

@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.eventbus.api.Event.Result;
 import sciwhiz12.voxeltools.VoxelTools;
+import sciwhiz12.voxeltools.VxConfig;
 
 public class Shovel extends BaseItem {
 	public static final ResourceLocation TAG_GROUND = new ResourceLocation(VoxelTools.MODID, "ground");
@@ -23,7 +24,7 @@ public class Shovel extends BaseItem {
 	}
 
 	public Result onLeftClickBlock(EntityPlayer player, BlockPos pos, EnumFacing face) {
-		if (!player.world.isRemote) {
+		if (VxConfig.SERVER.allowItemUse.get() && !player.world.isRemote) {
 			Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
 			for (MutableBlockPos targetPos : BlockPos.getAllInBoxMutable(pos.add(1, 1, 1), pos.add(-1, -1, -1))) {
 				if (col.contains(player.world.getBlockState(targetPos).getBlock())) {
@@ -36,7 +37,7 @@ public class Shovel extends BaseItem {
 	}
 
 	public EnumActionResult onItemUse(ItemUseContext context) {
-		if (!context.getWorld().isRemote && context.getPlayer().isSneaking()) {
+		if (VxConfig.SERVER.allowItemUse.get() && !context.getWorld().isRemote && context.getPlayer().isSneaking()) {
 			Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
 			BlockPos centerPos = context.getPos();
 			World world = context.getWorld();

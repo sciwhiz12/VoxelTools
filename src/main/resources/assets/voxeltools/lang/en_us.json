@@ -15,5 +15,7 @@
 	"status.voxeltools.paintbrush.saved": "%s saved into pallete",
 	"status.voxeltools.paintbrush.clear": "Pallete cleared",
 	"status.voxeltools.paintbrush.current": "Current pallete: %s",
-	"item.voxeltools.shovel": "Auto-Shoveller 9001"
+	"item.voxeltools.shovel": "Auto-Shoveller 9001",
+	"voxeltools.config.allowItemUse": "Allow Use of VoxelTools",
+	"voxeltools.config.allowItemUse.tooltip": "Enables/disables the functionality of all items."
 }

@@ -8,6 +8,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import sciwhiz12.voxeltools.VxConfig;
 
 public class Dooplicator extends BaseItem {
 	public Dooplicator() {
@@ -15,7 +16,7 @@ public class Dooplicator extends BaseItem {
 	}
 
 	public EnumActionResult onItemUse(ItemUseContext context) {
-		if (!context.getWorld().isRemote) {
+		if (VxConfig.SERVER.allowItemUse.get() && !context.getWorld().isRemote) {
 			IBlockState state = context.getWorld().getBlockState(context.getPos());
 			Item i = state.getBlock().asItem();
 			if (i != null) {

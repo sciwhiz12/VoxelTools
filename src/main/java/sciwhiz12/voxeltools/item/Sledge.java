@@ -6,6 +6,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.eventbus.api.Event.Result;
+import sciwhiz12.voxeltools.VxConfig;
 import sciwhiz12.voxeltools.util.MoveUtil;
 
 public class Sledge extends BaseItem {
@@ -14,7 +15,7 @@ public class Sledge extends BaseItem {
 	}
 
 	public Result onLeftClickBlock(EntityPlayer player, BlockPos pos, EnumFacing face) {
-		if (!player.world.isRemote) {
+		if (VxConfig.SERVER.allowItemUse.get() && !player.world.isRemote) {
 			BlockPos target = pos.offset(face, -1);
 			if (MoveUtil.moveBlock(player, pos, target, player.isSneaking(), true)) {
 				return Result.DENY;
@@ -24,7 +25,7 @@ public class Sledge extends BaseItem {
 	}
 
 	public EnumActionResult onItemUse(ItemUseContext context) {
-		if (!context.getWorld().isRemote) {
+		if (VxConfig.SERVER.allowItemUse.get() && !context.getWorld().isRemote) {
 			EntityPlayer player = context.getPlayer();
 			BlockPos target = context.getPos().offset(context.getFace());
 			if (MoveUtil.moveBlock(player, context.getPos(), target, player.isSneaking(), true)) {
