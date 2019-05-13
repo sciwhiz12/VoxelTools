@@ -15,6 +15,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -46,7 +47,7 @@ public class Paintbrush extends BaseItem {
 			ITooltipFlag flagIn) {
 		NBTTagCompound tag = stack.getOrCreateTag();
 		tooltip.add(new TextComponentTranslation("tooltip.voxeltools.paintbrush.blockname",
-				getBlockFromName(tag.getString(TAG_ID_BLOCKNAME)).getNameTextComponent()
+				new TextComponentTranslation(getBlockFromName(tag.getString(TAG_ID_BLOCKNAME)).getTranslationKey())
 						.applyTextStyle(TextFormatting.GREEN)).applyTextStyle(TextFormatting.GRAY));
 		if (tag.hasKey(TAG_ID_BLOCKSTATE)) {
 			if (GuiScreen.isShiftKeyDown()) {
@@ -71,10 +72,12 @@ public class Paintbrush extends BaseItem {
 
 			stack.setTag(storeBlockState(tag, state));
 
-			/*player.sendStatusMessage(new TextComponentTranslation("status.voxeltools.paintbrush.saved",
-					getBlockFromName(tag.getString(TAG_ID_BLOCKNAME)).getNameTextComponent()
-							.applyTextStyle(TextFormatting.GREEN)).applyTextStyle(TextFormatting.BLUE),
-					true);*/
+			((EntityPlayerMP) player).sendStatusMessage(
+					new TextComponentTranslation("status.voxeltools.paintbrush.saved",
+							new TextComponentTranslation(
+									getBlockFromName(tag.getString(TAG_ID_BLOCKNAME)).getTranslationKey())
+											.applyTextStyle(TextFormatting.GREEN)).applyTextStyle(TextFormatting.BLUE),
+					true);
 
 			return Result.DENY;
 		}
@@ -95,19 +98,21 @@ public class Paintbrush extends BaseItem {
 					BlockPos pos = trace.getBlockPos();
 					world.setBlockState(pos, state);
 				} else if (trace == null || trace.type == Type.MISS) {
-					/*player.sendStatusMessage(
-							new TextComponentTranslation("status.voxeltools.paintbrush.current",
-									getBlockFromName(stack.getOrCreateTag().getString(TAG_ID_BLOCKNAME))
-											.getNameTextComponent().applyTextStyle(TextFormatting.GREEN))
-													.applyTextStyle(TextFormatting.GRAY),
-							true);*/
+					((EntityPlayerMP) player)
+							.sendStatusMessage(new TextComponentTranslation("status.voxeltools.paintbrush.current",
+									new TextComponentTranslation(
+											getBlockFromName(stack.getOrCreateTag().getString(TAG_ID_BLOCKNAME))
+													.getTranslationKey()).applyTextStyle(TextFormatting.GREEN))
+															.applyTextStyle(TextFormatting.GRAY),
+									true);
 				}
 			} else {
 				NBTTagCompound tag = stack.getOrCreateTag();
 				stack.setTag(storeBlockState(tag, Blocks.AIR.getDefaultState()));
 
-				/*player.sendStatusMessage(new TextComponentTranslation("status.voxeltools.paintbrush.clear")
-						.applyTextStyle(TextFormatting.BLUE), true);*/
+				((EntityPlayerMP) player)
+						.sendStatusMessage(new TextComponentTranslation("status.voxeltools.paintbrush.clear")
+								.applyTextStyle(TextFormatting.BLUE), true);
 			}
 			return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 		}
