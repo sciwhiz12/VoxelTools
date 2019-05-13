@@ -71,10 +71,10 @@ public class Paintbrush extends BaseItem {
 
 			stack.setTag(storeBlockState(tag, state));
 
-			player.sendStatusMessage(new TextComponentTranslation("status.voxeltools.paintbrush.saved",
+			/*player.sendStatusMessage(new TextComponentTranslation("status.voxeltools.paintbrush.saved",
 					getBlockFromName(tag.getString(TAG_ID_BLOCKNAME)).getNameTextComponent()
 							.applyTextStyle(TextFormatting.GREEN)).applyTextStyle(TextFormatting.BLUE),
-					true);
+					true);*/
 
 			return Result.DENY;
 		}
@@ -95,19 +95,19 @@ public class Paintbrush extends BaseItem {
 					BlockPos pos = trace.getBlockPos();
 					world.setBlockState(pos, state);
 				} else if (trace == null || trace.type == Type.MISS) {
-					player.sendStatusMessage(
+					/*player.sendStatusMessage(
 							new TextComponentTranslation("status.voxeltools.paintbrush.current",
 									getBlockFromName(stack.getOrCreateTag().getString(TAG_ID_BLOCKNAME))
 											.getNameTextComponent().applyTextStyle(TextFormatting.GREEN))
 													.applyTextStyle(TextFormatting.GRAY),
-							true);
+							true);*/
 				}
 			} else {
 				NBTTagCompound tag = stack.getOrCreateTag();
 				stack.setTag(storeBlockState(tag, Blocks.AIR.getDefaultState()));
 
-				player.sendStatusMessage(new TextComponentTranslation("status.voxeltools.paintbrush.clear")
-						.applyTextStyle(TextFormatting.BLUE), true);
+				/*player.sendStatusMessage(new TextComponentTranslation("status.voxeltools.paintbrush.clear")
+						.applyTextStyle(TextFormatting.BLUE), true);*/
 			}
 			return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 		}
