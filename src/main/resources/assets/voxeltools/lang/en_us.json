@@ -18,8 +18,12 @@
 	"item.voxeltools.shovel": "Auto-Shoveller 9001",
 	"voxeltools.config.allowItemUse": "Allow Use of VoxelTools",
 	"voxeltools.config.allowItemUse.tooltip": "Enables/disables the functionality of all items.",
+	"voxeltools.config.defaultPermLevel": "Default Permission Level for VoxelTools",
+	"voxeltools.config.defaultPermLevel.tooltip": "The default permission level of the permission [voxeltools.item], which grants players access to VoxelTools.",
 	"voxeltools.config.paintbrushRange": "Magical Paintbrush's Remote Painting Radius",
 	"voxeltools.config.paintbrushRange.tooltip": "The range of the Magical Paintbrush when remotely painting a block.\nAnything below the player's reach distance (default 5) will disable remote painting.",
 	"voxeltools.config.jackhammerNoPhys": "Pneumatic Jackhammer's No-Physics Mode",
-	"voxeltools.config.jackhammerNoPhys.tooltip": "Whether to use no-physics mode for either mouse button, both, or neither."
+	"voxeltools.config.jackhammerNoPhys.tooltip": "Whether to use no-physics mode for either mouse button, both, or neither.",
+	"voxeltools.config.allowOverwrite": "Allow Overwrite of Blocks",
+	"voxeltools.config.allowOverwrite.tooltip": "Whether to allow block-moving items (ie Graviton Sledge) to destroy blocks in their way when the player is sneaking."
 }
