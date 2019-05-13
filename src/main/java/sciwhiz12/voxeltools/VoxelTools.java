@@ -12,6 +12,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.server.permission.DefaultPermissionLevel;
+import net.minecraftforge.server.permission.PermissionAPI;
 import sciwhiz12.voxeltools.item.VxItems;
 
 @Mod(VoxelTools.MODID)
@@ -27,6 +29,8 @@ public class VoxelTools {
 
 	private void setup(final FMLCommonSetupEvent event) {
 		LOGGER.info("Setting up common...");
+		PermissionAPI.registerNode(VxConfig.ITEM_USE_PERMISSION, DefaultPermissionLevel.OP,
+				"Allows the use of VoxelTools.");
 	}
 
 	@Mod.EventBusSubscriber(bus = Bus.MOD)

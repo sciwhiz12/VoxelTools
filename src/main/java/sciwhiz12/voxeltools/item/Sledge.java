@@ -15,7 +15,7 @@ public class Sledge extends BaseItem {
 	}
 
 	public Result onLeftClickBlock(EntityPlayer player, BlockPos pos, EnumFacing face) {
-		if (VxConfig.SERVER.allowItemUse.get() && !player.world.isRemote) {
+		if (!player.world.isRemote && VxConfig.SERVER.hasPermission(player)) {
 			BlockPos target = pos.offset(face, -1);
 			if (MoveUtil.moveBlock(player, pos, target, player.isSneaking(), true)) {
 				return Result.DENY;
@@ -25,7 +25,7 @@ public class Sledge extends BaseItem {
 	}
 
 	public EnumActionResult onItemUse(ItemUseContext context) {
-		if (VxConfig.SERVER.allowItemUse.get() && !context.getWorld().isRemote) {
+		if (!context.getWorld().isRemote && VxConfig.SERVER.hasPermission(context.getPlayer())) {
 			EntityPlayer player = context.getPlayer();
 			BlockPos target = context.getPos().offset(context.getFace());
 			if (MoveUtil.moveBlock(player, context.getPos(), target, player.isSneaking(), true)) {

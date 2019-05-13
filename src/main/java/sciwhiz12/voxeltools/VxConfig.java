@@ -2,10 +2,12 @@ package sciwhiz12.voxeltools;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.minecraftforge.server.permission.PermissionAPI;
 
 public final class VxConfig {
 	static final ForgeConfigSpec serverSpec;
@@ -34,10 +36,15 @@ public final class VxConfig {
 			jackhammerNoPhys = builder.translation("voxeltools.config.jackhammerNoPhys")
 					.comment("Whether to use no-physics mode for either mouse button, both, or neither.")
 					.defineEnum("jackhammerNoPhys", ClickType.RIGHT_CLICK_ONLY, ClickType.values());
-
 			builder.pop();
 		}
+
+		public boolean hasPermission(EntityPlayer player) {
+			return SERVER.allowItemUse.get() && PermissionAPI.hasPermission(player, ITEM_USE_PERMISSION);
+		}
 	}
+
+	public static final String ITEM_USE_PERMISSION = "voxeltools.item";
 
 	public static enum ClickType {
 		BOTH, RIGHT_CLICK_ONLY, LEFT_CLICK_ONLY, NONE;

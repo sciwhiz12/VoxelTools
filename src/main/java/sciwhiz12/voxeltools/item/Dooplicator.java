@@ -16,7 +16,7 @@ public class Dooplicator extends BaseItem {
 	}
 
 	public EnumActionResult onItemUse(ItemUseContext context) {
-		if (VxConfig.SERVER.allowItemUse.get() && !context.getWorld().isRemote) {
+		if (!context.getWorld().isRemote && VxConfig.SERVER.hasPermission(context.getPlayer())) {
 			IBlockState state = context.getWorld().getBlockState(context.getPos());
 			Item i = state.getBlock().asItem();
 			if (i != null) {

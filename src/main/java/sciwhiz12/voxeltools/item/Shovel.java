@@ -24,7 +24,7 @@ public class Shovel extends BaseItem {
 	}
 
 	public Result onLeftClickBlock(EntityPlayer player, BlockPos pos, EnumFacing face) {
-		if (VxConfig.SERVER.allowItemUse.get() && !player.world.isRemote) {
+		if (!player.world.isRemote && VxConfig.SERVER.hasPermission(player)) {
 			Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
 			for (MutableBlockPos targetPos : BlockPos.getAllInBoxMutable(pos.add(1, 1, 1), pos.add(-1, -1, -1))) {
 				if (col.contains(player.world.getBlockState(targetPos).getBlock())) {
@@ -37,7 +37,8 @@ public class Shovel extends BaseItem {
 	}
 
 	public EnumActionResult onItemUse(ItemUseContext context) {
-		if (VxConfig.SERVER.allowItemUse.get() && !context.getWorld().isRemote && context.getPlayer().isSneaking()) {
+		if (!context.getWorld().isRemote && VxConfig.SERVER.hasPermission(context.getPlayer())
+				&& context.getPlayer().isSneaking()) {
 			Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
 			BlockPos centerPos = context.getPos();
 			World world = context.getWorld();

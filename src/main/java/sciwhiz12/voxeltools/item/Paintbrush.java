@@ -61,7 +61,7 @@ public class Paintbrush extends BaseItem {
 	}
 
 	public Result onLeftClickBlock(EntityPlayer player, BlockPos pos, EnumFacing face) {
-		if (VxConfig.SERVER.allowItemUse.get() && !player.world.isRemote) {
+		if (!player.world.isRemote && VxConfig.SERVER.hasPermission(player)) {
 			ItemStack stack = player.getHeldItemMainhand();
 			if (stack.getItem() != this)
 				stack = player.getHeldItemOffhand();
@@ -82,7 +82,7 @@ public class Paintbrush extends BaseItem {
 	}
 
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		if (VxConfig.SERVER.allowItemUse.get() && !world.isRemote) {
+		if (!world.isRemote && VxConfig.SERVER.hasPermission(player)) {
 			ItemStack stack = player.getHeldItemMainhand();
 			if (stack.getItem() != this)
 				stack = player.getHeldItemOffhand();

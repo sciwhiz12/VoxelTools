@@ -19,7 +19,7 @@ public class Jackhammer extends BaseItem {
 
 	@Override
 	public Result onLeftClickBlock(EntityPlayer player, BlockPos pos, EnumFacing face) {
-		if (VxConfig.SERVER.allowItemUse.get() && !player.world.isRemote) {
+		if (!player.world.isRemote && VxConfig.SERVER.hasPermission(player)) {
 			player.world.playEvent(2001, pos, Block.getStateId(player.world.getBlockState(pos)));
 			int flags = 2;
 			ClickType option = VxConfig.SERVER.jackhammerNoPhys.get();
@@ -33,7 +33,7 @@ public class Jackhammer extends BaseItem {
 
 	@Override
 	public EnumActionResult onItemUse(ItemUseContext context) {
-		if (VxConfig.SERVER.allowItemUse.get() && !context.getWorld().isRemote) {
+		if (!context.getWorld().isRemote && VxConfig.SERVER.hasPermission(context.getPlayer())) {
 			context.getWorld().playEvent(2001, context.getPos(),
 					Block.getStateId(context.getWorld().getBlockState(context.getPos())));
 			int flags = 2;
