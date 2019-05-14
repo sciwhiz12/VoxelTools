@@ -26,7 +26,7 @@ public class Shovel extends BaseItem {
 	public Result onLeftClickBlock(EntityPlayer player, BlockPos pos, EnumFacing face) {
 		if (!player.world.isRemote && VxConfig.SERVER.hasPermission(player)) {
 			Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
-			for (MutableBlockPos targetPos : BlockPos.getAllInBoxMutable(pos.add(1, 1, 1), pos.add(-1, -1, -1))) {
+			for (MutableBlockPos targetPos : getDigRadius(pos)) {
 				if (col.contains(player.world.getBlockState(targetPos).getBlock())) {
 					player.world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
 				}
@@ -51,5 +51,14 @@ public class Shovel extends BaseItem {
 			return EnumActionResult.SUCCESS;
 		}
 		return EnumActionResult.PASS;
+	}
+	
+	private Iterable<MutableBlockPos> getDigRadius(BlockPos origin) {
+		int x = VxConfig.SERVER.shovelDigRadiusX.get();
+		int y = VxConfig.SERVER.shovelDigRadiusY.get();
+		int z = VxConfig.SERVER.shovelDigRadiusZ.get();
+		BlockPos cornerOne = origin.add(x, y, z);
+		BlockPos cornerTwo = origin.add(-x, -y, -z);
+		return BlockPos.getAllInBoxMutable(cornerOne, cornerTwo);
 	}
 }

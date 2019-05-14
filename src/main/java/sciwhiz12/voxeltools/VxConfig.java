@@ -26,6 +26,10 @@ public final class VxConfig {
 		public final EnumValue<ClickType> jackhammerNoPhys;
 		public final BooleanValue allowOverwrite;
 
+		public final IntValue shovelDigRadiusX;
+		public final IntValue shovelDigRadiusY;
+		public final IntValue shovelDigRadiusZ;
+
 		public Server(ForgeConfigSpec.Builder builder) {
 			builder.comment("General settings").push("general");
 
@@ -47,6 +51,18 @@ public final class VxConfig {
 			allowOverwrite = builder.translation("voxeltools.config.allowOverwrite").comment(
 					"Whether to allow block-moving items (ie Graviton Sledge) to destroy blocks in their way when the player is sneaking.")
 					.define("allowOverwrite", true);
+
+			shovelDigRadiusX = builder.translation("voxeltools.config.shovelDigRadiusX")
+					.comment("The radius of the Auto-Shoveler 9001's dig ability on the X axis. Set to 0 to disable.")
+					.defineInRange("shovelDigRadiusX", 1, 0, 16);
+
+			shovelDigRadiusY = builder.translation("voxeltools.config.shovelDigRadiusY")
+					.comment("The radius of the Auto-Shoveler 9001's dig ability on the Y axis. Set to 0 to disable.")
+					.defineInRange("shovelDigRadiusY", 1, 0, 16);
+
+			shovelDigRadiusZ = builder.translation("voxeltools.config.shovelDigRadiusZ")
+					.comment("The radius of the Auto-Shoveler 9001's dig ability on the Z axis. Set to 0 to disable.")
+					.defineInRange("shovelDigRadiusZ", 1, 0, 16);
 
 			builder.pop();
 		}
