@@ -5,6 +5,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
+import sciwhiz12.voxeltools.VxConfig;
 
 public class MoveUtil {
 	public static boolean moveBlock(EntityPlayer player, BlockPos originPos, BlockPos targetPos, boolean noPhys,
@@ -23,10 +24,12 @@ public class MoveUtil {
 		}
 		return false;
 	}
-	
+
 	public static boolean moveBlock(EntityPlayer player, BlockPos originPos, BlockPos targetPos, boolean noPhys,
 			boolean deleteOrigin) {
-		return MoveUtil.moveBlock(player, originPos, targetPos, noPhys, deleteOrigin, player.isSneaking() ? MoveUtil.Target.ALWAYS : MoveUtil.Target.ONLY_AIR);
+		return MoveUtil.moveBlock(player, originPos, targetPos, noPhys,
+				VxConfig.SERVER.allowOverwrite.get() && deleteOrigin,
+				player.isSneaking() ? MoveUtil.Target.ALWAYS : MoveUtil.Target.ONLY_AIR);
 	}
 
 	public enum Target {
