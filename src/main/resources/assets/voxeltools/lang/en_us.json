@@ -25,5 +25,11 @@
 	"voxeltools.config.jackhammerNoPhys": "Pneumatic Jackhammer's No-Physics Mode",
 	"voxeltools.config.jackhammerNoPhys.tooltip": "Whether to use no-physics mode for either mouse button, both, or neither.",
 	"voxeltools.config.allowOverwrite": "Allow Overwrite of Blocks",
-	"voxeltools.config.allowOverwrite.tooltip": "Whether to allow block-moving items (ie Graviton Sledge) to destroy blocks in their way when the player is sneaking."
+	"voxeltools.config.allowOverwrite.tooltip": "Whether to allow block-moving items (ie Graviton Sledge) to destroy blocks in their way when the player is sneaking.",
+	"voxeltools.config.shovelDigRadiusX": "Auto-Shoveler 9001's Dig Radius on the X axis",
+	"voxeltools.config.shovelDigRadiusX.tooltip": "The radius of the Auto-Shoveler 9001's dig ability on the X axis. Set to 0 to disable.",
+	"voxeltools.config.shovelDigRadiusY": "Auto-Shoveler 9001's Dig Radius on the Y axis",
+	"voxeltools.config.shovelDigRadiusY.tooltip": "The radius of the Auto-Shoveler 9001's dig ability on the Y axis. Set to 0 to disable.",
+	"voxeltools.config.shovelDigRadiusZ": "Auto-Shoveler 9001's Dig Radius on the Z axis",
+	"voxeltools.config.shovelDigRadiusZ.tooltip": "The radius of the Auto-Shoveler 9001's dig ability on the Z axis. Set to 0 to disable."
 }
