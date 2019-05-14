@@ -39,11 +39,11 @@ public class Shovel extends BaseItem {
 	public EnumActionResult onItemUse(ItemUseContext context) {
 		if (!context.getWorld().isRemote && VxConfig.SERVER.hasPermission(context.getPlayer())
 				&& context.getPlayer().isSneaking()) {
+			if (VxConfig.SERVER.shovelFlattenRadius.get() == 0)
+				return EnumActionResult.PASS;
 			Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
-			BlockPos centerPos = context.getPos();
 			World world = context.getWorld();
-			for (MutableBlockPos targetPos : BlockPos.getAllInBoxMutable(centerPos.add(2, 1, 2),
-					centerPos.add(-2, 1, -2))) {
+			for (MutableBlockPos targetPos : getFlattenRadius(context.getPos())) {
 				if (col.contains(world.getBlockState(targetPos).getBlock())) {
 					world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
 				}
@@ -52,13 +52,22 @@ public class Shovel extends BaseItem {
 		}
 		return EnumActionResult.PASS;
 	}
-	
+
 	private Iterable<MutableBlockPos> getDigRadius(BlockPos origin) {
 		int x = VxConfig.SERVER.shovelDigRadiusX.get();
 		int y = VxConfig.SERVER.shovelDigRadiusY.get();
 		int z = VxConfig.SERVER.shovelDigRadiusZ.get();
 		BlockPos cornerOne = origin.add(x, y, z);
 		BlockPos cornerTwo = origin.add(-x, -y, -z);
+		return BlockPos.getAllInBoxMutable(cornerOne, cornerTwo);
+	}
+
+	private Iterable<MutableBlockPos> getFlattenRadius(BlockPos origin) {
+		int radius = VxConfig.SERVER.shovelFlattenRadius.get();
+		int height = VxConfig.SERVER.shovelFlattenHeight.get();
+		int offset = VxConfig.SERVER.shovelFlattenHeightOffset.get();
+		BlockPos cornerOne = origin.add(radius, offset, radius);
+		BlockPos cornerTwo = origin.add(-radius, offset + height, -radius);
 		return BlockPos.getAllInBoxMutable(cornerOne, cornerTwo);
 	}
 }

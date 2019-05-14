@@ -30,6 +30,10 @@ public final class VxConfig {
 		public final IntValue shovelDigRadiusY;
 		public final IntValue shovelDigRadiusZ;
 
+		public final IntValue shovelFlattenRadius;
+		public final IntValue shovelFlattenHeight;
+		public final IntValue shovelFlattenHeightOffset;
+
 		public Server(ForgeConfigSpec.Builder builder) {
 			builder.comment("General settings").push("general");
 
@@ -63,6 +67,18 @@ public final class VxConfig {
 			shovelDigRadiusZ = builder.translation("voxeltools.config.shovelDigRadiusZ")
 					.comment("The radius of the Auto-Shoveler 9001's dig ability on the Z axis. Set to 0 to disable.")
 					.defineInRange("shovelDigRadiusZ", 1, 0, 16);
+
+			shovelFlattenRadius = builder.translation("voxeltools.config.shovelFlattenRadius")
+					.comment("The radius of the Auto-Shoveler 9001's flatten ability. Set to 0 to disable.")
+					.defineInRange("shovelFlattenRadius", 2, 0, 16);
+			shovelFlattenHeight = builder.translation("voxeltools.config.shovelFlattenHeight")
+					.comment("The height of the Auto-Shoveler 9001's flatten ability.",
+							"Set to 0 to only flatten blocks on the same horizontal plane.")
+					.defineInRange("shovelFlattenHeight", 4, 0, 128);
+			shovelFlattenHeightOffset = builder.translation("voxeltools.config.shovelFlattenHeightOffset").comment(
+					"The Auto-Shoveler 9001's flatten ability's height offset from the block clicked.",
+					"A value of 0 is the plane of the block clicked, and 'n' is the plane 'n' blocks above the block.")
+					.defineInRange("shovelFlattenHeightOffset", 1, 0, 8);
 
 			builder.pop();
 		}
