@@ -37,15 +37,16 @@ public class Shovel extends BaseItem {
 	}
 
 	public EnumActionResult onItemUse(ItemUseContext context) {
-		if (!context.getWorld().isRemote && VxConfig.SERVER.hasPermission(context.getPlayer())
-				&& context.getPlayer().isSneaking()) {
-			if (VxConfig.SERVER.shovelFlattenRadius.get() == 0)
-				return EnumActionResult.PASS;
-			Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
-			World world = context.getWorld();
-			for (MutableBlockPos targetPos : getFlattenRadius(context.getPos())) {
-				if (col.contains(world.getBlockState(targetPos).getBlock())) {
-					world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
+		if (!context.getWorld().isRemote && VxConfig.SERVER.hasPermission(context.getPlayer())) {
+			if (!context.getPlayer().isSneaking()) {
+				if (VxConfig.SERVER.shovelFlattenRadius.get() == 0)
+					return EnumActionResult.PASS;
+				Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
+				World world = context.getWorld();
+				for (MutableBlockPos targetPos : getFlattenRadius(context.getPos())) {
+					if (col.contains(world.getBlockState(targetPos).getBlock())) {
+						world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
+					}
 				}
 			}
 			return EnumActionResult.SUCCESS;
