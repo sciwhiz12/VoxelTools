@@ -48,8 +48,8 @@ public class Shovel extends BaseItem {
 						world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
 					}
 				}
+				return EnumActionResult.SUCCESS;
 			}
-			return EnumActionResult.SUCCESS;
 		}
 		return EnumActionResult.PASS;
 	}
