@@ -33,6 +33,9 @@ public final class VxConfig {
 		public final IntValue shovelFlattenRadius;
 		public final IntValue shovelFlattenHeight;
 		public final IntValue shovelFlattenHeightOffset;
+		
+		public final IntValue chainsawCutRadius;
+		public final IntValue chainsawCleanRadius;
 
 		public Server(ForgeConfigSpec.Builder builder) {
 			builder.comment("General settings").push("general");
@@ -80,6 +83,13 @@ public final class VxConfig {
 					"A value of 0 is the plane of the block clicked, and 'n' is the plane 'n' blocks above the block.")
 					.defineInRange("shovelFlattenHeightOffset", 1, 0, 8);
 
+			chainsawCutRadius = builder.translation("voxeltools.config.chainsawCutRadius")
+					.comment("The radius of the A.S.H. Chainsaw's cutting (trees) ability. Set to 0 to disable.")
+					.defineInRange("chainsawCutRadius", 4, 0, 32);
+			chainsawCleanRadius = builder.translation("voxeltools.config.chainsawCleanRadius")
+					.comment("The radius of the A.S.H. Chainsaw's cleaning (vegetation in general) ability. Set to 0 to disable.")
+					.defineInRange("chainsawCleanRadius", 5, 0, 32);
+			
 			builder.pop();
 		}
 

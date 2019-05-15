@@ -28,9 +28,12 @@ public class VxItems {
 
 	@ObjectHolder("shovel")
 	public static final BaseItem shovel = null;
+	
+	@ObjectHolder("chainsaw")
+	public static final BaseItem chainsaw = null;
 
 	public static void registerItems(RegistryEvent.Register<Item> event) {
 		event.getRegistry().registerAll(new TestItem(), new Jackhammer(), new Dooplicator(), new Sledge(), new Pliers(),
-				new Paintbrush(), new Shovel());
+				new Paintbrush(), new Shovel(), new Chainsaw());
 	}
 }

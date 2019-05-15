@@ -37,5 +37,10 @@
 	"voxeltools.config.shovelFlattenHeight": "Auto-Shoveler 9001's Flatten Height",
 	"voxeltools.config.shovelFlattenHeight.tooltip": "The height of the Auto-Shoveler 9001's flatten ability.\nSet to 1 to only flatten blocks on the same horizontal plane.",
 	"voxeltools.config.shovelFlattenHeightOffset": "Auto-Shoveler 9001's Flatten Height Offest",
-	"voxeltools.config.shovelFlattenHeightOffset.tooltip": "The Auto-Shoveler 9001's flatten ability's height offset from the block clicked.\nA value of 0 is the plane of the block clicked, and 'n' is the plane 'n' blocks above the block."
+	"voxeltools.config.shovelFlattenHeightOffset.tooltip": "The Auto-Shoveler 9001's flatten ability's height offset from the block clicked.\nA value of 0 is the plane of the block clicked, and 'n' is the plane 'n' blocks above the block.",
+	"item.voxeltools.chainsaw": "A.S.H. Chainsaw",
+	"voxeltools.config.chainsawCutRadius": "A.S.H. Chainsaw's Cutting Radius",
+	"voxeltools.config.chainsawCutRadius.tooltip": "The radius of the A.S.H. Chainsaw's cutting (trees) ability. Set to 0 to disable.",
+	"voxeltools.config.chainsawCleanRadius": "A.S.H. Chainsaw's Cleaning Radius",
+	"voxeltools.config.chainsawCleanRadius.tooltip": "The radius of the A.S.H. Chainsaw's cleaning (vegetation in general) ability. Set to 0 to disable."
 }
