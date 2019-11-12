@@ -16,7 +16,7 @@ public class InteractListener {
 		if (it instanceof BaseItem) {
 			if (event.isCanceled())
 				return;
-			Result res = ((BaseItem) it).onLeftClickBlock(event.getEntityPlayer(), event.getPos(), event.getFace());
+			Result res = ((BaseItem) it).onLeftClickBlock(event.getPlayer(), event.getPos(), event.getFace());
 			switch (res) {
 			case DENY:
 				event.setUseBlock(res);
