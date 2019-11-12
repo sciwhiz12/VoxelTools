@@ -2,7 +2,7 @@ package sciwhiz12.voxeltools;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
@@ -93,7 +93,7 @@ public final class VxConfig {
 			builder.pop();
 		}
 
-		public boolean hasPermission(EntityPlayer player) {
+		public boolean hasPermission(PlayerEntity player) {
 			return SERVER.allowItemUse.get() && PermissionAPI.hasPermission(player, ITEM_USE_PERMISSION);
 		}
 	}

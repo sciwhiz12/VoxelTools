@@ -1,19 +1,19 @@
 package sciwhiz12.voxeltools.util;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import sciwhiz12.voxeltools.VxConfig;
 
 public class MoveUtil {
-	public static boolean moveBlock(EntityPlayer player, BlockPos originPos, BlockPos targetPos, boolean noPhys,
+	public static boolean moveBlock(PlayerEntity player, BlockPos originPos, BlockPos targetPos, boolean noPhys,
 			boolean deleteOrigin, Target deleteTarget) {
 		int flags = 2 | 64;
 		if (noPhys)
 			flags |= 16 | 32;
-		IBlockState from = player.world.getBlockState(originPos);
+		BlockState from = player.world.getBlockState(originPos);
 		if (deleteTarget == Target.ALWAYS || (deleteTarget == Target.ONLY_AIR && player.world.isAirBlock(targetPos))) {
 			player.world.playEvent(2001, targetPos, Block.getStateId(from));
 			player.world.setBlockState(targetPos, from, flags);
@@ -25,7 +25,7 @@ public class MoveUtil {
 		return false;
 	}
 
-	public static boolean moveBlock(EntityPlayer player, BlockPos originPos, BlockPos targetPos, boolean noPhys,
+	public static boolean moveBlock(PlayerEntity player, BlockPos originPos, BlockPos targetPos, boolean noPhys,
 			boolean deleteOrigin) {
 		return MoveUtil.moveBlock(player, originPos, targetPos, noPhys,
 				VxConfig.SERVER.allowOverwrite.get() && deleteOrigin,

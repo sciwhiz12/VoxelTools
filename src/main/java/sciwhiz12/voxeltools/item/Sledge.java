@@ -1,9 +1,9 @@
 package sciwhiz12.voxeltools.item;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.eventbus.api.Event.Result;
 import sciwhiz12.voxeltools.VxConfig;
@@ -14,7 +14,7 @@ public class Sledge extends BaseItem {
 		super(new Properties(), "sledge");
 	}
 
-	public Result onLeftClickBlock(EntityPlayer player, BlockPos pos, EnumFacing face) {
+	public Result onLeftClickBlock(PlayerEntity player, BlockPos pos, Direction face) {
 		if (!player.world.isRemote && VxConfig.SERVER.hasPermission(player)) {
 			BlockPos target = pos.offset(face, -1);
 			if (MoveUtil.moveBlock(player, pos, target, player.isSneaking(), true)) {
@@ -24,14 +24,14 @@ public class Sledge extends BaseItem {
 		return Result.DEFAULT;
 	}
 
-	public EnumActionResult onItemUse(ItemUseContext context) {
+	public ActionResultType onItemUse(ItemUseContext context) {
 		if (!context.getWorld().isRemote && VxConfig.SERVER.hasPermission(context.getPlayer())) {
-			EntityPlayer player = context.getPlayer();
+			PlayerEntity player = context.getPlayer();
 			BlockPos target = context.getPos().offset(context.getFace());
 			if (MoveUtil.moveBlock(player, context.getPos(), target, player.isSneaking(), true)) {
-				return EnumActionResult.SUCCESS;
+				return ActionResultType.SUCCESS;
 			}
 		}
-		return EnumActionResult.PASS;
+		return ActionResultType.PASS;
 	}
 }
