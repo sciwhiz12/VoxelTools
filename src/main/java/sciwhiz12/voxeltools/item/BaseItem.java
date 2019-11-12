@@ -18,7 +18,7 @@ import sciwhiz12.voxeltools.VoxelTools;
 public class BaseItem extends Item {
 	public BaseItem(Properties props, String regname) {
 		super(props.setNoRepair().addToolType(ToolType.PICKAXE, ItemTier.DIAMOND.getHarvestLevel()).defaultMaxDamage(0)
-				.maxStackSize(1));
+				.maxStackSize(1).group(VxItems.CREATIVE_TAB));
 		this.setRegistryName(VoxelTools.MODID, regname);
 	}
 
