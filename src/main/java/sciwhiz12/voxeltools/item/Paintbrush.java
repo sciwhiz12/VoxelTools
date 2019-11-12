@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -51,7 +52,7 @@ public class Paintbrush extends BaseItem {
 				new TranslationTextComponent(getBlockFromName(tag.getString(TAG_ID_BLOCKNAME)).getTranslationKey())
 						.applyTextStyle(TextFormatting.GREEN)).applyTextStyle(TextFormatting.GRAY));
 		if (tag.contains(TAG_ID_BLOCKSTATE)) {
-			if (true/*GuiScreen.isShiftKeyDown()*/) { // TODO: find way to detect sneak key
+			if (Screen.hasShiftDown()) {
 				tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.blockstate",
 						new StringTextComponent(toStringFromState(getBlockState(tag)))
 								.applyTextStyle(TextFormatting.GREEN)).applyTextStyle(TextFormatting.GRAY));
@@ -92,7 +93,7 @@ public class Paintbrush extends BaseItem {
 				stack = player.getHeldItemOffhand();
 			if (!player.isSneaking()) {
 				double reach = player.getAttribute(PlayerEntity.REACH_DISTANCE).getValue();
-				RayTraceResult trace = rangedRayTrace(world, player, RayTraceContext.FluidMode.ANY, 
+				RayTraceResult trace = rangedRayTrace(world, player, RayTraceContext.FluidMode.ANY,
 						Math.max(VxConfig.SERVER.paintbrushRange.get(), reach));
 				if (trace != null && trace.getType() == Type.BLOCK) {
 					BlockState state = getBlockState(stack.getOrCreateTag());
