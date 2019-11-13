@@ -18,6 +18,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
@@ -39,9 +40,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.Event.Result;
 import sciwhiz12.voxeltools.VxConfig;
 
-public class Paintbrush extends BaseItem {
-	public Paintbrush() {
-		super(new Properties(), "paintbrush");
+public class Paintbrush extends Item implements IVoxelTool {
+	public Paintbrush(Properties properties) {
+		super(properties);
 	}
 
 	@OnlyIn(Dist.CLIENT)

@@ -1,6 +1,7 @@
 package sciwhiz12.voxeltools.item;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -9,9 +10,9 @@ import net.minecraftforge.eventbus.api.Event.Result;
 import sciwhiz12.voxeltools.VxConfig;
 import sciwhiz12.voxeltools.util.MoveUtil;
 
-public class Pliers extends BaseItem {
-	public Pliers() {
-		super(new Properties(), "pliers");
+public class Pliers extends Item implements IVoxelTool {
+	public Pliers(Properties properties) {
+		super(properties);
 	}
 
 	public Result onLeftClickBlock(PlayerEntity player, BlockPos pos, Direction face) {

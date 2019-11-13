@@ -3,6 +3,7 @@ package sciwhiz12.voxeltools.item;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -11,10 +12,9 @@ import net.minecraftforge.eventbus.api.Event.Result;
 import sciwhiz12.voxeltools.VxConfig;
 import sciwhiz12.voxeltools.VxConfig.ClickType;
 
-public class Jackhammer extends BaseItem {
-
-	public Jackhammer() {
-		super(new Properties(), "jackhammer");
+public class Jackhammer extends Item implements IVoxelTool {
+	public Jackhammer(Properties properties) {
+		super(properties);
 	}
 
 	@Override

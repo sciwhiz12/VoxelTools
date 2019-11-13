@@ -1,6 +1,7 @@
 package sciwhiz12.voxeltools.item;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -9,9 +10,9 @@ import net.minecraftforge.eventbus.api.Event.Result;
 import sciwhiz12.voxeltools.VxConfig;
 import sciwhiz12.voxeltools.util.MoveUtil;
 
-public class Sledge extends BaseItem {
-	public Sledge() {
-		super(new Properties(), "sledge");
+public class Sledge extends Item implements IVoxelTool {
+	public Sledge(Properties properties) {
+		super(properties);
 	}
 
 	public Result onLeftClickBlock(PlayerEntity player, BlockPos pos, Direction face) {

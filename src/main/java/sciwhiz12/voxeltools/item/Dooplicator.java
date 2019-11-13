@@ -1,20 +1,25 @@
 package sciwhiz12.voxeltools.item;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.eventbus.api.Event.Result;
 import sciwhiz12.voxeltools.VxConfig;
 
-public class Dooplicator extends BaseItem {
-	public Dooplicator() {
-		super(new Properties(), "dooplicator");
+public class Dooplicator extends Item implements IVoxelTool {
+	public Dooplicator(Properties properties) {
+		super(properties);
 	}
 
+	@Override
 	public ActionResultType onItemUse(ItemUseContext context) {
 		if (!context.getWorld().isRemote && VxConfig.SERVER.hasPermission(context.getPlayer())) {
 			BlockState state = context.getWorld().getBlockState(context.getPos());
@@ -36,5 +41,10 @@ public class Dooplicator extends BaseItem {
 			return ActionResultType.SUCCESS;
 		}
 		return ActionResultType.PASS;
+	}
+
+	@Override
+	public Result onLeftClickBlock(PlayerEntity player, BlockPos pos, Direction dir) {
+		return Result.DEFAULT;
 	}
 }

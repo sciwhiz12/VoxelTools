@@ -3,6 +3,7 @@ package sciwhiz12.voxeltools.item;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
@@ -15,11 +16,11 @@ import net.minecraftforge.eventbus.api.Event.Result;
 import sciwhiz12.voxeltools.VoxelTools;
 import sciwhiz12.voxeltools.VxConfig;
 
-public class Shovel extends BaseItem {
+public class Shovel extends Item implements IVoxelTool {
 	public static final ResourceLocation TAG_GROUND = new ResourceLocation(VoxelTools.MODID, "ground");
 
-	public Shovel() {
-		super(new Properties(), "shovel");
+	public Shovel(Properties properties) {
+		super(properties);
 	}
 
 	public Result onLeftClickBlock(PlayerEntity player, BlockPos pos, Direction face) {

@@ -32,7 +32,7 @@ public class VoxelTools {
 		LOGGER.info("Setting up common...");
 		MinecraftForge.EVENT_BUS.register(this);
 	}
-	
+
 	@SubscribeEvent
 	public void handleServerAboutToStartEvent(final FMLServerAboutToStartEvent event) {
 		PermissionAPI.registerNode(VxConfig.ITEM_USE_PERMISSION, VxConfig.SERVER.defaultPermLevel.get(),

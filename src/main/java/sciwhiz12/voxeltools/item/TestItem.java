@@ -1,6 +1,7 @@
 package sciwhiz12.voxeltools.item;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResult;
@@ -15,9 +16,9 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.eventbus.api.Event.Result;
 
-public class TestItem extends BaseItem {
-	public TestItem() {
-		super(new Properties(), "test_item");
+public class TestItem extends Item implements IVoxelTool {
+	public TestItem(Properties properties) {
+		super(properties);
 	}
 
 	public Result onLeftClickBlock(PlayerEntity player, BlockPos pos, Direction face) {
