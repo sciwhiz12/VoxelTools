@@ -39,6 +39,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.Event.Result;
 import sciwhiz12.voxeltools.VxConfig;
+import sciwhiz12.voxeltools.util.PermissionUtil;
 
 public class Paintbrush extends Item implements IVoxelTool {
 	public Paintbrush(Properties properties) {
@@ -65,7 +66,7 @@ public class Paintbrush extends Item implements IVoxelTool {
 	}
 
 	public Result onLeftClickBlock(PlayerEntity player, BlockPos pos, Direction face) {
-		if (!player.world.isRemote && VxConfig.SERVER.hasPermission(player)) {
+		if (!player.world.isRemote && PermissionUtil.checkForPermission(player)) {
 			ItemStack stack = player.getHeldItemMainhand();
 			if (stack.getItem() != this)
 				stack = player.getHeldItemOffhand();
@@ -88,7 +89,7 @@ public class Paintbrush extends Item implements IVoxelTool {
 	}
 
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		if (!world.isRemote && VxConfig.SERVER.hasPermission(player)) {
+		if (!world.isRemote && PermissionUtil.checkForPermission(player)) {
 			ItemStack stack = player.getHeldItemMainhand();
 			if (stack.getItem() != this)
 				stack = player.getHeldItemOffhand();

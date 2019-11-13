@@ -4,6 +4,8 @@
 	"voxeltools.test_item.rightblock": "Right-clicked on a block!",
 	"voxeltools.test_item.rightitem": "Right-clicked on air!",
 	"voxeltools.test_item.leftblock": "Left-clicked on a block!",
+	"error.voxeltools.disabled": "This item has been disabled by your server administrator.",
+	"error.voxeltools.noPermission": "You do not have permission to use this item.",
 	"item.voxeltools.jackhammer": "Pneumatic Jackhammer",
 	"item.voxeltools.dooplicator": "Dooplicator",
 	"voxeltools.dooplicator.dooped": "Dooped %s of %s",

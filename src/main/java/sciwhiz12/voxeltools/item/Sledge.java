@@ -7,8 +7,8 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.eventbus.api.Event.Result;
-import sciwhiz12.voxeltools.VxConfig;
 import sciwhiz12.voxeltools.util.MoveUtil;
+import sciwhiz12.voxeltools.util.PermissionUtil;
 
 public class Sledge extends Item implements IVoxelTool {
 	public Sledge(Properties properties) {
@@ -16,7 +16,7 @@ public class Sledge extends Item implements IVoxelTool {
 	}
 
 	public Result onLeftClickBlock(PlayerEntity player, BlockPos pos, Direction face) {
-		if (!player.world.isRemote && VxConfig.SERVER.hasPermission(player)) {
+		if (!player.world.isRemote && PermissionUtil.checkForPermission(player)) {
 			BlockPos target = pos.offset(face, -1);
 			if (MoveUtil.moveBlock(player, pos, target, player.isSneaking(), true)) {
 				return Result.DENY;
@@ -26,7 +26,7 @@ public class Sledge extends Item implements IVoxelTool {
 	}
 
 	public ActionResultType onItemUse(ItemUseContext context) {
-		if (!context.getWorld().isRemote && VxConfig.SERVER.hasPermission(context.getPlayer())) {
+		if (!context.getWorld().isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
 			PlayerEntity player = context.getPlayer();
 			BlockPos target = context.getPos().offset(context.getFace());
 			if (MoveUtil.moveBlock(player, context.getPos(), target, player.isSneaking(), true)) {

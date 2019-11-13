@@ -12,7 +12,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.eventbus.api.Event.Result;
-import sciwhiz12.voxeltools.VxConfig;
+import sciwhiz12.voxeltools.util.PermissionUtil;
 
 public class Dooplicator extends Item implements IVoxelTool {
 	public Dooplicator(Properties properties) {
@@ -21,7 +21,7 @@ public class Dooplicator extends Item implements IVoxelTool {
 
 	@Override
 	public ActionResultType onItemUse(ItemUseContext context) {
-		if (!context.getWorld().isRemote && VxConfig.SERVER.hasPermission(context.getPlayer())) {
+		if (!context.getWorld().isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
 			BlockState state = context.getWorld().getBlockState(context.getPos());
 			Item i = state.getBlock().asItem();
 			if (i != null) {

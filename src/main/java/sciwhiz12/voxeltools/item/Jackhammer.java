@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.eventbus.api.Event.Result;
 import sciwhiz12.voxeltools.VxConfig;
 import sciwhiz12.voxeltools.VxConfig.ClickType;
+import sciwhiz12.voxeltools.util.PermissionUtil;
 
 public class Jackhammer extends Item implements IVoxelTool {
 	public Jackhammer(Properties properties) {
@@ -19,7 +20,7 @@ public class Jackhammer extends Item implements IVoxelTool {
 
 	@Override
 	public Result onLeftClickBlock(PlayerEntity player, BlockPos pos, Direction face) {
-		if (!player.world.isRemote && VxConfig.SERVER.hasPermission(player)) {
+		if (!player.world.isRemote && PermissionUtil.checkForPermission(player)) {
 			player.world.playEvent(2001, pos, Block.getStateId(player.world.getBlockState(pos)));
 			int flags = 2;
 			ClickType option = VxConfig.SERVER.jackhammerNoPhys.get();
@@ -33,7 +34,7 @@ public class Jackhammer extends Item implements IVoxelTool {
 
 	@Override
 	public ActionResultType onItemUse(ItemUseContext context) {
-		if (!context.getWorld().isRemote && VxConfig.SERVER.hasPermission(context.getPlayer())) {
+		if (!context.getWorld().isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
 			context.getWorld().playEvent(2001, context.getPos(),
 					Block.getStateId(context.getWorld().getBlockState(context.getPos())));
 			int flags = 2;

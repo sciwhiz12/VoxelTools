@@ -19,6 +19,7 @@ import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.Event.Result;
 import sciwhiz12.voxeltools.VoxelTools;
 import sciwhiz12.voxeltools.VxConfig;
+import sciwhiz12.voxeltools.util.PermissionUtil;
 
 public class Chainsaw extends Item implements IVoxelTool {
 	public static final ResourceLocation TAG_VEGETATION = new ResourceLocation(VoxelTools.MODID, "vegetation");
@@ -30,7 +31,7 @@ public class Chainsaw extends Item implements IVoxelTool {
 
 	@Override
 	public Result onLeftClickBlock(PlayerEntity player, BlockPos pos, Direction face) {
-		if (!player.world.isRemote && VxConfig.SERVER.hasPermission(player)) {
+		if (!player.world.isRemote && PermissionUtil.checkForPermission(player)) {
 			Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_TREE_STUFF);
 			for (BlockPos targetPos : getDestroyRadius(VxConfig.SERVER.chainsawCutRadius, pos)) {
 				if (col.contains(player.world.getBlockState(targetPos).getBlock())) {
@@ -44,7 +45,7 @@ public class Chainsaw extends Item implements IVoxelTool {
 
 	@Override
 	public ActionResultType onItemUse(ItemUseContext context) {
-		if (!context.getWorld().isRemote && VxConfig.SERVER.hasPermission(context.getPlayer())) {
+		if (!context.getWorld().isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
 			if (!context.getPlayer().isSneaking()) {
 				if (VxConfig.SERVER.shovelFlattenRadius.get() == 0)
 					return ActionResultType.PASS;

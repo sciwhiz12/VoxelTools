@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.eventbus.api.Event.Result;
 import sciwhiz12.voxeltools.VoxelTools;
 import sciwhiz12.voxeltools.VxConfig;
+import sciwhiz12.voxeltools.util.PermissionUtil;
 
 public class Shovel extends Item implements IVoxelTool {
 	public static final ResourceLocation TAG_GROUND = new ResourceLocation(VoxelTools.MODID, "ground");
@@ -24,7 +25,7 @@ public class Shovel extends Item implements IVoxelTool {
 	}
 
 	public Result onLeftClickBlock(PlayerEntity player, BlockPos pos, Direction face) {
-		if (!player.world.isRemote && VxConfig.SERVER.hasPermission(player)) {
+		if (!player.world.isRemote && PermissionUtil.checkForPermission(player)) {
 			Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
 			for (BlockPos targetPos : getDigRadius(pos)) {
 				if (col.contains(player.world.getBlockState(targetPos).getBlock())) {
@@ -37,7 +38,7 @@ public class Shovel extends Item implements IVoxelTool {
 	}
 
 	public ActionResultType onItemUse(ItemUseContext context) {
-		if (!context.getWorld().isRemote && VxConfig.SERVER.hasPermission(context.getPlayer())) {
+		if (!context.getWorld().isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
 			if (!context.getPlayer().isSneaking()) {
 				if (VxConfig.SERVER.shovelFlattenRadius.get() == 0)
 					return ActionResultType.PASS;

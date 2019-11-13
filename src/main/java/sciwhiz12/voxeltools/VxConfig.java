@@ -2,13 +2,11 @@ package sciwhiz12.voxeltools;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
-import net.minecraftforge.server.permission.PermissionAPI;
 
 public final class VxConfig {
 	static final ForgeConfigSpec serverSpec;
@@ -91,10 +89,6 @@ public final class VxConfig {
 					.defineInRange("chainsawCleanRadius", 5, 0, 32);
 
 			builder.pop();
-		}
-
-		public boolean hasPermission(PlayerEntity player) {
-			return SERVER.allowItemUse.get() && PermissionAPI.hasPermission(player, ITEM_USE_PERMISSION);
 		}
 	}
 
