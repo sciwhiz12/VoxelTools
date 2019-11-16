@@ -18,7 +18,7 @@ public class Sledge extends Item implements IVoxelTool {
 	public Result onLeftClickBlock(PlayerEntity player, BlockPos pos, Direction face) {
 		if (!player.world.isRemote && PermissionUtil.checkForPermission(player)) {
 			BlockPos target = pos.offset(face, -1);
-			if (MoveUtil.moveBlock(player, pos, target, player.isSneaking(), true)) {
+			if (MoveUtil.moveBlock(player, pos, target, false, true)) {
 				return Result.DENY;
 			}
 		}

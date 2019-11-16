@@ -21,7 +21,6 @@ public final class VxConfig {
 		public final BooleanValue allowItemUse;
 		public final EnumValue<DefaultPermissionLevel> defaultPermLevel;
 		public final IntValue paintbrushRange;
-		public final EnumValue<ClickType> jackhammerNoPhys;
 		public final BooleanValue allowOverwrite;
 
 		public final IntValue shovelDigRadiusX;
@@ -48,10 +47,6 @@ public final class VxConfig {
 			paintbrushRange = builder.translation("voxeltools.config.paintbrushRange").comment(
 					"The range of the Magical Paintbrush when remotely painting a block. Anything below the player's reach distance (default 5) will disable remote painting.")
 					.defineInRange("paintbrushRange", 16, 0, 48);
-
-			jackhammerNoPhys = builder.translation("voxeltools.config.jackhammerNoPhys")
-					.comment("Whether to use no-physics mode for either mouse button, both, or neither.")
-					.defineEnum("jackhammerNoPhys", ClickType.RIGHT_CLICK_ONLY, ClickType.values());
 
 			allowOverwrite = builder.translation("voxeltools.config.allowOverwrite").comment(
 					"Whether to allow block-moving items (ie Graviton Sledge) to destroy blocks in their way when the player is sneaking.")
@@ -93,8 +88,4 @@ public final class VxConfig {
 	}
 
 	public static final String ITEM_USE_PERMISSION = "voxeltools.item";
-
-	public static enum ClickType {
-		BOTH, RIGHT_CLICK_ONLY, LEFT_CLICK_ONLY, NONE;
-	}
 }

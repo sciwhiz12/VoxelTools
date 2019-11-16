@@ -18,7 +18,7 @@ public class Pliers extends Item implements IVoxelTool {
 	public Result onLeftClickBlock(PlayerEntity player, BlockPos pos, Direction face) {
 		if (!player.world.isRemote && PermissionUtil.checkForPermission(player)) {
 			BlockPos target = pos.offset(face, -1);
-			if (MoveUtil.moveBlock(player, pos, target, false, true)) {
+			if (MoveUtil.moveBlock(player, pos, target, false, false)) {
 				return Result.DENY;
 			}
 		}
@@ -29,7 +29,7 @@ public class Pliers extends Item implements IVoxelTool {
 		if (!context.getWorld().isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
 			PlayerEntity player = context.getPlayer();
 			BlockPos target = context.getPos().offset(context.getFace());
-			if (MoveUtil.moveBlock(player, context.getPos(), target, false, !player.isSneaking())) {
+			if (MoveUtil.moveBlock(player, context.getPos(), target, false, false)) {
 				return ActionResultType.SUCCESS;
 			}
 		}
