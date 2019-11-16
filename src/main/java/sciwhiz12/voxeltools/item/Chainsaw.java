@@ -1,5 +1,7 @@
 package sciwhiz12.voxeltools.item;
 
+import java.util.Collections;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
@@ -47,8 +49,6 @@ public class Chainsaw extends Item implements IVoxelTool {
 	public ActionResultType onItemUse(ItemUseContext context) {
 		if (!context.getWorld().isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
 			if (!context.getPlayer().isSneaking()) {
-				if (VxConfig.SERVER.chainsawCleanRadius.get() == 0)
-					return ActionResultType.PASS;
 				Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_VEGETATION);
 				World world = context.getWorld();
 				for (BlockPos targetPos : getDestroyRadius(VxConfig.SERVER.chainsawCleanRadius, context.getPos())) {
@@ -64,6 +64,9 @@ public class Chainsaw extends Item implements IVoxelTool {
 
 	private Iterable<BlockPos> getDestroyRadius(IntValue radiusConfig, BlockPos origin) {
 		int r = radiusConfig.get();
+		if (r <= 0) {
+			return Collections.emptyList();
+		}
 		BlockPos cornerOne = origin.add(r, r, r);
 		BlockPos cornerTwo = origin.add(-r, -r, -r);
 		return BlockPos.getAllInBoxMutable(cornerOne, cornerTwo);
