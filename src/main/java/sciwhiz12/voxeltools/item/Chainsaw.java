@@ -47,7 +47,7 @@ public class Chainsaw extends Item implements IVoxelTool {
 	public ActionResultType onItemUse(ItemUseContext context) {
 		if (!context.getWorld().isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
 			if (!context.getPlayer().isSneaking()) {
-				if (VxConfig.SERVER.shovelFlattenRadius.get() == 0)
+				if (VxConfig.SERVER.chainsawCleanRadius.get() == 0)
 					return ActionResultType.PASS;
 				Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_VEGETATION);
 				World world = context.getWorld();
