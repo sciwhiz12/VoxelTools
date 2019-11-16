@@ -19,8 +19,9 @@ public class InteractListener {
 			Result res = ((IVoxelTool) it).onLeftClickBlock(event.getPlayer(), event.getPos(), event.getFace());
 			switch (res) {
 			case DENY:
-				event.setUseBlock(res);
-				event.setUseItem(res);
+				event.setCanceled(true);
+				//event.setUseBlock(res);
+				//event.setUseItem(res);
 				return;
 			case DEFAULT:
 			case ALLOW:
