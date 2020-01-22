@@ -15,6 +15,7 @@ import sciwhiz12.voxeltools.VoxelTools;
 public class VxItems {
 
     public static final ItemGroup CREATIVE_TAB = (new ItemGroup("voxelTools") {
+        @Override
         @OnlyIn(Dist.CLIENT)
         public ItemStack createIcon() {
             // return new ItemStack(VxItems.jackhammer);
@@ -33,26 +34,31 @@ public class VxItems {
             "test_item", () -> new TestItem(TOOL_PROPERTIES)
     );
 
-    /*
-     * @ObjectHolder(VoxelTools.MODID + ":jackhammer") public static final Item
-     * jackhammer = null;
-     * 
-     * @ObjectHolder(VoxelTools.MODID + ":dooplicator") public static final Item
-     * dooplicator = null;
-     * 
-     * @ObjectHolder(VoxelTools.MODID + ":sledge") public static final Item sledge =
-     * null;
-     * 
-     * @ObjectHolder(VoxelTools.MODID + ":pliers") public static final Item pliers =
-     * null;
-     * 
-     * @ObjectHolder(VoxelTools.MODID + ":paintbrush") public static final Item
-     * paintbrush = null;
-     * 
-     * @ObjectHolder(VoxelTools.MODID + ":shovel") public static final Item shovel =
-     * null;
-     * 
-     * @ObjectHolder(VoxelTools.MODID + ":chainsaw") public static final Item
-     * chainsaw = null;
-     */
+    public static final RegistryObject<Item> dooplicator = ITEMS.register(
+            "dooplicator", () -> new Dooplicator(TOOL_PROPERTIES)
+    );
+
+    public static final RegistryObject<Item> jackhammer = ITEMS.register(
+            "jackhammer", () -> new Jackhammer(TOOL_PROPERTIES)
+    );
+
+    public static final RegistryObject<Item> paintbrush = ITEMS.register(
+            "paintbrush", () -> new Paintbrush(TOOL_PROPERTIES)
+    );
+
+    public static final RegistryObject<Item> sledge = ITEMS.register(
+            "sledge", () -> new Sledge(TOOL_PROPERTIES)
+    );
+
+    public static final RegistryObject<Item> pliers = ITEMS.register(
+            "pliers", () -> new Pliers(TOOL_PROPERTIES)
+    );
+
+    public static final RegistryObject<Item> shovel = ITEMS.register(
+            "shovel", () -> new Shovel(TOOL_PROPERTIES)
+    );
+
+    public static final RegistryObject<Item> chainsaw = ITEMS.register(
+            "chainsaw", () -> new Chainsaw(TOOL_PROPERTIES)
+    );
 }
