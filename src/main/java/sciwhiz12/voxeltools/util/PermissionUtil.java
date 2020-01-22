@@ -8,11 +8,11 @@ import sciwhiz12.voxeltools.VxConfig;
 
 public class PermissionUtil {
 	public static boolean hasPermission(PlayerEntity player) {
-		return VxConfig.SERVER.allowItemUse.get() && PermissionAPI.hasPermission(player, VxConfig.ITEM_USE_PERMISSION);
+		return VxConfig.ServerConfig.allowItemUse && PermissionAPI.hasPermission(player, VxConfig.ITEM_USE_PERMISSION);
 	}
 
 	public static boolean checkForPermission(PlayerEntity player) {
-		if (!VxConfig.SERVER.allowItemUse.get()) {
+		if (!VxConfig.ServerConfig.allowItemUse) {
 			if (player.shouldReceiveErrors() && player.shouldReceiveFeedback()) {
 				player.sendMessage(
 						new TranslationTextComponent("error.voxeltools.disabled").applyTextStyle(TextFormatting.RED));
