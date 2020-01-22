@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceContext.FluidMode;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.eventbus.api.Event.Result;
 
@@ -23,7 +23,7 @@ public class TestItem extends Item implements IVoxelTool {
 
 	public Result onLeftClickBlock(PlayerEntity player, BlockPos pos, Direction face) {
 		if (!player.world.isRemote) {
-			player.sendMessage(new TranslationTextComponent("voxeltools.test_item.leftblock"));
+			player.sendMessage(new StringTextComponent("Left-clicked on a block!"));
 			return Result.DENY;
 		}
 		return Result.DEFAULT;
@@ -33,7 +33,7 @@ public class TestItem extends Item implements IVoxelTool {
 		if (!world.isRemote) {
 			RayTraceResult res = rayTrace(world, player, FluidMode.NONE);
 			if (res == null || res.getType() == Type.MISS) {
-				player.sendMessage(new TranslationTextComponent("voxeltools.test_item.rightitem"));
+				player.sendMessage(new StringTextComponent("Right-clicked on air!"));
 				return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
 			}
 		}
@@ -42,7 +42,7 @@ public class TestItem extends Item implements IVoxelTool {
 
 	public ActionResultType onItemUse(ItemUseContext context) {
 		if (!context.getWorld().isRemote) {
-			context.getPlayer().sendMessage(new TranslationTextComponent("voxeltools.test_item.rightblock"));
+			context.getPlayer().sendMessage(new StringTextComponent("Right-clicked on a block!"));
 			return ActionResultType.SUCCESS;
 		}
 		return ActionResultType.PASS;
