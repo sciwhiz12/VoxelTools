@@ -3,13 +3,11 @@ package sciwhiz12.voxeltools;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
@@ -25,12 +23,15 @@ public class VoxelTools {
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	public VoxelTools() {
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+	    IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+	    modBus.addListener(this::setup);
+		VxItems.ITEMS.register(modBus);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, VxConfig.serverSpec);
 	}
 
 	private void setup(final FMLCommonSetupEvent event) {
 		LOGGER.info("Setting up common...");
+		
 		VxNetwork.registerPackets();
 		MinecraftForge.EVENT_BUS.register(this);
 	}
@@ -39,13 +40,5 @@ public class VoxelTools {
 	public void handleServerAboutToStartEvent(final FMLServerAboutToStartEvent event) {
 		PermissionAPI.registerNode(VxConfig.ITEM_USE_PERMISSION, VxConfig.SERVER.defaultPermLevel.get(),
 				"Allows the use of VoxelTools.");
-	}
-
-	@Mod.EventBusSubscriber(bus = Bus.MOD)
-	public static class RegistryEvents {
-		@SubscribeEvent
-		public static void registerItems(RegistryEvent.Register<Item> event) {
-			VxItems.registerItems(event);
-		}
 	}
 }
