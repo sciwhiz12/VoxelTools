@@ -17,7 +17,7 @@ public class VxItems {
 	@ObjectHolder(VoxelTools.MODID + ":test_item")
 	public static final Item test_item = null;
 
-	@ObjectHolder(VoxelTools.MODID + ":jackhammer")
+	/*@ObjectHolder(VoxelTools.MODID + ":jackhammer")
 	public static final Item jackhammer = null;
 
 	@ObjectHolder(VoxelTools.MODID + ":dooplicator")
@@ -36,25 +36,26 @@ public class VxItems {
 	public static final Item shovel = null;
 
 	@ObjectHolder(VoxelTools.MODID + ":chainsaw")
-	public static final Item chainsaw = null;
+	public static final Item chainsaw = null;*/
 
 	public static final ItemGroup CREATIVE_TAB = (new ItemGroup("voxelTools") {
 		@OnlyIn(Dist.CLIENT)
 		public ItemStack createIcon() {
-			return new ItemStack(VxItems.jackhammer);
+			//return new ItemStack(VxItems.jackhammer);
+		    return new ItemStack(VxItems.test_item);
 		}
 	}).setTabPath("voxel_tools");
 
 	public static void registerItems(RegistryEvent.Register<Item> event) {
 		IForgeRegistry<Item> registry = event.getRegistry();
 		registry.register(new TestItem(TOOL_PROPERTIES).setRegistryName("test_item"));
-		registry.register(new Jackhammer(TOOL_PROPERTIES).setRegistryName("jackhammer"));
+		/*registry.register(new Jackhammer(TOOL_PROPERTIES).setRegistryName("jackhammer"));
 		registry.register(new Dooplicator(TOOL_PROPERTIES).setRegistryName("dooplicator"));
 		registry.register(new Sledge(TOOL_PROPERTIES).setRegistryName("sledge"));
 		registry.register(new Pliers(TOOL_PROPERTIES).setRegistryName("pliers"));
 		registry.register(new Paintbrush(TOOL_PROPERTIES).setRegistryName("paintbrush"));
 		registry.register(new Shovel(TOOL_PROPERTIES).setRegistryName("shovel"));
-		registry.register(new Chainsaw(TOOL_PROPERTIES).setRegistryName("chainsaw"));
+		registry.register(new Chainsaw(TOOL_PROPERTIES).setRegistryName("chainsaw"));*/
 	}
 
 	private static final Item.Properties TOOL_PROPERTIES = new Item.Properties().setNoRepair()

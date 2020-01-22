@@ -16,6 +16,7 @@ import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.server.permission.PermissionAPI;
 import sciwhiz12.voxeltools.item.VxItems;
+import sciwhiz12.voxeltools.net.VxNetwork;
 
 @Mod(VoxelTools.MODID)
 public class VoxelTools {
@@ -30,6 +31,7 @@ public class VoxelTools {
 
 	private void setup(final FMLCommonSetupEvent event) {
 		LOGGER.info("Setting up common...");
+		VxNetwork.registerPackets();
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
