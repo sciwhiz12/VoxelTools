@@ -74,6 +74,7 @@ public final class VxConfig {
                     "Whether to allow block-moving items (ie Graviton Sledge) to destroy blocks in their way when the player is sneaking."
             ).define("allowOverwrite", true);
 
+            builder.push("shovel");
             shovelDigRadiusX = builder.translation(
                     "voxeltools.config.shovelDigRadiusX"
             ).comment(
@@ -109,7 +110,9 @@ public final class VxConfig {
                     "The Auto-Shoveler 9001's flatten ability's height offset from the block clicked.",
                     "A value of 0 is the plane of the block clicked, and 'n' is the plane 'n' blocks above the block."
             ).defineInRange("shovelFlattenHeightOffset", 1, 0, 8);
-
+            builder.pop();
+            
+            builder.push("chainsaw");
             chainsawCutRadius = builder.translation(
                     "voxeltools.config.chainsawCutRadius"
             ).comment(
@@ -120,7 +123,8 @@ public final class VxConfig {
             ).comment(
                     "The radius of the A.S.H. Chainsaw's cleaning (vegetation in general) ability. Set to 0 to disable."
             ).defineInRange("chainsawCleanRadius", 5, 0, 32);
-
+            builder.pop();
+            
             builder.pop();
         }
     }
