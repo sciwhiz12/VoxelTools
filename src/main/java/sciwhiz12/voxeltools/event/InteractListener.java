@@ -21,31 +21,28 @@ import sciwhiz12.voxeltools.util.PaintbrushUtil;
 @EventBusSubscriber(bus = Bus.FORGE)
 public class InteractListener {
     @SubscribeEvent
-    public static void onLeftClickEmpty(
-            PlayerInteractEvent.LeftClickEmpty event) {
+    public static void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
         // Client side event
         if (isValidEvent(event)) {
             VxNetwork.CHANNEL.send(
-                    PacketDistributor.SERVER.noArg(),
-                    new LeftClickEmptyPacket(event.getHand())
+                    PacketDistributor.SERVER.noArg(), new LeftClickEmptyPacket(event.getHand())
             );
         }
     }
 
     @SubscribeEvent
-    public static void onLeftClickBlock(
-            PlayerInteractEvent.LeftClickBlock event) {
-        if (event.getSide() == LogicalSide.SERVER
-                && event.getResult() == Result.DEFAULT && isValidEvent(event)) {
+    public static void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+        if (event.getSide() == LogicalSide.SERVER && event.getResult() == Result.DEFAULT
+                && isValidEvent(event)) {
             IVoxelTool tool = (IVoxelTool) event.getItemStack().getItem();
             Result result = tool.hasLeftClickBlockAction(
-                    event.getPlayer(), event.getWorld(), event.getHand(),
-                    event.getPos(), event.getFace()
+                    event.getPlayer(), event.getWorld(), event.getHand(), event.getPos(), event
+                            .getFace()
             );
             if (result != Result.DEFAULT) {
                 tool.onLeftClickBlock(
-                        event.getPlayer(), event.getWorld(), event.getHand(),
-                        event.getPos(), event.getFace()
+                        event.getPlayer(), event.getWorld(), event.getHand(), event.getPos(), event
+                                .getFace()
                 );
                 event.setResult(result);
             }
@@ -53,41 +50,38 @@ public class InteractListener {
     }
 
     @SubscribeEvent
-    public static void onRightClickEmpty(
-            PlayerInteractEvent.RightClickItem event) {
-        if (event.getSide() == LogicalSide.SERVER
-                && event.getResult() == Result.DEFAULT && isValidEvent(event)) {
-            RayTraceResult res = PaintbrushUtil.rangedRayTrace(event.getWorld(), event.getPlayer(), FluidMode.NONE, event.getPlayer().getAttribute(PlayerEntity.REACH_DISTANCE).getValue());
-            if (res == null || res.getType() != Type.MISS) {
-                return;
-            }
+    public static void onRightClickEmpty(PlayerInteractEvent.RightClickItem event) {
+        if (event.getSide() == LogicalSide.SERVER && event.getResult() == Result.DEFAULT
+                && isValidEvent(event)) {
+            RayTraceResult res = PaintbrushUtil.rangedRayTrace(
+                    event.getWorld(), event.getPlayer(), FluidMode.NONE, event.getPlayer()
+                            .getAttribute(PlayerEntity.REACH_DISTANCE).getValue()
+            );
+            if (res == null || res.getType() != Type.MISS) { return; }
             IVoxelTool tool = (IVoxelTool) event.getItemStack().getItem();
             Result result = tool.hasRightClickEmptyAction(
                     event.getPlayer(), event.getWorld(), event.getHand()
             );
             if (result != Result.DEFAULT) {
-                tool.onRightClickEmpty(
-                        event.getPlayer(), event.getWorld(), event.getHand()
-                );
+                tool.onRightClickEmpty(event.getPlayer(), event.getWorld(), event.getHand());
                 event.setResult(result);
             }
         }
     }
 
     @SubscribeEvent
-    public static void onRightClickBlock(
-            PlayerInteractEvent.RightClickBlock event) {
-        if (event.getSide() == LogicalSide.SERVER
-                && event.getResult() == Result.DEFAULT && isValidEvent(event)) {
+    public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        if (event.getSide() == LogicalSide.SERVER && event.getResult() == Result.DEFAULT
+                && isValidEvent(event)) {
             IVoxelTool tool = (IVoxelTool) event.getItemStack().getItem();
             Result result = tool.hasRightClickBlockAction(
-                    event.getPlayer(), event.getWorld(), event.getHand(),
-                    event.getPos(), event.getFace()
+                    event.getPlayer(), event.getWorld(), event.getHand(), event.getPos(), event
+                            .getFace()
             );
             if (result != Result.DEFAULT) {
                 tool.onRightClickBlock(
-                        event.getPlayer(), event.getWorld(), event.getHand(),
-                        event.getPos(), event.getFace()
+                        event.getPlayer(), event.getWorld(), event.getHand(), event.getPos(), event
+                                .getFace()
                 );
                 event.setResult(result);
             }
@@ -99,9 +93,7 @@ public class InteractListener {
         ItemStack stack = player.getHeldItem(event.getHand());
         if (stack != null && !stack.isEmpty()) {
             Item item = stack.getItem();
-            if (item instanceof IVoxelTool) {
-                return true;
-            }
+            if (item instanceof IVoxelTool) { return true; }
         }
         return false;
     }

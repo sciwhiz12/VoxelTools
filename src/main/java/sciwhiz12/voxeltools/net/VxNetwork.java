@@ -7,8 +7,10 @@ import sciwhiz12.voxeltools.VoxelTools;
 
 public class VxNetwork {
     public static final String PROTOCOL_VERSION = "1";
-    public static final SimpleChannel CHANNEL = NetworkRegistry
-            .newSimpleChannel(new ResourceLocation(VoxelTools.MODID, "channel"), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
+    public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
+            new ResourceLocation(VoxelTools.MODID, "channel"), () -> PROTOCOL_VERSION,
+            PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals
+    );
 
     private static int id = 1;
 

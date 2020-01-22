@@ -26,20 +26,19 @@ public class TestItem extends Item implements IVoxelTool {
     }
 
     @Override
-    public Result hasLeftClickEmptyAction(PlayerEntity player, World world,
-            Hand hand) {
+    public Result hasLeftClickEmptyAction(PlayerEntity player, World world, Hand hand) {
         return Result.ALLOW;
     }
 
     @Override
-    public void onLeftClickBlock(PlayerEntity player, World world, Hand hand,
-            BlockPos pos, Direction face) {
+    public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+            Direction face) {
         printInfo("Left Click Block", player, world, hand, pos, face);
     }
 
     @Override
-    public Result hasLeftClickBlockAction(PlayerEntity player, World world,
-            Hand hand, BlockPos pos, Direction face) {
+    public Result hasLeftClickBlockAction(PlayerEntity player, World world, Hand hand, BlockPos pos,
+            Direction face) {
         return Result.ALLOW;
     }
 
@@ -49,109 +48,84 @@ public class TestItem extends Item implements IVoxelTool {
     }
 
     @Override
-    public Result hasRightClickEmptyAction(PlayerEntity player, World world,
-            Hand hand) {
+    public Result hasRightClickEmptyAction(PlayerEntity player, World world, Hand hand) {
         return Result.ALLOW;
     }
 
     @Override
-    public void onRightClickBlock(PlayerEntity player, World world, Hand hand,
-            BlockPos pos, Direction face) {
+    public void onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+            Direction face) {
         printInfo("Right Click Block", player, world, hand, pos, face);
 
     }
 
     @Override
-    public Result hasRightClickBlockAction(PlayerEntity player, World world,
-            Hand hand, BlockPos pos, Direction face) {
+    public Result hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
+            BlockPos pos, Direction face) {
         return Result.ALLOW;
     }
 
-    public static void printInfo(String infoString, PlayerEntity player,
-            World world, Hand hand, @Nullable BlockPos pos,
-            @Nullable Direction face) {
-        Style whiteBold = new Style().setBold(true).setColor(
-                TextFormatting.WHITE
-        );
+    public static void printInfo(String infoString, PlayerEntity player, World world, Hand hand,
+            @Nullable BlockPos pos, @Nullable Direction face) {
+        Style whiteBold = new Style().setBold(true).setColor(TextFormatting.WHITE);
         player.sendMessage(
                 new StringTextComponent("\n\n\n\n\n\n\n\n").appendSibling(
                         new StringTextComponent("[TEST_ITEM] ").applyTextStyles(
                                 TextFormatting.GREEN, TextFormatting.BOLD
+                        ).appendSibling(new StringTextComponent(infoString).setStyle(whiteBold))
+                ).appendText("\n").appendSibling(
+                        new StringTextComponent("  logical side: ").applyTextStyle(
+                                TextFormatting.DARK_AQUA
                         ).appendSibling(
-                                new StringTextComponent(infoString).setStyle(
-                                        whiteBold
-                                )
+                                new StringTextComponent(world.isRemote ? "CLIENT" : "SERVER")
+                                        .applyTextStyles(
+                                                TextFormatting.ITALIC, TextFormatting.WHITE
+                                        )
                         )
                 ).appendText("\n").appendSibling(
-                        new StringTextComponent("  logical side: ")
-                                .applyTextStyle(TextFormatting.DARK_AQUA)
-                                .appendSibling(
-                                        new StringTextComponent(
-                                                world.isRemote ? "CLIENT"
-                                                        : "SERVER"
-                                        ).applyTextStyles(
-                                                TextFormatting.ITALIC,
-                                                TextFormatting.WHITE
-                                        )
-                                )
-                ).appendText("\n").appendSibling(
-                        new StringTextComponent("  physical side: ")
-                                .applyTextStyle(TextFormatting.DARK_AQUA)
-                                .appendSibling(
-                                        new StringTextComponent(
-                                                FMLEnvironment.dist == Dist.CLIENT
-                                                        ? "CLIENT"
-                                                        : "SERVER"
-                                        ).applyTextStyles(
-                                                TextFormatting.ITALIC,
-                                                TextFormatting.WHITE
-                                        )
-                                )
+                        new StringTextComponent("  physical side: ").applyTextStyle(
+                                TextFormatting.DARK_AQUA
+                        ).appendSibling(
+                                new StringTextComponent(
+                                        FMLEnvironment.dist == Dist.CLIENT ? "CLIENT" : "SERVER"
+                                ).applyTextStyles(TextFormatting.ITALIC, TextFormatting.WHITE)
+                        )
                 ).appendText("\n").appendSibling(
                         new StringTextComponent("  player: ").applyTextStyle(
                                 TextFormatting.DARK_AQUA
                         ).appendSibling(
                                 player.getName().applyTextStyles(
-                                        TextFormatting.ITALIC,
-                                        TextFormatting.WHITE
+                                        TextFormatting.ITALIC, TextFormatting.WHITE
                                 )
                         )
                 ).appendText("\n").appendSibling(
-                        new StringTextComponent("  hand: ").applyTextStyle(
-                                TextFormatting.DARK_AQUA
-                        ).appendSibling(
-                                new StringTextComponent(hand.toString())
-                                        .applyTextStyles(
-                                                TextFormatting.ITALIC,
-                                                TextFormatting.WHITE
+                        new StringTextComponent("  hand: ").applyTextStyle(TextFormatting.DARK_AQUA)
+                                .appendSibling(
+                                        new StringTextComponent(hand.toString()).applyTextStyles(
+                                                TextFormatting.ITALIC, TextFormatting.WHITE
                                         )
-                        )
+                                )
                 )
         );
         if (pos != null) {
             player.sendMessage(
-                    new StringTextComponent("  pos: ").applyTextStyle(
-                            TextFormatting.DARK_AQUA
-                    ).appendSibling(
-                            new StringTextComponent(pos.toString())
-                                    .applyTextStyles(
-                                            TextFormatting.ITALIC,
-                                            TextFormatting.WHITE
+                    new StringTextComponent("  pos: ").applyTextStyle(TextFormatting.DARK_AQUA)
+                            .appendSibling(
+                                    new StringTextComponent(pos.toString()).applyTextStyles(
+                                            TextFormatting.ITALIC, TextFormatting.WHITE
                                     )
-                    )
+                            )
             );
         }
         if (world != null) {
             player.sendMessage(
-                    new StringTextComponent("  world: ").applyTextStyle(
-                            TextFormatting.DARK_AQUA
-                    ).appendSibling(
-                            new StringTextComponent(
-                                    world.getWorldInfo().getWorldName()
-                            ).applyTextStyles(
-                                    TextFormatting.ITALIC, TextFormatting.WHITE
+                    new StringTextComponent("  world: ").applyTextStyle(TextFormatting.DARK_AQUA)
+                            .appendSibling(
+                                    new StringTextComponent(world.getWorldInfo().getWorldName())
+                                            .applyTextStyles(
+                                                    TextFormatting.ITALIC, TextFormatting.WHITE
+                                            )
                             )
-                    )
             );
         }
     }

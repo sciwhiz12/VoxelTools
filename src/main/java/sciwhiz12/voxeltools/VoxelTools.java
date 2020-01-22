@@ -18,27 +18,29 @@ import sciwhiz12.voxeltools.net.VxNetwork;
 
 @Mod(VoxelTools.MODID)
 public class VoxelTools {
-	public static final String MODID = "voxeltools";
+    public static final String MODID = "voxeltools";
 
-	public static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
 
-	public VoxelTools() {
-	    IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
-	    modBus.addListener(this::setup);
-		VxItems.ITEMS.register(modBus);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, VxConfig.serverSpec);
-	}
+    public VoxelTools() {
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modBus.addListener(this::setup);
+        VxItems.ITEMS.register(modBus);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, VxConfig.serverSpec);
+    }
 
-	private void setup(final FMLCommonSetupEvent event) {
-		LOGGER.info("Setting up common...");
-		
-		VxNetwork.registerPackets();
-		MinecraftForge.EVENT_BUS.register(this);
-	}
+    private void setup(final FMLCommonSetupEvent event) {
+        LOGGER.info("Setting up common...");
 
-	@SubscribeEvent
-	public void handleServerAboutToStartEvent(final FMLServerAboutToStartEvent event) {
-		PermissionAPI.registerNode(VxConfig.ITEM_USE_PERMISSION, VxConfig.ServerConfig.defaultPermLevel,
-				"Allows the use of VoxelTools.");
-	}
+        VxNetwork.registerPackets();
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    @SubscribeEvent
+    public void handleServerAboutToStartEvent(final FMLServerAboutToStartEvent event) {
+        PermissionAPI.registerNode(
+                VxConfig.ITEM_USE_PERMISSION, VxConfig.ServerConfig.defaultPermLevel,
+                "Allows the use of VoxelTools."
+        );
+    }
 }

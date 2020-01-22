@@ -8,35 +8,31 @@ import net.minecraft.world.World;
 import net.minecraftforge.eventbus.api.Event.Result;
 
 public interface IVoxelTool {
-    public default void onLeftClickEmpty(PlayerEntity player, World world,
-            Hand hand) {}
+    public default void onLeftClickEmpty(PlayerEntity player, World world, Hand hand) {}
 
-    public default Result hasLeftClickEmptyAction(PlayerEntity player,
-            World world, Hand hand) {
+    public default Result hasLeftClickEmptyAction(PlayerEntity player, World world, Hand hand) {
         return Result.DEFAULT;
     }
 
-    public default void onLeftClickBlock(PlayerEntity player, World world,
-            Hand hand, BlockPos pos, Direction face) {}
+    public default void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+            Direction face) {}
 
-    public default Result hasLeftClickBlockAction(PlayerEntity player,
-            World world, Hand hand, BlockPos pos, Direction face) {
+    public default Result hasLeftClickBlockAction(PlayerEntity player, World world, Hand hand,
+            BlockPos pos, Direction face) {
         return Result.DEFAULT;
     }
 
-    public default void onRightClickEmpty(PlayerEntity player, World world,
-            Hand hand) {}
+    public default void onRightClickEmpty(PlayerEntity player, World world, Hand hand) {}
 
-    public default Result hasRightClickEmptyAction(PlayerEntity player,
-            World world, Hand hand) {
+    public default Result hasRightClickEmptyAction(PlayerEntity player, World world, Hand hand) {
         return Result.DEFAULT;
     }
 
-    public default void onRightClickBlock(PlayerEntity player, World world,
-            Hand hand, BlockPos pos, Direction face) {}
+    public default void onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+            Direction face) {}
 
-    public default Result hasRightClickBlockAction(PlayerEntity player,
-            World world, Hand hand, BlockPos pos, Direction face) {
+    public default Result hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
+            BlockPos pos, Direction face) {
         return Result.DEFAULT;
     }
 }
