@@ -9,9 +9,12 @@ import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 
+@EventBusSubscriber(modid = VoxelTools.MODID, bus = Bus.MOD)
 public final class VxConfig {
     public static final Logger LOGGER = LogManager.getLogger();
 
