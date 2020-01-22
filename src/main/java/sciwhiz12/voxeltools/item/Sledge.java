@@ -29,7 +29,7 @@ public class Sledge extends Item implements IVoxelTool {
 		if (!context.getWorld().isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
 			PlayerEntity player = context.getPlayer();
 			BlockPos target = context.getPos().offset(context.getFace());
-			if (MoveUtil.moveBlock(player, context.getPos(), target, player.isSneaking(), true)) {
+			if (MoveUtil.moveBlock(player, context.getPos(), target, player.isCrouching(), true)) {
 				return ActionResultType.SUCCESS;
 			}
 		}

@@ -19,5 +19,5 @@ Adds powerful tools from the Voxel Box.
 [[dependencies.voxeltools]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.14.4]"
+    versionRange="[1.15.1]"
     side="BOTH"

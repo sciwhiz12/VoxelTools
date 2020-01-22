@@ -72,7 +72,7 @@ public class Paintbrush extends Item implements IVoxelTool {
 				stack = player.getHeldItemOffhand();
 
 			CompoundNBT tag = stack.getOrCreateTag();
-			if (player.isSneaking()) {
+			if (player.isCrouching()) {
 				stack.setTag(storeBlockState(tag, Blocks.AIR.getDefaultState()));
 				((ServerPlayerEntity) player)
 						.sendStatusMessage(new TranslationTextComponent("status.voxeltools.paintbrush.clear")
@@ -99,7 +99,7 @@ public class Paintbrush extends Item implements IVoxelTool {
 			if (stack.getItem() != this)
 				stack = player.getHeldItemOffhand();
 			double reach = player.getAttribute(PlayerEntity.REACH_DISTANCE).getValue();
-			if (player.isSneaking()) {
+			if (player.isCrouching()) {
 				reach = Math.max(VxConfig.SERVER.paintbrushRange.get(), reach);
 			}
 			RayTraceResult trace = rangedRayTrace(world, player, RayTraceContext.FluidMode.ANY, reach);

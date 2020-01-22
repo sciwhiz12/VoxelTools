@@ -29,7 +29,7 @@ public class MoveUtil {
 			boolean deleteOrigin) {
 		return MoveUtil.moveBlock(player, originPos, targetPos, noPhys,
 				VxConfig.SERVER.allowOverwrite.get() && deleteOrigin,
-				player.isSneaking() ? MoveUtil.Target.ALWAYS : MoveUtil.Target.ONLY_AIR);
+				player.isCrouching() ? MoveUtil.Target.ALWAYS : MoveUtil.Target.ONLY_AIR);
 	}
 
 	public enum Target {
