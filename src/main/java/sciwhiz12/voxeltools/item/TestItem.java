@@ -31,9 +31,10 @@ public class TestItem extends Item implements IVoxelTool {
     }
 
     @Override
-    public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+    public boolean onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
         printInfo("Left Click Block", player, world, hand, pos, face);
+        return true;
     }
 
     @Override
@@ -53,10 +54,10 @@ public class TestItem extends Item implements IVoxelTool {
     }
 
     @Override
-    public void onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+    public boolean onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
         printInfo("Right Click Block", player, world, hand, pos, face);
-
+        return true;
     }
 
     @Override

@@ -14,8 +14,10 @@ public interface IVoxelTool {
         return Result.DEFAULT;
     }
 
-    public default void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
-            Direction face) {}
+    public default boolean onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+            Direction face) {
+        return false;
+    }
 
     public default Result hasLeftClickBlockAction(PlayerEntity player, World world, Hand hand,
             BlockPos pos, Direction face) {
@@ -28,8 +30,10 @@ public interface IVoxelTool {
         return Result.DEFAULT;
     }
 
-    public default void onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
-            Direction face) {}
+    public default boolean onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+            Direction face) {
+        return false;
+    }
 
     public default Result hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
             BlockPos pos, Direction face) {

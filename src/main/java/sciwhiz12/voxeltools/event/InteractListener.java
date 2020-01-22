@@ -3,6 +3,7 @@ package sciwhiz12.voxeltools.event;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.RayTraceContext.FluidMode;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
@@ -40,10 +41,11 @@ public class InteractListener {
                             .getFace()
             );
             if (result != Result.DEFAULT) {
-                tool.onLeftClickBlock(
+                boolean cancel = tool.onLeftClickBlock(
                         event.getPlayer(), event.getWorld(), event.getHand(), event.getPos(), event
                                 .getFace()
                 );
+                event.setCanceled(cancel);
                 event.setResult(result);
             }
         }
@@ -79,10 +81,14 @@ public class InteractListener {
                             .getFace()
             );
             if (result != Result.DEFAULT) {
-                tool.onRightClickBlock(
+                boolean cancel = tool.onRightClickBlock(
                         event.getPlayer(), event.getWorld(), event.getHand(), event.getPos(), event
                                 .getFace()
                 );
+                if (cancel) {
+                    event.setCanceled(cancel);
+                    event.setCancellationResult(ActionResultType.SUCCESS);
+                }
                 event.setResult(result);
             }
         }
