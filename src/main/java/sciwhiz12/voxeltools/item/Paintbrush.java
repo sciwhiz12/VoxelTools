@@ -36,7 +36,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.Event.Result;
-import sciwhiz12.voxeltools.VoxelTools;
 import sciwhiz12.voxeltools.VxConfig;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
@@ -133,9 +132,7 @@ public class Paintbrush extends Item implements IVoxelTool {
         if (player.isCrouching()) {
             reach = Math.max(VxConfig.ServerConfig.paintbrushRange, reach);
         }
-        VoxelTools.LOGGER.info(reach);
         RayTraceResult trace = rangedRayTrace(world, player, RayTraceContext.FluidMode.ANY, reach);
-        VoxelTools.LOGGER.info(trace.getType());
         if (trace != null && trace.getType() == Type.BLOCK) {
             BlockState state = getBlockState(stack.getOrCreateTag());
             BlockPos pos = ((BlockRayTraceResult) trace).getPos();

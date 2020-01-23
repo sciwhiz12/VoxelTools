@@ -19,7 +19,7 @@ public class VxItems {
         @OnlyIn(Dist.CLIENT)
         public ItemStack createIcon() {
             // return new ItemStack(VxItems.jackhammer);
-            return new ItemStack(VxItems.test_item.get());
+            return new ItemStack(VxItems.jackhammer.get());
         }
     }).setTabPath("voxel_tools");
     private static final Item.Properties TOOL_PROPERTIES = new Item.Properties().setNoRepair()
