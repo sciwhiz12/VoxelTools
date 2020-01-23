@@ -25,28 +25,39 @@ public class InteractListener {
     public static void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
         // Client side event
         if (isValidEvent(event)) {
-            VxNetwork.CHANNEL.send(
-                    PacketDistributor.SERVER.noArg(), new LeftClickEmptyPacket(event.getHand())
+            IVoxelTool tool = (IVoxelTool) event.getItemStack().getItem();
+            ActionType type = tool.hasLeftClickEmptyAction(
+                    event.getPlayer(), event.getWorld(), event.getHand()
             );
+            if (type != ActionType.PASS) {
+                // ignore CANCEL and CONTINUE; cancel has no effect + no way to cancel
+                VxNetwork.CHANNEL.send(
+                        PacketDistributor.SERVER.noArg(), new LeftClickEmptyPacket(event.getHand())
+                );
+            }
         }
     }
 
     @SubscribeEvent
     public static void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
-        if (event.getSide() == LogicalSide.SERVER && event.getResult() == Result.DEFAULT
-                && isValidEvent(event)) {
+        if (event.getResult() == Result.DEFAULT && isValidEvent(event)) {
             IVoxelTool tool = (IVoxelTool) event.getItemStack().getItem();
-            Result result = tool.hasLeftClickBlockAction(
+            ActionType type = tool.hasLeftClickBlockAction(
                     event.getPlayer(), event.getWorld(), event.getHand(), event.getPos(), event
                             .getFace()
             );
-            if (result != Result.DEFAULT) {
-                boolean cancel = tool.onLeftClickBlock(
-                        event.getPlayer(), event.getWorld(), event.getHand(), event.getPos(), event
-                                .getFace()
-                );
-                event.setCanceled(cancel);
-                event.setResult(result);
+            if (type != ActionType.PASS) {
+                if (event.getSide() == LogicalSide.SERVER) {
+                    tool.onLeftClickBlock(
+                            event.getPlayer(), event.getWorld(), event.getHand(), event.getPos(),
+                            event.getFace()
+                    );
+                }
+                if (type == ActionType.CANCEL) {
+                    event.setCanceled(true);
+                    event.setCancellationResult(ActionResultType.SUCCESS);
+                }
+                event.setResult(type.getEventResult());
             }
         }
     }
@@ -61,12 +72,12 @@ public class InteractListener {
             );
             if (res == null || res.getType() != Type.MISS) { return; }
             IVoxelTool tool = (IVoxelTool) event.getItemStack().getItem();
-            Result result = tool.hasRightClickEmptyAction(
+            ActionType type = tool.hasRightClickEmptyAction(
                     event.getPlayer(), event.getWorld(), event.getHand()
             );
-            if (result != Result.DEFAULT) {
+            if (type != ActionType.PASS) {
                 tool.onRightClickEmpty(event.getPlayer(), event.getWorld(), event.getHand());
-                event.setResult(result);
+                event.setResult(type.getEventResult());
             }
         }
     }
@@ -76,20 +87,20 @@ public class InteractListener {
         if (event.getSide() == LogicalSide.SERVER && event.getResult() == Result.DEFAULT
                 && isValidEvent(event)) {
             IVoxelTool tool = (IVoxelTool) event.getItemStack().getItem();
-            Result result = tool.hasRightClickBlockAction(
+            ActionType type = tool.hasRightClickBlockAction(
                     event.getPlayer(), event.getWorld(), event.getHand(), event.getPos(), event
                             .getFace()
             );
-            if (result != Result.DEFAULT) {
-                boolean cancel = tool.onRightClickBlock(
+            if (type != ActionType.PASS) {
+                tool.onRightClickBlock(
                         event.getPlayer(), event.getWorld(), event.getHand(), event.getPos(), event
                                 .getFace()
                 );
-                if (cancel) {
-                    event.setCanceled(cancel);
+                if (type == ActionType.CANCEL) {
+                    event.setCanceled(true);
                     event.setCancellationResult(ActionResultType.SUCCESS);
                 }
-                event.setResult(result);
+                event.setResult(type.getEventResult());
             }
         }
     }

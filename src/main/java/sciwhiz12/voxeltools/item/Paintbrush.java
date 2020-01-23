@@ -35,8 +35,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.eventbus.api.Event.Result;
 import sciwhiz12.voxeltools.VxConfig;
+import sciwhiz12.voxeltools.event.ActionType;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
 public class Paintbrush extends Item implements IVoxelTool {
@@ -76,7 +76,7 @@ public class Paintbrush extends Item implements IVoxelTool {
     }
 
     @Override
-    public boolean onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+    public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
         ItemStack stack = player.getHeldItem(hand);
         if (stack.getItem() != this) stack = player.getHeldItemOffhand();
@@ -99,29 +99,26 @@ public class Paintbrush extends Item implements IVoxelTool {
                     ).applyTextStyle(TextFormatting.BLUE), true
             );
         }
-        return true;
     }
 
     @Override
-    public Result hasLeftClickBlockAction(PlayerEntity player, World world, Hand hand, BlockPos pos,
-            Direction face) {
-        return PermissionUtil.checkForPermission(player) ? Result.ALLOW : Result.DEFAULT;
+    public ActionType hasLeftClickBlockAction(PlayerEntity player, World world, Hand hand,
+            BlockPos pos, Direction face) {
+        return PermissionUtil.checkForPermission(player) ? ActionType.CANCEL : ActionType.PASS;
     }
 
     @Override
-    public boolean onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+    public void onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
         ItemStack stack = player.getHeldItem(hand);
         BlockState state = getBlockState(stack.getOrCreateTag());
         world.setBlockState(pos, state);
-        return false;
-
     }
 
     @Override
-    public Result hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
+    public ActionType hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
             BlockPos pos, Direction face) {
-        return PermissionUtil.checkForPermission(player) ? Result.ALLOW : Result.DEFAULT;
+        return PermissionUtil.checkForPermission(player) ? ActionType.CANCEL : ActionType.PASS;
     }
 
     @Override
@@ -151,7 +148,7 @@ public class Paintbrush extends Item implements IVoxelTool {
     }
 
     @Override
-    public Result hasRightClickEmptyAction(PlayerEntity player, World world, Hand hand) {
-        return PermissionUtil.checkForPermission(player) ? Result.ALLOW : Result.DEFAULT;
+    public ActionType hasRightClickEmptyAction(PlayerEntity player, World world, Hand hand) {
+        return PermissionUtil.checkForPermission(player) ? ActionType.CANCEL : ActionType.PASS;
     }
 }

@@ -18,8 +18,7 @@ public class VxItems {
         @Override
         @OnlyIn(Dist.CLIENT)
         public ItemStack createIcon() {
-            // return new ItemStack(VxItems.jackhammer);
-            return new ItemStack(VxItems.jackhammer.get());
+            return new ItemStack(VxItems.test_item.get());
         }
     }).setTabPath("voxel_tools");
     private static final Item.Properties TOOL_PROPERTIES = new Item.Properties().setNoRepair()
@@ -61,4 +60,5 @@ public class VxItems {
     public static final RegistryObject<Item> chainsaw = ITEMS.register(
             "chainsaw", () -> new Chainsaw(TOOL_PROPERTIES)
     );
+
 }

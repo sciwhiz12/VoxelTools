@@ -12,9 +12,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.Event.Result;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import sciwhiz12.voxeltools.event.ActionType;
 import sciwhiz12.voxeltools.util.ChatUtil;
 
 public class TestItem extends Item implements IVoxelTool {
@@ -28,21 +26,20 @@ public class TestItem extends Item implements IVoxelTool {
     }
 
     @Override
-    public Result hasLeftClickEmptyAction(PlayerEntity player, World world, Hand hand) {
-        return Result.ALLOW;
+    public ActionType hasLeftClickEmptyAction(PlayerEntity player, World world, Hand hand) {
+        return ActionType.CANCEL;
     }
 
     @Override
-    public boolean onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+    public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
         printInfo("Left Click Block", player, world, hand, pos, face);
-        return true;
     }
 
     @Override
-    public Result hasLeftClickBlockAction(PlayerEntity player, World world, Hand hand, BlockPos pos,
-            Direction face) {
-        return Result.ALLOW;
+    public ActionType hasLeftClickBlockAction(PlayerEntity player, World world, Hand hand,
+            BlockPos pos, Direction face) {
+        return ActionType.CANCEL;
     }
 
     @Override
@@ -51,21 +48,20 @@ public class TestItem extends Item implements IVoxelTool {
     }
 
     @Override
-    public Result hasRightClickEmptyAction(PlayerEntity player, World world, Hand hand) {
-        return Result.ALLOW;
+    public ActionType hasRightClickEmptyAction(PlayerEntity player, World world, Hand hand) {
+        return ActionType.CANCEL;
     }
 
     @Override
-    public boolean onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+    public void onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
-        printInfo("Right Click Block", player, world, hand, pos, face);
-        return true;
+        printInfo("Right Click Block", player, world, hand, pos, face);;
     }
 
     @Override
-    public Result hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
+    public ActionType hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
             BlockPos pos, Direction face) {
-        return Result.ALLOW;
+        return ActionType.CANCEL;
     }
 
     public static void printInfo(String infoString, PlayerEntity player, World world, Hand hand,
@@ -83,14 +79,6 @@ public class TestItem extends Item implements IVoxelTool {
                                                 TextFormatting.ITALIC, TextFormatting.WHITE
                                         )
                         )
-        ).appendText("\n").appendSibling(
-                new StringTextComponent("  physical side: ").applyTextStyle(
-                        TextFormatting.DARK_AQUA
-                ).appendSibling(
-                        new StringTextComponent(
-                                FMLEnvironment.dist == Dist.CLIENT ? "CLIENT" : "SERVER"
-                        ).applyTextStyles(TextFormatting.ITALIC, TextFormatting.WHITE)
-                )
         ).appendText("\n").appendSibling(
                 new StringTextComponent("  player: ").applyTextStyle(TextFormatting.DARK_AQUA)
                         .appendSibling(
@@ -118,13 +106,12 @@ public class TestItem extends Item implements IVoxelTool {
         }
         if (world != null) {
             text.appendText("\n").appendSibling(
-                    new StringTextComponent("  dimension: ").applyTextStyle(TextFormatting.DARK_AQUA)
-                            .appendSibling(
-                                    new StringTextComponent(player.dimension.getRegistryName().toString())
-                                            .applyTextStyles(
-                                                    TextFormatting.ITALIC, TextFormatting.WHITE
-                                            )
-                            )
+                    new StringTextComponent("  dimension: ").applyTextStyle(
+                            TextFormatting.DARK_AQUA
+                    ).appendSibling(
+                            new StringTextComponent(player.dimension.getRegistryName().toString())
+                                    .applyTextStyles(TextFormatting.ITALIC, TextFormatting.WHITE)
+                    )
             );
         }
         ChatUtil.sendIndexedMessage(player, text);

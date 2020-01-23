@@ -6,7 +6,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.eventbus.api.Event.Result;
+import sciwhiz12.voxeltools.event.ActionType;
 import sciwhiz12.voxeltools.util.MoveUtil;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
@@ -16,30 +16,28 @@ public class Sledge extends Item implements IVoxelTool {
     }
 
     @Override
-    public boolean onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+    public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
         BlockPos target = pos.offset(face, -1);
         MoveUtil.moveBlock(player, pos, target, false, true);
-        return true;
     }
 
     @Override
-    public Result hasLeftClickBlockAction(PlayerEntity player, World world, Hand hand, BlockPos pos,
-            Direction face) {
-        return PermissionUtil.checkForPermission(player) ? Result.ALLOW : Result.DEFAULT;
+    public ActionType hasLeftClickBlockAction(PlayerEntity player, World world, Hand hand,
+            BlockPos pos, Direction face) {
+        return PermissionUtil.checkForPermission(player) ? ActionType.CANCEL : ActionType.PASS;
     }
 
     @Override
-    public boolean onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+    public void onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
         BlockPos target = pos.offset(face);
         MoveUtil.moveBlock(player, pos, target, player.isCrouching(), true);
-        return true;
     }
 
     @Override
-    public Result hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
+    public ActionType hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
             BlockPos pos, Direction face) {
-        return PermissionUtil.checkForPermission(player) ? Result.ALLOW : Result.DEFAULT;
+        return PermissionUtil.checkForPermission(player) ? ActionType.CANCEL : ActionType.PASS;
     }
 }

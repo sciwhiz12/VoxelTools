@@ -11,9 +11,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.eventbus.api.Event.Result;
 import sciwhiz12.voxeltools.VoxelTools;
 import sciwhiz12.voxeltools.VxConfig;
+import sciwhiz12.voxeltools.event.ActionType;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
 public class Shovel extends Item implements IVoxelTool {
@@ -26,7 +26,7 @@ public class Shovel extends Item implements IVoxelTool {
     }
 
     @Override
-    public boolean onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+    public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
         Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
         for (BlockPos targetPos : getDigRadius(pos)) {
@@ -34,20 +34,18 @@ public class Shovel extends Item implements IVoxelTool {
                 world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
             }
         }
-        return false;
     }
 
     @Override
-    public Result hasLeftClickBlockAction(PlayerEntity player, World world, Hand hand, BlockPos pos,
-            Direction face) {
-        return PermissionUtil.checkForPermission(player) ? Result.ALLOW : Result.DEFAULT;
+    public ActionType hasLeftClickBlockAction(PlayerEntity player, World world, Hand hand,
+            BlockPos pos, Direction face) {
+        return PermissionUtil.checkForPermission(player) ? ActionType.CONTINUE : ActionType.PASS;
     }
 
     @Override
-    public boolean onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+    public void onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
         if (player.isCrouching()) {
-            if (VxConfig.ServerConfig.shovelFlattenRadius == 0) return false;
             Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
             for (BlockPos targetPos : getFlattenRadius(pos)) {
                 if (col.contains(world.getBlockState(targetPos).getBlock())) {
@@ -55,13 +53,14 @@ public class Shovel extends Item implements IVoxelTool {
                 }
             }
         }
-        return false;
     }
 
     @Override
-    public Result hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
+    public ActionType hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
             BlockPos pos, Direction face) {
-        return PermissionUtil.checkForPermission(player) ? Result.ALLOW : Result.DEFAULT;
+        return PermissionUtil.checkForPermission(player)
+                && VxConfig.ServerConfig.shovelFlattenRadius != 0 ? ActionType.CONTINUE
+                        : ActionType.PASS;
     }
 
     private Iterable<BlockPos> getDigRadius(BlockPos origin) {

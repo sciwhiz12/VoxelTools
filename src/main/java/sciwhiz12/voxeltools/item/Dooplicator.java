@@ -11,7 +11,8 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.eventbus.api.Event.Result;
+import sciwhiz12.voxeltools.event.ActionType;
+import sciwhiz12.voxeltools.util.ChatUtil;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
 public class Dooplicator extends Item implements IVoxelTool {
@@ -20,36 +21,33 @@ public class Dooplicator extends Item implements IVoxelTool {
     }
 
     @Override
-    public boolean onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+    public void onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
-        if (!world.isRemote) {
-            BlockState state = world.getBlockState(pos);
-            Item i = state.getBlock().asItem();
-            if (i != null) {
-                ItemStack stack = new ItemStack(state.getBlock().asItem());
-                if (stack != null) {
-                    stack.setCount(stack.getMaxStackSize());
-                    if (player.inventory.addItemStackToInventory(stack)) {
-                        player.sendMessage(
-                                new TranslationTextComponent(
-                                        "voxeltools.dooplicator.dooped", new StringTextComponent(
-                                                String.valueOf(stack.getMaxStackSize())
-                                        ).applyTextStyle(TextFormatting.DARK_PURPLE),
-                                        new TranslationTextComponent(
-                                                state.getBlock().getTranslationKey()
-                                        ).applyTextStyle(TextFormatting.GREEN)
-                                ).applyTextStyle(TextFormatting.BLUE)
-                        );
-                    }
+        BlockState state = world.getBlockState(pos);
+        Item i = state.getBlock().asItem();
+        if (i != null) {
+            ItemStack stack = new ItemStack(state.getBlock().asItem());
+            if (!stack.isEmpty()) {
+                stack.setCount(stack.getMaxStackSize());
+                if (player.inventory.addItemStackToInventory(stack)) {
+                    ChatUtil.sendIndexedMessage(
+                            player, new TranslationTextComponent(
+                                    "voxeltools.dooplicator.dooped", new StringTextComponent(
+                                            String.valueOf(stack.getMaxStackSize())
+                                    ).applyTextStyle(TextFormatting.DARK_PURPLE),
+                                    new TranslationTextComponent(
+                                            state.getBlock().getTranslationKey()
+                                    ).applyTextStyle(TextFormatting.GREEN)
+                            ).applyTextStyle(TextFormatting.BLUE)
+                    );
                 }
             }
         }
-        return false;
     }
 
     @Override
-    public Result hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
+    public ActionType hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
             BlockPos pos, Direction face) {
-        return PermissionUtil.checkForPermission(player) ? Result.ALLOW : Result.DEFAULT;
+        return PermissionUtil.checkForPermission(player) ? ActionType.CANCEL : ActionType.PASS;
     }
 }

@@ -13,9 +13,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.eventbus.api.Event.Result;
 import sciwhiz12.voxeltools.VoxelTools;
 import sciwhiz12.voxeltools.VxConfig;
+import sciwhiz12.voxeltools.event.ActionType;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
 public class Chainsaw extends Item implements IVoxelTool {
@@ -31,7 +31,7 @@ public class Chainsaw extends Item implements IVoxelTool {
     }
 
     @Override
-    public boolean onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+    public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
         Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_TREE_STUFF);
         for (BlockPos targetPos : getDestroyRadius(VxConfig.ServerConfig.chainsawCutRadius, pos)) {
@@ -39,17 +39,16 @@ public class Chainsaw extends Item implements IVoxelTool {
                 player.world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
             }
         }
-        return false;
     }
 
     @Override
-    public Result hasLeftClickBlockAction(PlayerEntity player, World world, Hand hand, BlockPos pos,
-            Direction face) {
-        return PermissionUtil.checkForPermission(player) ? Result.ALLOW : Result.DEFAULT;
+    public ActionType hasLeftClickBlockAction(PlayerEntity player, World world, Hand hand,
+            BlockPos pos, Direction face) {
+        return PermissionUtil.checkForPermission(player) ? ActionType.CONTINUE : ActionType.PASS;
     }
 
     @Override
-    public boolean onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
+    public void onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
         if (!player.isCrouching()) {
             Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_VEGETATION);
@@ -61,13 +60,12 @@ public class Chainsaw extends Item implements IVoxelTool {
                 }
             }
         }
-        return false;
     }
 
     @Override
-    public Result hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
+    public ActionType hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
             BlockPos pos, Direction face) {
-        return PermissionUtil.checkForPermission(player) ? Result.ALLOW : Result.DEFAULT;
+        return PermissionUtil.checkForPermission(player) ? ActionType.CONTINUE : ActionType.PASS;
     }
 
     private Iterable<BlockPos> getDestroyRadius(int radius, BlockPos origin) {
