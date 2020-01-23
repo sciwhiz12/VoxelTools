@@ -19,7 +19,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class PaintbrushUtil {
+public class BlockUtil {
     public static final String TAG_ID_BLOCKSTATE = "blockstate";
     public static final String TAG_ID_BLOCKNAME = "blockname";
 

@@ -1,12 +1,12 @@
 package sciwhiz12.voxeltools.item;
 
-import static sciwhiz12.voxeltools.util.PaintbrushUtil.TAG_ID_BLOCKNAME;
-import static sciwhiz12.voxeltools.util.PaintbrushUtil.TAG_ID_BLOCKSTATE;
-import static sciwhiz12.voxeltools.util.PaintbrushUtil.getBlockFromName;
-import static sciwhiz12.voxeltools.util.PaintbrushUtil.getBlockState;
-import static sciwhiz12.voxeltools.util.PaintbrushUtil.rangedRayTrace;
-import static sciwhiz12.voxeltools.util.PaintbrushUtil.storeBlockState;
-import static sciwhiz12.voxeltools.util.PaintbrushUtil.toStringFromState;
+import static sciwhiz12.voxeltools.util.BlockUtil.TAG_ID_BLOCKNAME;
+import static sciwhiz12.voxeltools.util.BlockUtil.TAG_ID_BLOCKSTATE;
+import static sciwhiz12.voxeltools.util.BlockUtil.getBlockFromName;
+import static sciwhiz12.voxeltools.util.BlockUtil.getBlockState;
+import static sciwhiz12.voxeltools.util.BlockUtil.rangedRayTrace;
+import static sciwhiz12.voxeltools.util.BlockUtil.storeBlockState;
+import static sciwhiz12.voxeltools.util.BlockUtil.toStringFromState;
 
 import java.util.List;
 

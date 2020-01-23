@@ -17,7 +17,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import sciwhiz12.voxeltools.item.IVoxelTool;
 import sciwhiz12.voxeltools.net.LeftClickEmptyPacket;
 import sciwhiz12.voxeltools.net.VxNetwork;
-import sciwhiz12.voxeltools.util.PaintbrushUtil;
+import sciwhiz12.voxeltools.util.BlockUtil;
 
 @EventBusSubscriber(bus = Bus.FORGE)
 public class InteractListener {
@@ -55,7 +55,7 @@ public class InteractListener {
     public static void onRightClickEmpty(PlayerInteractEvent.RightClickItem event) {
         if (event.getSide() == LogicalSide.SERVER && event.getResult() == Result.DEFAULT
                 && isValidEvent(event)) {
-            RayTraceResult res = PaintbrushUtil.rangedRayTrace(
+            RayTraceResult res = BlockUtil.rangedRayTrace(
                     event.getWorld(), event.getPlayer(), FluidMode.NONE, event.getPlayer()
                             .getAttribute(PlayerEntity.REACH_DISTANCE).getValue()
             );
