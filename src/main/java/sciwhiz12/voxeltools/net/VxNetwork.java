@@ -19,5 +19,9 @@ public class VxNetwork {
                 id++, LeftClickEmptyPacket.class, LeftClickEmptyPacket::encode,
                 LeftClickEmptyPacket::decode, LeftClickEmptyPacket::handlePacket
         );
+        CHANNEL.registerMessage(
+                id++, IndexedChatPacket.class, IndexedChatPacket::encode,
+                IndexedChatPacket::decode, IndexedChatPacket::handlePacket
+        );
     }
 }

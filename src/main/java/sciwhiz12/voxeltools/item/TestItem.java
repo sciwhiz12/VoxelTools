@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -14,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import sciwhiz12.voxeltools.util.ChatUtil;
 
 public class TestItem extends Item implements IVoxelTool {
     public TestItem(Properties properties) {
@@ -69,47 +71,43 @@ public class TestItem extends Item implements IVoxelTool {
     public static void printInfo(String infoString, PlayerEntity player, World world, Hand hand,
             @Nullable BlockPos pos, @Nullable Direction face) {
         Style whiteBold = new Style().setBold(true).setColor(TextFormatting.WHITE);
-        player.sendMessage(
-                new StringTextComponent("\n\n\n\n\n\n\n\n").appendSibling(
-                        new StringTextComponent("[TEST_ITEM] ").applyTextStyles(
-                                TextFormatting.GREEN, TextFormatting.BOLD
-                        ).appendSibling(new StringTextComponent(infoString).setStyle(whiteBold))
-                ).appendText("\n").appendSibling(
-                        new StringTextComponent("  logical side: ").applyTextStyle(
-                                TextFormatting.DARK_AQUA
-                        ).appendSibling(
+        ITextComponent text = new StringTextComponent("").appendSibling(
+                new StringTextComponent("[TEST_ITEM] ").applyTextStyles(
+                        TextFormatting.GREEN, TextFormatting.BOLD
+                ).appendSibling(new StringTextComponent(infoString).setStyle(whiteBold))
+        ).appendText("\n").appendSibling(
+                new StringTextComponent("  logical side: ").applyTextStyle(TextFormatting.DARK_AQUA)
+                        .appendSibling(
                                 new StringTextComponent(world.isRemote ? "CLIENT" : "SERVER")
                                         .applyTextStyles(
                                                 TextFormatting.ITALIC, TextFormatting.WHITE
                                         )
                         )
-                ).appendText("\n").appendSibling(
-                        new StringTextComponent("  physical side: ").applyTextStyle(
-                                TextFormatting.DARK_AQUA
-                        ).appendSibling(
-                                new StringTextComponent(
-                                        FMLEnvironment.dist == Dist.CLIENT ? "CLIENT" : "SERVER"
-                                ).applyTextStyles(TextFormatting.ITALIC, TextFormatting.WHITE)
-                        )
-                ).appendText("\n").appendSibling(
-                        new StringTextComponent("  player: ").applyTextStyle(
-                                TextFormatting.DARK_AQUA
-                        ).appendSibling(
+        ).appendText("\n").appendSibling(
+                new StringTextComponent("  physical side: ").applyTextStyle(
+                        TextFormatting.DARK_AQUA
+                ).appendSibling(
+                        new StringTextComponent(
+                                FMLEnvironment.dist == Dist.CLIENT ? "CLIENT" : "SERVER"
+                        ).applyTextStyles(TextFormatting.ITALIC, TextFormatting.WHITE)
+                )
+        ).appendText("\n").appendSibling(
+                new StringTextComponent("  player: ").applyTextStyle(TextFormatting.DARK_AQUA)
+                        .appendSibling(
                                 player.getName().applyTextStyles(
                                         TextFormatting.ITALIC, TextFormatting.WHITE
                                 )
                         )
-                ).appendText("\n").appendSibling(
-                        new StringTextComponent("  hand: ").applyTextStyle(TextFormatting.DARK_AQUA)
-                                .appendSibling(
-                                        new StringTextComponent(hand.toString()).applyTextStyles(
-                                                TextFormatting.ITALIC, TextFormatting.WHITE
-                                        )
+        ).appendText("\n").appendSibling(
+                new StringTextComponent("  hand: ").applyTextStyle(TextFormatting.DARK_AQUA)
+                        .appendSibling(
+                                new StringTextComponent(hand.toString()).applyTextStyles(
+                                        TextFormatting.ITALIC, TextFormatting.WHITE
                                 )
-                )
+                        )
         );
         if (pos != null) {
-            player.sendMessage(
+            text.appendText("\n").appendSibling(
                     new StringTextComponent("  pos: ").applyTextStyle(TextFormatting.DARK_AQUA)
                             .appendSibling(
                                     new StringTextComponent(pos.toString()).applyTextStyles(
@@ -119,15 +117,16 @@ public class TestItem extends Item implements IVoxelTool {
             );
         }
         if (world != null) {
-            player.sendMessage(
-                    new StringTextComponent("  world: ").applyTextStyle(TextFormatting.DARK_AQUA)
+            text.appendText("\n").appendSibling(
+                    new StringTextComponent("  dimension: ").applyTextStyle(TextFormatting.DARK_AQUA)
                             .appendSibling(
-                                    new StringTextComponent(world.getWorldInfo().getWorldName())
+                                    new StringTextComponent(player.dimension.getRegistryName().toString())
                                             .applyTextStyles(
                                                     TextFormatting.ITALIC, TextFormatting.WHITE
                                             )
                             )
             );
         }
+        ChatUtil.sendIndexedMessage(player, text);
     }
 }
