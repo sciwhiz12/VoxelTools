@@ -30,9 +30,10 @@ public class MoveUtil {
     public static boolean moveBlock(PlayerEntity player, BlockPos originPos, BlockPos targetPos,
             boolean noPhys, boolean deleteOrigin) {
         return MoveUtil.moveBlock(
-                player, originPos, targetPos, noPhys, VxConfig.ServerConfig.allowOverwrite
-                        && deleteOrigin, player.isCrouching() ? MoveUtil.Target.ALWAYS
-                                : MoveUtil.Target.ONLY_AIR
+                player, originPos, targetPos, noPhys, deleteOrigin,
+                VxConfig.ServerConfig.allowOverwrite && player.isCrouching()
+                        ? MoveUtil.Target.ALWAYS
+                        : MoveUtil.Target.ONLY_AIR
         );
     }
 
