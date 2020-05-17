@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.PacketDistributor;
 import sciwhiz12.voxeltools.net.IndexedChatPacket;
@@ -15,17 +16,17 @@ public class ChatUtil {
 
     @SuppressWarnings("resource")
     public static void sendIndexedMessage(PlayerEntity player, ITextComponent msg) {
-        DistExecutor.runForDist(() -> () -> {
-            Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(
-                msg, chatIndex
-            );
-            return null;
-        }, () -> () -> {
-            if (player instanceof ServerPlayerEntity) VxNetwork.CHANNEL.send(
+        if (player instanceof ServerPlayerEntity) {
+            VxNetwork.CHANNEL.send(
                 PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player),
                 new IndexedChatPacket(msg)
             );
-            return null;
-        });
+        } else {
+            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+                Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(
+                    msg, chatIndex
+                );
+            });
+        }
     }
 }
