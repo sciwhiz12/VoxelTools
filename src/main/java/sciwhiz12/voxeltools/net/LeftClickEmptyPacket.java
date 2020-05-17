@@ -18,12 +18,11 @@ public class LeftClickEmptyPacket {
     }
 
     public static void encode(LeftClickEmptyPacket pkt, PacketBuffer buf) {
-        buf.writeString(pkt.hand.name());
+        buf.writeEnumValue(pkt.hand);
     }
 
     public static LeftClickEmptyPacket decode(PacketBuffer buf) {
-        Hand hand = Hand.valueOf(buf.readString());
-        return new LeftClickEmptyPacket(hand);
+        return new LeftClickEmptyPacket(buf.readEnumValue(Hand.class));
     }
 
     public static void handlePacket(LeftClickEmptyPacket pkt, Supplier<Context> ctx) {
