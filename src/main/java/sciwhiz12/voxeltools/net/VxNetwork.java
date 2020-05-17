@@ -8,20 +8,20 @@ import sciwhiz12.voxeltools.VoxelTools;
 public class VxNetwork {
     public static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(VoxelTools.MODID, "channel"), () -> PROTOCOL_VERSION,
-            PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals
+        new ResourceLocation(VoxelTools.MODID, "channel"), () -> PROTOCOL_VERSION,
+        PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals
     );
 
     private static int id = 1;
 
     public static void registerPackets() {
         CHANNEL.registerMessage(
-                id++, LeftClickEmptyPacket.class, LeftClickEmptyPacket::encode,
-                LeftClickEmptyPacket::decode, LeftClickEmptyPacket::handlePacket
+            id++, LeftClickEmptyPacket.class, LeftClickEmptyPacket::encode,
+            LeftClickEmptyPacket::decode, LeftClickEmptyPacket::handlePacket
         );
         CHANNEL.registerMessage(
-                id++, IndexedChatPacket.class, IndexedChatPacket::encode,
-                IndexedChatPacket::decode, IndexedChatPacket::handlePacket
+            id++, IndexedChatPacket.class, IndexedChatPacket::encode, IndexedChatPacket::decode,
+            IndexedChatPacket::handlePacket
         );
     }
 }

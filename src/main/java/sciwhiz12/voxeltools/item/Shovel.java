@@ -26,7 +26,7 @@ public class Shovel extends Item implements ILeftClicker.OnBlock {
     public Shovel(Properties properties) {
         super(properties);
     }
-    
+
     @Override
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {

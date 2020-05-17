@@ -15,8 +15,8 @@ public class MoveUtil {
         if (noPhys) flags |= 16 | 32;
         BlockState from = player.world.getBlockState(originPos);
         if (deleteTarget == Target.ALWAYS || (deleteTarget == Target.ONLY_AIR && (player.world
-                .isAirBlock(targetPos) || player.world.getBlockState(targetPos)
-                        .getBlock() instanceof FlowingFluidBlock))) {
+            .isAirBlock(targetPos) || player.world.getBlockState(targetPos)
+                .getBlock() instanceof FlowingFluidBlock))) {
             player.world.playEvent(2001, targetPos, Block.getStateId(from));
             player.world.setBlockState(targetPos, from, flags);
             if (deleteOrigin) {
@@ -30,10 +30,8 @@ public class MoveUtil {
     public static boolean moveBlock(PlayerEntity player, BlockPos originPos, BlockPos targetPos,
             boolean noPhys, boolean deleteOrigin) {
         return MoveUtil.moveBlock(
-                player, originPos, targetPos, noPhys, deleteOrigin,
-                VxConfig.ServerConfig.allowOverwrite && player.isCrouching()
-                        ? MoveUtil.Target.ALWAYS
-                        : MoveUtil.Target.ONLY_AIR
+            player, originPos, targetPos, noPhys, deleteOrigin, VxConfig.ServerConfig.allowOverwrite
+                    && player.isCrouching() ? MoveUtil.Target.ALWAYS : MoveUtil.Target.ONLY_AIR
         );
     }
 
