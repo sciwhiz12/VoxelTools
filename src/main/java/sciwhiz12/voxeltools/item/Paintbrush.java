@@ -1,11 +1,6 @@
 package sciwhiz12.voxeltools.item;
 
-import static sciwhiz12.voxeltools.util.BlockUtil.TAG_ID_BLOCKNAME;
-import static sciwhiz12.voxeltools.util.BlockUtil.TAG_ID_BLOCKSTATE;
-import static sciwhiz12.voxeltools.util.BlockUtil.getBlockFromName;
-import static sciwhiz12.voxeltools.util.BlockUtil.getBlockState;
 import static sciwhiz12.voxeltools.util.BlockUtil.rangedRayTrace;
-import static sciwhiz12.voxeltools.util.BlockUtil.storeBlockState;
 import static sciwhiz12.voxeltools.util.BlockUtil.toStringFromState;
 
 import java.util.List;
@@ -20,7 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -40,6 +35,8 @@ import sciwhiz12.voxeltools.event.ActionType;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
 public class Paintbrush extends Item implements IVoxelTool {
+    public static final String TAG_ID_STOREDBLOCK = "StoredBlock";
+
     public Paintbrush(Properties properties) {
         super(properties);
     }
@@ -48,28 +45,28 @@ public class Paintbrush extends Item implements IVoxelTool {
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn,
             List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        CompoundNBT tag = stack.getOrCreateTag();
+        if (!stack.hasTag() || !stack.getTag().contains(TAG_ID_STOREDBLOCK)) return;
+        BlockState state = NBTUtil.readBlockState(stack.getChildTag(TAG_ID_STOREDBLOCK));
         tooltip.add(
-                new TranslationTextComponent(
-                        "tooltip.voxeltools.paintbrush.blockname", new TranslationTextComponent(
-                                getBlockFromName(tag.getString(TAG_ID_BLOCKNAME))
-                                        .getTranslationKey()
-                        ).applyTextStyle(TextFormatting.GREEN)
-                ).applyTextStyle(TextFormatting.GRAY)
+            new TranslationTextComponent(
+                "tooltip.voxeltools.paintbrush.blockname", new TranslationTextComponent(
+                    state.getBlock().getTranslationKey()
+                ).applyTextStyle(TextFormatting.GREEN)
+            ).applyTextStyle(TextFormatting.GRAY)
         );
-        if (tag.contains(TAG_ID_BLOCKSTATE)) {
+        if (!state.getBlock().getStateContainer().getProperties().isEmpty()) {
             if (Screen.hasShiftDown()) {
                 tooltip.add(
-                        new TranslationTextComponent(
-                                "tooltip.voxeltools.paintbrush.blockstate", new StringTextComponent(
-                                        toStringFromState(getBlockState(tag))
-                                ).applyTextStyle(TextFormatting.GREEN)
-                        ).applyTextStyle(TextFormatting.GRAY)
+                    new TranslationTextComponent(
+                        "tooltip.voxeltools.paintbrush.blockstate", new StringTextComponent(
+                            toStringFromState(state)
+                        ).applyTextStyle(TextFormatting.GREEN)
+                    ).applyTextStyle(TextFormatting.GRAY)
                 );
             } else {
                 tooltip.add(
-                        new TranslationTextComponent("tooltip.voxeltools.paintbrush.sneak")
-                                .applyTextStyle(TextFormatting.GRAY)
+                    new TranslationTextComponent("tooltip.voxeltools.paintbrush.sneak")
+                        .applyTextStyle(TextFormatting.GRAY)
                 );
             }
         }
@@ -79,24 +76,24 @@ public class Paintbrush extends Item implements IVoxelTool {
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
         ItemStack stack = player.getHeldItem(hand);
-        if (stack.getItem() != this) stack = player.getHeldItemOffhand();
-        CompoundNBT tag = stack.getOrCreateTag();
         if (player.isCrouching()) {
-            stack.setTag(storeBlockState(tag, Blocks.AIR.getDefaultState()));
+            stack.setTagInfo(
+                TAG_ID_STOREDBLOCK, NBTUtil.writeBlockState(Blocks.AIR.getDefaultState())
+            );
             ((ServerPlayerEntity) player).sendStatusMessage(
-                    new TranslationTextComponent("status.voxeltools.paintbrush.clear")
-                            .applyTextStyle(TextFormatting.BLUE), true
+                new TranslationTextComponent("status.voxeltools.paintbrush.clear").applyTextStyle(
+                    TextFormatting.BLUE
+                ), true
             );
         } else {
             BlockState state = player.world.getBlockState(pos);
-            stack.setTag(storeBlockState(tag, state));
+            stack.setTagInfo(TAG_ID_STOREDBLOCK, NBTUtil.writeBlockState(state));
             ((ServerPlayerEntity) player).sendStatusMessage(
-                    new TranslationTextComponent(
-                            "status.voxeltools.paintbrush.saved", new TranslationTextComponent(
-                                    getBlockFromName(tag.getString(TAG_ID_BLOCKNAME))
-                                            .getTranslationKey()
-                            ).applyTextStyle(TextFormatting.GREEN)
-                    ).applyTextStyle(TextFormatting.BLUE), true
+                new TranslationTextComponent(
+                    "status.voxeltools.paintbrush.saved", new TranslationTextComponent(
+                        state.getBlock().getTranslationKey()
+                    ).applyTextStyle(TextFormatting.GREEN)
+                ).applyTextStyle(TextFormatting.BLUE), true
             );
         }
     }
@@ -111,7 +108,8 @@ public class Paintbrush extends Item implements IVoxelTool {
     public void onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
         ItemStack stack = player.getHeldItem(hand);
-        BlockState state = getBlockState(stack.getOrCreateTag());
+        if (!stack.hasTag() || !stack.getTag().contains(TAG_ID_STOREDBLOCK)) return;
+        BlockState state = NBTUtil.readBlockState(stack.getChildTag(TAG_ID_STOREDBLOCK));
         world.setBlockState(pos, state);
     }
 
@@ -123,26 +121,24 @@ public class Paintbrush extends Item implements IVoxelTool {
 
     @Override
     public void onRightClickEmpty(PlayerEntity player, World world, Hand hand) {
-        ItemStack stack = player.getHeldItemMainhand();
-        if (stack.getItem() != this) stack = player.getHeldItemOffhand();
+        ItemStack stack = player.getHeldItem(hand);
+        if (!stack.hasTag() || !stack.getTag().contains(TAG_ID_STOREDBLOCK)) return;
+        BlockState state = NBTUtil.readBlockState(stack.getChildTag(TAG_ID_STOREDBLOCK));
         double reach = player.getAttribute(PlayerEntity.REACH_DISTANCE).getValue();
         if (player.isCrouching()) {
             reach = Math.max(VxConfig.ServerConfig.paintbrushRange, reach);
         }
         RayTraceResult trace = rangedRayTrace(world, player, RayTraceContext.FluidMode.ANY, reach);
         if (trace != null && trace.getType() == Type.BLOCK) {
-            BlockState state = getBlockState(stack.getOrCreateTag());
             BlockPos pos = ((BlockRayTraceResult) trace).getPos();
             world.setBlockState(pos, state);
         } else if (trace == null || trace.getType() == Type.MISS) {
             ((ServerPlayerEntity) player).sendStatusMessage(
-                    new TranslationTextComponent(
-                            "status.voxeltools.paintbrush.current", new TranslationTextComponent(
-                                    getBlockFromName(
-                                            stack.getOrCreateTag().getString(TAG_ID_BLOCKNAME)
-                                    ).getTranslationKey()
-                            ).applyTextStyle(TextFormatting.GREEN)
-                    ).applyTextStyle(TextFormatting.GRAY), true
+                new TranslationTextComponent(
+                    "status.voxeltools.paintbrush.current", new TranslationTextComponent(
+                        state.getBlock().getTranslationKey()
+                    ).applyTextStyle(TextFormatting.GREEN)
+                ).applyTextStyle(TextFormatting.GRAY), true
             );
         }
     }
