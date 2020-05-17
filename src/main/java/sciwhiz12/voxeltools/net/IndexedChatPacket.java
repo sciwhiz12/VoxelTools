@@ -15,11 +15,11 @@ public class IndexedChatPacket {
     }
 
     public static void encode(IndexedChatPacket pkt, PacketBuffer buf) {
-        buf.writeString(ITextComponent.Serializer.toJson(pkt.text));
+        buf.writeTextComponent(pkt.text);
     }
 
     public static IndexedChatPacket decode(PacketBuffer buf) {
-        return new IndexedChatPacket(ITextComponent.Serializer.fromJson(buf.readString()));
+        return new IndexedChatPacket(buf.readTextComponent());
     }
 
     public static void handlePacket(IndexedChatPacket pkt, Supplier<Context> ctx) {
