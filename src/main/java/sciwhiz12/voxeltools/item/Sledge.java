@@ -2,15 +2,17 @@ package sciwhiz12.voxeltools.item;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import sciwhiz12.voxeltools.event.ActionType;
 import sciwhiz12.voxeltools.util.MoveUtil;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
-public class Sledge extends Item implements IVoxelTool {
+public class Sledge extends Item implements ILeftClicker.OnBlock {
     public Sledge(Properties properties) {
         super(properties);
     }
@@ -18,26 +20,27 @@ public class Sledge extends Item implements IVoxelTool {
     @Override
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
-        BlockPos target = pos.offset(face, -1);
-        MoveUtil.moveBlock(player, pos, target, false, true);
+        if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
+            BlockPos target = pos.offset(face.getOpposite());
+            MoveUtil.moveBlock(player, pos, target, false, true);
+        }
     }
 
     @Override
-    public ActionType hasLeftClickBlockAction(PlayerEntity player, World world, Hand hand,
-            BlockPos pos, Direction face) {
-        return PermissionUtil.checkForPermission(player) ? ActionType.CANCEL : ActionType.PASS;
+    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
+        return true;
     }
 
     @Override
-    public void onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
-            Direction face) {
-        BlockPos target = pos.offset(face);
-        MoveUtil.moveBlock(player, pos, target, player.isCrouching(), true);
-    }
-
-    @Override
-    public ActionType hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
-            BlockPos pos, Direction face) {
-        return PermissionUtil.checkForPermission(player) ? ActionType.CANCEL : ActionType.PASS;
+    public ActionResultType onItemUse(ItemUseContext context) {
+        World world = context.getWorld();
+        PlayerEntity player = context.getPlayer();
+        if (!world.isRemote && PermissionUtil.checkForPermission(player)) {
+            BlockPos pos = context.getPos();
+            BlockPos target = pos.offset(context.getFace());
+            MoveUtil.moveBlock(player, pos, target, player.isCrouching(), true);
+            return ActionResultType.SUCCESS;
+        }
+        return ActionResultType.PASS;
     }
 }

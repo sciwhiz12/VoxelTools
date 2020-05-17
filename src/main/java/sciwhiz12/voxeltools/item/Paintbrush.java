@@ -1,6 +1,5 @@
 package sciwhiz12.voxeltools.item;
 
-import static sciwhiz12.voxeltools.util.BlockUtil.rangedRayTrace;
 import static sciwhiz12.voxeltools.util.BlockUtil.toStringFromState;
 
 import java.util.List;
@@ -13,7 +12,10 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -29,10 +31,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import sciwhiz12.voxeltools.VxConfig;
-import sciwhiz12.voxeltools.event.ActionType;
+import sciwhiz12.voxeltools.util.BlockUtil;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
-public class Paintbrush extends Item implements IVoxelTool {
+public class Paintbrush extends Item implements ILeftClicker.OnBlock {
     public static final String TAG_ID_STOREDBLOCK = "StoredBlock";
 
     public Paintbrush(Properties properties) {
@@ -80,71 +82,71 @@ public class Paintbrush extends Item implements IVoxelTool {
     @Override
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
+        if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
+            ItemStack stack = player.getHeldItem(hand);
+            if (player.isCrouching()) {
+                stack.removeChildTag(TAG_ID_STOREDBLOCK);
+                sendStatus(player, "status.voxeltools.paintbrush.clear", TextFormatting.BLUE);
+            } else {
+                BlockState state = player.world.getBlockState(pos);
+                stack.setTagInfo(TAG_ID_STOREDBLOCK, NBTUtil.writeBlockState(state));
+                sendStatus(
+                    player, "status.voxeltools.paintbrush.saved", TextFormatting.BLUE, state
+                        .getBlock().getTranslationKey()
+                );
+            }
+        }
+    }
+
+    @Override
+    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
+        return true;
+    }
+
+    @Override
+    public ActionResultType onItemUse(ItemUseContext context) {
+        World world = context.getWorld();
+        if (!world.isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
+            ItemStack stack = context.getItem();
+            if (!stack.hasTag() || !stack.getTag().contains(TAG_ID_STOREDBLOCK)) {
+                sendEmptyStatus(context.getPlayer());
+                return ActionResultType.PASS;
+            }
+            BlockState state = NBTUtil.readBlockState(stack.getChildTag(TAG_ID_STOREDBLOCK));
+            world.setBlockState(context.getPos(), state);
+            return ActionResultType.SUCCESS;
+        }
+        return ActionResultType.PASS;
+    }
+
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
-        if (player.isCrouching()) {
-            stack.removeChildTag(TAG_ID_STOREDBLOCK);
-            sendStatus(player, "status.voxeltools.paintbrush.clear", TextFormatting.BLUE);
-        } else {
-            BlockState state = player.world.getBlockState(pos);
-            stack.setTagInfo(TAG_ID_STOREDBLOCK, NBTUtil.writeBlockState(state));
-            sendStatus(
-                player, "status.voxeltools.paintbrush.saved", TextFormatting.BLUE, state.getBlock()
-                    .getTranslationKey()
+        if (!world.isRemote && PermissionUtil.checkForPermission(player)) {
+            if (!stack.hasTag() || !stack.getTag().contains(TAG_ID_STOREDBLOCK)) {
+                sendEmptyStatus(player);
+                return ActionResult.resultPass(stack);
+            }
+            BlockState state = NBTUtil.readBlockState(stack.getChildTag(TAG_ID_STOREDBLOCK));
+            double reach = player.getAttribute(PlayerEntity.REACH_DISTANCE).getValue();
+            if (player.isCrouching()) {
+                reach = Math.max(VxConfig.ServerConfig.paintbrushRange, reach);
+            }
+            RayTraceResult trace = BlockUtil.rangedRayTrace(
+                world, player, RayTraceContext.FluidMode.ANY, reach
             );
+            if (trace != null && trace.getType() == Type.BLOCK) {
+                BlockPos pos = ((BlockRayTraceResult) trace).getPos();
+                world.setBlockState(pos, state);
+            } else if (trace == null || trace.getType() == Type.MISS) {
+                sendStatus(
+                    player, "status.voxeltools.paintbrush.current", TextFormatting.GRAY, state
+                        .getBlock().getTranslationKey()
+                );
+            }
+            return ActionResult.resultSuccess(stack);
         }
-    }
-
-    @Override
-    public ActionType hasLeftClickBlockAction(PlayerEntity player, World world, Hand hand,
-            BlockPos pos, Direction face) {
-        return PermissionUtil.checkForPermission(player) ? ActionType.CANCEL : ActionType.PASS;
-    }
-
-    @Override
-    public void onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
-            Direction face) {
-        ItemStack stack = player.getHeldItem(hand);
-        if (!stack.hasTag() || !stack.getTag().contains(TAG_ID_STOREDBLOCK)) {
-            sendEmptyStatus(player);
-            return;
-        }
-        BlockState state = NBTUtil.readBlockState(stack.getChildTag(TAG_ID_STOREDBLOCK));
-        world.setBlockState(pos, state);
-    }
-
-    @Override
-    public ActionType hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
-            BlockPos pos, Direction face) {
-        return PermissionUtil.checkForPermission(player) ? ActionType.CANCEL : ActionType.PASS;
-    }
-
-    @Override
-    public void onRightClickEmpty(PlayerEntity player, World world, Hand hand) {
-        ItemStack stack = player.getHeldItem(hand);
-        if (!stack.hasTag() || !stack.getTag().contains(TAG_ID_STOREDBLOCK)) {
-            sendEmptyStatus(player);
-            return;
-        }
-        BlockState state = NBTUtil.readBlockState(stack.getChildTag(TAG_ID_STOREDBLOCK));
-        double reach = player.getAttribute(PlayerEntity.REACH_DISTANCE).getValue();
-        if (player.isCrouching()) {
-            reach = Math.max(VxConfig.ServerConfig.paintbrushRange, reach);
-        }
-        RayTraceResult trace = rangedRayTrace(world, player, RayTraceContext.FluidMode.ANY, reach);
-        if (trace != null && trace.getType() == Type.BLOCK) {
-            BlockPos pos = ((BlockRayTraceResult) trace).getPos();
-            world.setBlockState(pos, state);
-        } else if (trace == null || trace.getType() == Type.MISS) {
-            sendStatus(
-                player, "status.voxeltools.paintbrush.current", TextFormatting.GRAY, state
-                    .getBlock().getTranslationKey()
-            );
-        }
-    }
-
-    @Override
-    public ActionType hasRightClickEmptyAction(PlayerEntity player, World world, Hand hand) {
-        return PermissionUtil.checkForPermission(player) ? ActionType.CANCEL : ActionType.PASS;
+        return ActionResult.resultPass(stack);
     }
 
     private static void sendEmptyStatus(PlayerEntity player) {

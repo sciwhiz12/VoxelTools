@@ -4,14 +4,17 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import sciwhiz12.voxeltools.event.ActionType;
+import net.minecraftforge.common.util.Constants;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
-public class Jackhammer extends Item implements IVoxelTool {
+public class Jackhammer extends Item implements ILeftClicker.OnBlock {
     public Jackhammer(Properties properties) {
         super(properties);
     }
@@ -19,27 +22,35 @@ public class Jackhammer extends Item implements IVoxelTool {
     @Override
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
-        if (player.isCreative()) return;
-        player.world.playEvent(2001, pos, Block.getStateId(player.world.getBlockState(pos)));
-        player.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+        if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
+            if (player.isCreative()) return;
+            player.world.playEvent(2001, pos, Block.getStateId(player.world.getBlockState(pos)));
+            player.world.setBlockState(
+                pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT
+            );
+        }
     }
 
     @Override
-    public ActionType hasLeftClickBlockAction(PlayerEntity player, World world, Hand hand,
-            BlockPos pos, Direction face) {
-        return PermissionUtil.checkForPermission(player) ? ActionType.CONTINUE : ActionType.PASS;
+    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
+        return true;
     }
 
     @Override
-    public void onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
-            Direction face) {
-        player.world.playEvent(2001, pos, Block.getStateId(player.world.getBlockState(pos)));
-        player.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2 | 16 | 32);
-    }
-
-    @Override
-    public ActionType hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
-            BlockPos pos, Direction face) {
-        return PermissionUtil.checkForPermission(player) ? ActionType.CONTINUE : ActionType.PASS;
+    public ActionResultType onItemUse(ItemUseContext context) {
+        World world = context.getWorld();
+        if (!world.isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
+            BlockPos pos = context.getPos();
+            world.playEvent(
+                2001, pos, Block.getStateId(context.getPlayer().world.getBlockState(pos))
+            );
+            world.setBlockState(
+                pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.BLOCK_UPDATE
+                        | Constants.BlockFlags.UPDATE_NEIGHBORS
+                        | Constants.BlockFlags.NO_NEIGHBOR_DROPS
+            );
+            return ActionResultType.SUCCESS;
+        }
+        return ActionResultType.PASS;
     }
 }

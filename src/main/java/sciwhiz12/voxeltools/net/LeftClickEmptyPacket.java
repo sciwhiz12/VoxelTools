@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Hand;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
-import sciwhiz12.voxeltools.item.IVoxelTool;
+import sciwhiz12.voxeltools.item.ILeftClicker;
 
 public class LeftClickEmptyPacket {
     protected Hand hand;
@@ -31,8 +31,8 @@ public class LeftClickEmptyPacket {
             ItemStack stack = player.getHeldItem(pkt.hand);
             if (stack != null && !stack.isEmpty()) {
                 Item item = stack.getItem();
-                if (item instanceof IVoxelTool) {
-                    IVoxelTool tool = (IVoxelTool) item;
+                if (item instanceof ILeftClicker.OnEmpty) {
+                    ILeftClicker.OnEmpty tool = (ILeftClicker.OnEmpty) item;
                     tool.onLeftClickEmpty(player, player.world, pkt.hand);
                 }
             }

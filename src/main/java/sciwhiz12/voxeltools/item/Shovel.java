@@ -4,8 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
@@ -13,41 +16,23 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import sciwhiz12.voxeltools.VoxelTools;
 import sciwhiz12.voxeltools.VxConfig;
-import sciwhiz12.voxeltools.event.ActionType;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
-public class Shovel extends Item implements IVoxelTool {
+public class Shovel extends Item implements ILeftClicker.OnBlock {
     public static final ResourceLocation TAG_GROUND = new ResourceLocation(
-            VoxelTools.MODID, "ground"
+        VoxelTools.MODID, "ground"
     );
 
     public Shovel(Properties properties) {
         super(properties);
     }
-
+    
     @Override
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
-        Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
-        for (BlockPos targetPos : getDigRadius(pos)) {
-            if (col.contains(world.getBlockState(targetPos).getBlock())) {
-                world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
-            }
-        }
-    }
-
-    @Override
-    public ActionType hasLeftClickBlockAction(PlayerEntity player, World world, Hand hand,
-            BlockPos pos, Direction face) {
-        return PermissionUtil.checkForPermission(player) ? ActionType.CONTINUE : ActionType.PASS;
-    }
-
-    @Override
-    public void onRightClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
-            Direction face) {
-        if (player.isCrouching()) {
+        if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
             Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
-            for (BlockPos targetPos : getFlattenRadius(pos)) {
+            for (BlockPos targetPos : getDigRadius(pos)) {
                 if (col.contains(world.getBlockState(targetPos).getBlock())) {
                     world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
                 }
@@ -56,11 +41,27 @@ public class Shovel extends Item implements IVoxelTool {
     }
 
     @Override
-    public ActionType hasRightClickBlockAction(PlayerEntity player, World world, Hand hand,
-            BlockPos pos, Direction face) {
-        return PermissionUtil.checkForPermission(player)
-                && VxConfig.ServerConfig.shovelFlattenRadius != 0 ? ActionType.CONTINUE
-                        : ActionType.PASS;
+    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
+        return true;
+    }
+
+    @Override
+    public ActionResultType onItemUse(ItemUseContext context) {
+        World world = context.getWorld();
+        if (!world.isRemote && PermissionUtil.checkForPermission(context.getPlayer())
+                && VxConfig.ServerConfig.shovelFlattenRadius != 0) {
+            BlockPos pos = context.getPos();
+            if (context.getPlayer().isCrouching()) {
+                Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
+                for (BlockPos targetPos : getFlattenRadius(pos)) {
+                    if (col.contains(world.getBlockState(targetPos).getBlock())) {
+                        world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
+                    }
+                }
+                return ActionResultType.SUCCESS;
+            }
+        }
+        return ActionResultType.PASS;
     }
 
     private Iterable<BlockPos> getDigRadius(BlockPos origin) {
