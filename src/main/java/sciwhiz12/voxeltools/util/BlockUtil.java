@@ -1,12 +1,12 @@
 package sciwhiz12.voxeltools.util;
 
+import java.util.Map.Entry;
+
+import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.EnumProperty;
 import net.minecraft.state.IProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
@@ -17,20 +17,26 @@ public class BlockUtil {
     public static final String TAG_ID_STOREDBLOCK = "StoredBlock";
 
     public static String toStringFromState(BlockState state) {
-        String str = "[";
+        StringBuilder str = new StringBuilder();
+        str.append("[");
         boolean first = true;
-        for (IProperty<?> prop : state.getProperties()) {
-            if (!first) { str += ","; }
-            first = false;
-            if (prop instanceof BooleanProperty) {
-                str += prop.getName() + "=" + state.get(prop);
-            } else if (prop instanceof IntegerProperty) {
-                str += prop.getName() + "=" + state.get(prop);
-            } else if (prop instanceof EnumProperty<?>) {
-                str += prop.getName() + "=" + ((IStringSerializable) state.get(prop)).getName();
+        ImmutableMap<IProperty<?>, Comparable<?>> immutablemap = state.getValues();
+        if (!immutablemap.isEmpty()) {
+            for (Entry<IProperty<?>, Comparable<?>> entry : immutablemap.entrySet()) {
+                if (!first) str.append(",");
+                first = false;
+                IProperty<?> iproperty = entry.getKey();
+                str.append(iproperty.getName());
+                str.append("=");
+                str.append(getName(iproperty, entry.getValue()));
             }
         }
-        return str + "]";
+        return str.append("]").toString();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T extends Comparable<T>> String getName(IProperty<T> prop, Comparable<?> val) {
+        return prop.getName((T) val);
     }
 
     public static RayTraceResult rangedRayTrace(World worldIn, PlayerEntity player,
@@ -46,9 +52,7 @@ public class BlockUtil {
         float f7 = f2 * f4;
         Vec3d vec3d1 = vec3d.add((double) f6 * range, (double) f5 * range, (double) f7 * range);
         return worldIn.rayTraceBlocks(
-                new RayTraceContext(
-                        vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player
-                )
+            new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player)
         );
     }
 }
