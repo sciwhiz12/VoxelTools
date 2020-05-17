@@ -8,22 +8,22 @@ import net.minecraftforge.fml.network.NetworkEvent.Context;
 import sciwhiz12.voxeltools.util.ChatUtil;
 
 public class IndexedChatPacket {
-    private ITextComponent text;
+    private final ITextComponent text;
 
     public IndexedChatPacket(final ITextComponent text) {
         this.text = text;
     }
 
     public static void encode(IndexedChatPacket pkt, PacketBuffer buf) {
-        buf.writeString(ChatUtil.serialize(pkt.text));
+        buf.writeString(ITextComponent.Serializer.toJson(pkt.text));
     }
 
     public static IndexedChatPacket decode(PacketBuffer buf) {
-        return new IndexedChatPacket(ChatUtil.deserialize(buf.readString()));
+        return new IndexedChatPacket(ITextComponent.Serializer.fromJson(buf.readString()));
     }
 
     public static void handlePacket(IndexedChatPacket pkt, Supplier<Context> ctx) {
-        ctx.get().enqueueWork(() -> { ChatUtil.sendIndexedMessage(pkt.text); });
+        ctx.get().enqueueWork(() -> ChatUtil.sendIndexedMessage(ctx.get().getSender(), pkt.text));
         ctx.get().setPacketHandled(true);
     }
 }
