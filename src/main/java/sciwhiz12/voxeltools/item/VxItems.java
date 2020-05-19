@@ -13,12 +13,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 import sciwhiz12.voxeltools.VoxelTools;
 
 public class VxItems {
-
     public static final ItemGroup CREATIVE_TAB = (new ItemGroup("voxelTools") {
         @Override
         @OnlyIn(Dist.CLIENT)
         public ItemStack createIcon() {
-            return new ItemStack(VxItems.test_item.get());
+            return new ItemStack(VxItems.dooplicator.get());
         }
     }).setTabPath("voxel_tools");
     private static final Item.Properties TOOL_PROPERTIES = new Item.Properties().setNoRepair()
