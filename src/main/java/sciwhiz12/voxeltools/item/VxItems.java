@@ -61,4 +61,7 @@ public class VxItems {
         "chainsaw", () -> new Chainsaw(TOOL_PROPERTIES)
     );
 
+    public static final RegistryObject<Item> clock = ITEMS.register(
+        "clock", () -> new Clock(TOOL_PROPERTIES)
+    );
 }

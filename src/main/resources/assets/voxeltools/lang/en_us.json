@@ -44,5 +44,9 @@
 	"voxeltools.config.chainsawCutRadius": "A.S.H. Chainsaw's Cutting Radius",
 	"voxeltools.config.chainsawCutRadius.tooltip": "The radius of the A.S.H. Chainsaw's cutting (trees) ability. Set to 0 to disable.",
 	"voxeltools.config.chainsawCleanRadius": "A.S.H. Chainsaw's Cleaning Radius",
-	"voxeltools.config.chainsawCleanRadius.tooltip": "The radius of the A.S.H. Chainsaw's cleaning (vegetation in general) ability. Set to 0 to disable."
+	"voxeltools.config.chainsawCleanRadius.tooltip": "The radius of the A.S.H. Chainsaw's cleaning (vegetation in general) ability. Set to 0 to disable.",
+	"item.voxeltools.clock": "Tachyonic Chronometer",
+	"status.voxeltools.clock": "Real Time: %s - Stored Time: %s - %s",
+	"status.voxeltools.clock.active": "ACTIVE",
+	"status.voxeltools.clock.inactive": "INACTIVE"
 }

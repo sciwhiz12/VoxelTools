@@ -23,5 +23,13 @@ public class VxNetwork {
             id++, IndexedChatPacket.class, IndexedChatPacket::encode, IndexedChatPacket::decode,
             IndexedChatPacket::handlePacket
         );
+        CHANNEL.registerMessage(
+            id++, ScrollPacket.class, ScrollPacket::encode, ScrollPacket::decode,
+            ScrollPacket::handlePacket
+        );
+        CHANNEL.registerMessage(
+            id++, SetFreezeTimePacket.class, SetFreezeTimePacket::encode,
+            SetFreezeTimePacket::decode, SetFreezeTimePacket::handlePacket
+        );
     }
 }
