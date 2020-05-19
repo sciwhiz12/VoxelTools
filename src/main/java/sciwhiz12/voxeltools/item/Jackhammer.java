@@ -1,6 +1,7 @@
 package sciwhiz12.voxeltools.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -23,8 +24,11 @@ public class Jackhammer extends Item implements ILeftClicker.OnBlock {
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
             Direction face) {
         if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
-            if (player.isCreative()) return;
-            player.world.playEvent(2001, pos, Block.getStateId(player.world.getBlockState(pos)));
+            player.world.playEvent(
+                Constants.WorldEvents.BREAK_BLOCK_EFFECTS, pos, Block.getStateId(
+                    player.world.getBlockState(pos)
+                )
+            );
             player.world.setBlockState(
                 pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT
             );
@@ -36,13 +40,20 @@ public class Jackhammer extends Item implements ILeftClicker.OnBlock {
         return true;
     }
 
+    public boolean canPlayerBreakBlockWhileHolding(BlockState state, World worldIn, BlockPos pos,
+            PlayerEntity player) {
+        return false;
+    }
+
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
         World world = context.getWorld();
         if (!world.isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
             BlockPos pos = context.getPos();
             world.playEvent(
-                2001, pos, Block.getStateId(context.getPlayer().world.getBlockState(pos))
+                Constants.WorldEvents.BREAK_BLOCK_EFFECTS, pos, Block.getStateId(
+                    context.getPlayer().world.getBlockState(pos)
+                )
             );
             world.setBlockState(
                 pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.BLOCK_UPDATE
