@@ -138,6 +138,7 @@ public class Paintbrush extends Item implements ILeftClicker.OnBlock {
             if (trace != null && trace.getType() == Type.BLOCK) {
                 BlockPos pos = ((BlockRayTraceResult) trace).getPos();
                 world.setBlockState(pos, state);
+                player.swing(hand, true);
             } else if (trace == null || trace.getType() == Type.MISS) {
                 sendStatus(
                     player, "status.voxeltools.paintbrush.current", TextFormatting.GRAY, state
