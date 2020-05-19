@@ -7,11 +7,12 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.network.PacketDistributor;
+import sciwhiz12.voxeltools.VoxelTools;
 import sciwhiz12.voxeltools.item.ILeftClicker;
 import sciwhiz12.voxeltools.net.LeftClickEmptyPacket;
 import sciwhiz12.voxeltools.net.VxNetwork;
 
-@EventBusSubscriber(bus = Bus.FORGE)
+@EventBusSubscriber(bus = Bus.FORGE, modid = VoxelTools.MODID)
 public class InteractListener {
     @SubscribeEvent
     public static void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
