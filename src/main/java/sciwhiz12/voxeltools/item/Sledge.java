@@ -1,5 +1,7 @@
 package sciwhiz12.voxeltools.item;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -9,7 +11,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import sciwhiz12.voxeltools.util.MoveUtil;
+import sciwhiz12.voxeltools.util.BlockUtil;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
 public class Sledge extends Item implements ILeftClicker.OnBlock {
@@ -22,13 +24,21 @@ public class Sledge extends Item implements ILeftClicker.OnBlock {
             Direction face) {
         if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
             BlockPos target = pos.offset(face.getOpposite());
-            MoveUtil.moveBlock(player, pos, target, false, true);
+            BlockUtil.moveBlock(
+                world, pos, target, (w, p) -> player.isCrouching() || w.isAirBlock(p) || w
+                    .getBlockState(p).getBlock() instanceof FlowingFluidBlock, (w, p) -> true
+            );
         }
     }
 
     @Override
     public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, PlayerEntity player) {
         return true;
+    }
+
+    public boolean canPlayerBreakBlockWhileHolding(BlockState state, World worldIn, BlockPos pos,
+            PlayerEntity player) {
+        return false;
     }
 
     @Override
@@ -38,7 +48,10 @@ public class Sledge extends Item implements ILeftClicker.OnBlock {
         if (!world.isRemote && PermissionUtil.checkForPermission(player)) {
             BlockPos pos = context.getPos();
             BlockPos target = pos.offset(context.getFace());
-            MoveUtil.moveBlock(player, pos, target, player.isCrouching(), true);
+            BlockUtil.moveBlock(
+                world, pos, target, (w, p) -> player.isCrouching() || w.isAirBlock(p) || w
+                    .getBlockState(p).getBlock() instanceof FlowingFluidBlock, (w, p) -> true
+            );
             return ActionResultType.SUCCESS;
         }
         return ActionResultType.PASS;
