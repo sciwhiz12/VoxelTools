@@ -31,6 +31,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import sciwhiz12.voxeltools.VxConfig;
+import sciwhiz12.voxeltools.client.render.PaintbrushRenderer;
 import sciwhiz12.voxeltools.util.BlockUtil;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
@@ -38,7 +39,7 @@ public class Paintbrush extends Item implements ILeftClicker.OnBlock {
     public static final String TAG_ID_STOREDBLOCK = "StoredBlock";
 
     public Paintbrush(Properties properties) {
-        super(properties);
+        super(properties.setISTER(() -> PaintbrushRenderer::new));
     }
 
     @Override
