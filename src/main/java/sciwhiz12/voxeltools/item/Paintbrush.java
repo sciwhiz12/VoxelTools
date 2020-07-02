@@ -113,7 +113,7 @@ public class Paintbrush extends Item implements ILeftClicker.OnBlock {
             BlockState state = NBTUtil.readBlockState(stack.getChildTag(TAG_ID_STOREDBLOCK));
             double reach = player.getAttribute(PlayerEntity.REACH_DISTANCE).getValue();
             if (player.isCrouching()) {
-                reach = Math.max(VxConfig.ServerConfig.paintbrushRange, reach);
+                reach = Math.max(VxConfig.Server.paintbrushRange, reach);
             }
             RayTraceResult trace = BlockUtil.rangedRayTrace(world, player, RayTraceContext.FluidMode.ANY, reach);
             if (trace != null && trace.getType() == Type.BLOCK) {

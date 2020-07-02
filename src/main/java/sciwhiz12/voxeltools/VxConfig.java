@@ -18,21 +18,22 @@ public final class VxConfig {
     public static final Logger LOGGER = LogManager.getLogger();
 
     static final ForgeConfigSpec serverSpec;
-    public static final Server SERVER_CONFIG;
+    public static final ServerSpec SERVER_CONFIG;
 
     static {
-        final Pair<Server, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Server::new);
+        final Pair<ServerSpec, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(ServerSpec::new);
         serverSpec = specPair.getRight();
         SERVER_CONFIG = specPair.getLeft();
     }
 
     public static final String ITEM_USE_PERMISSION = "voxeltools.item";
 
-    public static class Server {
-        public final BooleanValue allowItemUse;
+    public static class ServerSpec {
+        public final BooleanValue enableItems;
         public final EnumValue<DefaultPermissionLevel> defaultPermLevel;
-        public final IntValue paintbrushRange;
         public final BooleanValue allowOverwrite;
+
+        public final IntValue paintbrushRange;
 
         public final IntValue shovelDigRadiusX;
         public final IntValue shovelDigRadiusY;
@@ -45,70 +46,73 @@ public final class VxConfig {
         public final IntValue chainsawCutRadius;
         public final IntValue chainsawCleanRadius;
 
-        public Server(ForgeConfigSpec.Builder builder) {
+        public ServerSpec(ForgeConfigSpec.Builder builder) {
             builder.comment("General settings").push("general");
 
-            allowItemUse = builder.translation("voxeltools.config.allowItemUse")
-                    .comment("Enables/disables the functionality of all items.")
-                    .define("allowItemUse", ServerConfig.allowItemUse);
-
-            defaultPermLevel = builder.translation("voxeltools.config.defaultPermLevel").comment(
+            enableItems = builder.translation("config.voxeltools.enableItems")
+                    .comment("Enables/disables the functionality of all items.").define("enableItems", Server.enableItems);
+            defaultPermLevel = builder.translation("config.voxeltools.defaultPermLevel").comment(
                     "The default permission level of the permission [voxeltools.item], which grants players access to " +
                             "VoxelTools.")
-                    .defineEnum("defaultPermLevel", ServerConfig.defaultPermLevel, DefaultPermissionLevel.values());
-
-            paintbrushRange = builder.translation("voxeltools.config.paintbrushRange").comment(
-                    "The range of the Magical Paintbrush when remotely painting a block. Anything below the player's " +
-                            "reach" + " distance (default 5) will disable remote painting.")
-                    .defineInRange("paintbrushRange", ServerConfig.paintbrushRange, 0, 48);
-
-            allowOverwrite = builder.translation("voxeltools.config.allowOverwrite").comment(
+                    .defineEnum("defaultPermLevel", Server.defaultPermLevel, DefaultPermissionLevel.values());
+            allowOverwrite = builder.translation("config.voxeltools.allowOverwrite").comment(
                     "Whether to allow block-moving items (ie Graviton Sledge) to destroy blocks in their way when the " +
                             "player is sneaking.")
-                    .define("allowOverwrite", ServerConfig.allowOverwrite);
-
-            builder.push("shovel");
-            shovelDigRadiusX = builder.translation("voxeltools.config.shovelDigRadiusX")
-                    .comment("The radius of the Auto-Shoveler 9001's dig ability on the X axis. Set to 0 to disable.")
-                    .defineInRange("shovelDigRadiusX", ServerConfig.shovelDigRadiusX, 0, 16);
-            shovelDigRadiusY = builder.translation("voxeltools.config.shovelDigRadiusY")
-                    .comment("The radius of the Auto-Shoveler 9001's dig ability on the Y axis. Set to 0 to disable.")
-                    .defineInRange("shovelDigRadiusY", ServerConfig.shovelDigRadiusY, 0, 16);
-            shovelDigRadiusZ = builder.translation("voxeltools.config.shovelDigRadiusZ")
-                    .comment("The radius of the Auto-Shoveler 9001's dig ability on the Z axis. Set to 0 to disable.")
-                    .defineInRange("shovelDigRadiusZ", ServerConfig.shovelDigRadiusZ, 0, 16);
-
-            shovelFlattenRadius = builder.translation("voxeltools.config.shovelFlattenRadius")
-                    .comment("The radius of the Auto-Shoveler 9001's flatten ability. Set to 0 to disable.")
-                    .defineInRange("shovelFlattenRadius", ServerConfig.shovelFlattenRadius, 0, 16);
-            shovelFlattenHeight = builder.translation("voxeltools.config.shovelFlattenHeight")
-                    .comment("The height of the Auto-Shoveler 9001's flatten ability.",
-                            "Set to 0 to only flatten blocks on the same horizontal plane.")
-                    .defineInRange("shovelFlattenHeight", ServerConfig.shovelFlattenHeight, 0, 128);
-            shovelFlattenHeightOffset = builder.translation("voxeltools.config.shovelFlattenHeightOffset")
-                    .comment("The Auto-Shoveler 9001's flatten ability's height offset from the block clicked.",
-                            "A value of 0 is the plane of the block clicked, and 'n' is the plane 'n' blocks above the " + "block.")
-                    .defineInRange("shovelFlattenHeightOffset", ServerConfig.shovelFlattenHeightOffset, 0, 8);
+                    .define("allowOverwrite", Server.allowOverwrite);
             builder.pop();
 
-            builder.push("chainsaw");
-            chainsawCutRadius = builder.translation("voxeltools.config.chainsawCutRadius")
-                    .comment("The radius of the A.S.H. Chainsaw's cutting (trees) ability. Set to 0 to disable.")
-                    .defineInRange("chainsawCutRadius", ServerConfig.chainsawCutRadius, 0, 32);
-            chainsawCleanRadius = builder.translation("voxeltools.config.chainsawCleanRadius").comment(
-                    "The radius of the A.S.H. Chainsaw's cleaning (vegetation in general) ability. Set to 0 to disable.")
-                    .defineInRange("chainsawCleanRadius", ServerConfig.chainsawCleanRadius, 0, 32);
+            builder.comment("Item settings").push("items");
+
+            builder.comment("Settings for paintbrush item (Magical Paintbrush)").push("paintbrush");
+            paintbrushRange = builder.translation("config.voxeltools.paintbrush.range")
+                    .comment("The range of the paintbrush when remotely painting a block.",
+                            "Anything below the player's reach distance (default 5) will disable remote painting.")
+                    .defineInRange("range", Server.paintbrushRange, 0, 48);
+            builder.pop();
+
+            builder.comment("Settings for shovel item (Auto-Shoveler 9001)").push("shovel");
+            shovelDigRadiusX = builder.translation("config.voxeltools.shovel.digRadiusX")
+                    .comment("The radius of the shovel's dig ability on the X axis. Set to 0 to disable.")
+                    .defineInRange("digRadiusX", Server.shovelDigRadiusX, 0, 16);
+            shovelDigRadiusY = builder.translation("config.voxeltools.shovel.digRadiusY")
+                    .comment("The radius of the shovel's dig ability on the Y axis. Set to 0 to disable.")
+                    .defineInRange("digRadiusY", Server.shovelDigRadiusY, 0, 16);
+            shovelDigRadiusZ = builder.translation("config.voxeltools.shovel.digRadiusZ")
+                    .comment("The radius of the shovel's dig ability on the Z axis. Set to 0 to disable.")
+                    .defineInRange("digRadiusZ", Server.shovelDigRadiusZ, 0, 16);
+
+            shovelFlattenRadius = builder.translation("config.voxeltools.shovel.flattenRadius")
+                    .comment("The radius of the shovel's flatten ability. Set to 0 to disable.")
+                    .defineInRange("flattenRadius", Server.shovelFlattenRadius, 0, 16);
+            shovelFlattenHeight = builder.translation("config.voxeltools.shovel.flattenHeight")
+                    .comment("The height of the shovel's flatten ability.",
+                            "Set to 0 to only flatten blocks on the same horizontal plane.")
+                    .defineInRange("flattenHeight", Server.shovelFlattenHeight, 0, 128);
+            shovelFlattenHeightOffset = builder.translation("config.voxeltools.shovel.flattenHeightOffset")
+                    .comment("The shovel's flatten ability's height offset from the block clicked.",
+                            "A value of 0 is the plane of the block clicked, and 'n' is the plane 'n' blocks above the " + "block.")
+                    .defineInRange("flattenHeightOffset", Server.shovelFlattenHeightOffset, 0, 8);
+            builder.pop();
+
+            builder.comment("Settings for chainsaw (A.S.H. Chainsaw)").push("chainsaw");
+            chainsawCutRadius = builder.translation("config.voxeltools.chainsaw.cutRadius")
+                    .comment("The radius of the chainsaw's cutting (trees) ability. Set to 0 to disable.")
+                    .defineInRange("cutRadius", Server.chainsawCutRadius, 0, 32);
+            chainsawCleanRadius = builder.translation("config.voxeltools.chainsaw.cleanRadius")
+                    .comment("The radius of the chainsaw's cleaning (vegetation in general) ability. Set to 0 to disable.")
+                    .defineInRange("cleanRadius", Server.chainsawCleanRadius, 0, 32);
             builder.pop();
 
             builder.pop();
         }
     }
 
-    public static class ServerConfig {
-        public static boolean allowItemUse = true;
+    public static class Server {
+        public static boolean enableItems = true;
         public static DefaultPermissionLevel defaultPermLevel = DefaultPermissionLevel.OP;
-        public static int paintbrushRange = 16;
         public static boolean allowOverwrite = true;
+
+        public static int paintbrushRange = 16;
 
         public static int shovelDigRadiusX = 1;
         public static int shovelDigRadiusY = 1;
@@ -122,10 +126,11 @@ public final class VxConfig {
         public static int chainsawCleanRadius = 5;
 
         public static void bakeConfig(ModConfig config) {
-            allowItemUse = VxConfig.SERVER_CONFIG.allowItemUse.get();
+            enableItems = VxConfig.SERVER_CONFIG.enableItems.get();
             defaultPermLevel = VxConfig.SERVER_CONFIG.defaultPermLevel.get();
-            paintbrushRange = VxConfig.SERVER_CONFIG.paintbrushRange.get();
             allowOverwrite = VxConfig.SERVER_CONFIG.allowOverwrite.get();
+
+            paintbrushRange = VxConfig.SERVER_CONFIG.paintbrushRange.get();
 
             shovelDigRadiusX = VxConfig.SERVER_CONFIG.shovelDigRadiusX.get();
             shovelDigRadiusY = VxConfig.SERVER_CONFIG.shovelDigRadiusY.get();
@@ -145,6 +150,6 @@ public final class VxConfig {
     @SubscribeEvent
     public static void onModConfigEvent(final ModConfig.ModConfigEvent event) {
         final ModConfig config = event.getConfig();
-        if (config.getSpec() == VxConfig.serverSpec) { ServerConfig.bakeConfig(config); }
+        if (config.getSpec() == VxConfig.serverSpec) { Server.bakeConfig(config); }
     }
 }

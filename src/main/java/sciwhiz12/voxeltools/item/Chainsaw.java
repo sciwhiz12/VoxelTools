@@ -32,7 +32,7 @@ public class Chainsaw extends Item implements ILeftClicker.OnBlock {
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction face) {
         if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
             Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_TREE_STUFF);
-            for (BlockPos targetPos : getDestroyRadius(VxConfig.ServerConfig.chainsawCutRadius, pos)) {
+            for (BlockPos targetPos : getDestroyRadius(VxConfig.Server.chainsawCutRadius, pos)) {
                 if (col.contains(player.world.getBlockState(targetPos).getBlock())) {
                     player.world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
                 }
@@ -51,7 +51,7 @@ public class Chainsaw extends Item implements ILeftClicker.OnBlock {
         if (!world.isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
             if (!context.getPlayer().isCrouching()) {
                 Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_VEGETATION);
-                for (BlockPos targetPos : getDestroyRadius(VxConfig.ServerConfig.chainsawCleanRadius, context.getPos())) {
+                for (BlockPos targetPos : getDestroyRadius(VxConfig.Server.chainsawCleanRadius, context.getPos())) {
                     if (col.contains(world.getBlockState(targetPos).getBlock())) {
                         world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
                     }

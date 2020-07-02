@@ -37,7 +37,7 @@ public class VoxelTools {
 
     @SubscribeEvent
     public void handleServerAboutToStartEvent(final FMLServerAboutToStartEvent event) {
-        PermissionAPI.registerNode(VxConfig.ITEM_USE_PERMISSION, VxConfig.ServerConfig.defaultPermLevel,
+        PermissionAPI.registerNode(VxConfig.ITEM_USE_PERMISSION, VxConfig.Server.defaultPermLevel,
                 "Allows the use of VoxelTools.");
     }
 }

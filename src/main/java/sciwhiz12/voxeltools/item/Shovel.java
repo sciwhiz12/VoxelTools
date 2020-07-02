@@ -46,7 +46,7 @@ public class Shovel extends Item implements ILeftClicker.OnBlock {
     public ActionResultType onItemUse(ItemUseContext context) {
         World world = context.getWorld();
         if (!world.isRemote && PermissionUtil
-                .checkForPermission(context.getPlayer()) && VxConfig.ServerConfig.shovelFlattenRadius != 0) {
+                .checkForPermission(context.getPlayer()) && VxConfig.Server.shovelFlattenRadius != 0) {
             BlockPos pos = context.getPos();
             if (context.getPlayer().isCrouching()) {
                 Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
@@ -62,18 +62,18 @@ public class Shovel extends Item implements ILeftClicker.OnBlock {
     }
 
     private Iterable<BlockPos> getDigRadius(BlockPos origin) {
-        int x = VxConfig.ServerConfig.shovelDigRadiusX;
-        int y = VxConfig.ServerConfig.shovelDigRadiusY;
-        int z = VxConfig.ServerConfig.shovelDigRadiusZ;
+        int x = VxConfig.Server.shovelDigRadiusX;
+        int y = VxConfig.Server.shovelDigRadiusY;
+        int z = VxConfig.Server.shovelDigRadiusZ;
         BlockPos cornerOne = origin.add(x, y, z);
         BlockPos cornerTwo = origin.add(-x, -y, -z);
         return BlockPos.getAllInBoxMutable(cornerOne, cornerTwo);
     }
 
     private Iterable<BlockPos> getFlattenRadius(BlockPos origin) {
-        int radius = VxConfig.ServerConfig.shovelFlattenRadius;
-        int height = VxConfig.ServerConfig.shovelFlattenHeight;
-        int offset = VxConfig.ServerConfig.shovelFlattenHeightOffset;
+        int radius = VxConfig.Server.shovelFlattenRadius;
+        int height = VxConfig.Server.shovelFlattenHeight;
+        int offset = VxConfig.Server.shovelFlattenHeightOffset;
         BlockPos cornerOne = origin.add(radius, offset, radius);
         BlockPos cornerTwo = origin.add(-radius, offset + height, -radius);
         return BlockPos.getAllInBoxMutable(cornerOne, cornerTwo);
