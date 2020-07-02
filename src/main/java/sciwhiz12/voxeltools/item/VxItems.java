@@ -21,46 +21,29 @@ public class VxItems {
         }
     }).setTabPath("voxel_tools");
     private static final Item.Properties TOOL_PROPERTIES = new Item.Properties().setNoRepair()
-        .addToolType(ToolType.PICKAXE, ItemTier.DIAMOND.getHarvestLevel()).defaultMaxDamage(0)
-        .maxStackSize(1).group(VxItems.CREATIVE_TAB);
+            .addToolType(ToolType.PICKAXE, ItemTier.DIAMOND.getHarvestLevel()).defaultMaxDamage(0).maxStackSize(1)
+            .group(VxItems.CREATIVE_TAB);
 
-    public static final DeferredRegister<Item> ITEMS = new DeferredRegister<Item>(
-        ForgeRegistries.ITEMS, VoxelTools.MODID
-    );
+    public static final DeferredRegister<Item> ITEMS = new DeferredRegister<Item>(ForgeRegistries.ITEMS, VoxelTools.MODID);
 
-    public static final RegistryObject<Item> test_item = ITEMS.register(
-        "test_item", () -> new TestItem(TOOL_PROPERTIES)
-    );
+    public static final RegistryObject<Item> test_item = ITEMS.register("test_item", () -> new TestItem(TOOL_PROPERTIES));
 
-    public static final RegistryObject<Item> dooplicator = ITEMS.register(
-        "dooplicator", () -> new Dooplicator(TOOL_PROPERTIES)
-    );
+    public static final RegistryObject<Item> dooplicator = ITEMS
+            .register("dooplicator", () -> new Dooplicator(TOOL_PROPERTIES));
 
-    public static final RegistryObject<Item> jackhammer = ITEMS.register(
-        "jackhammer", () -> new Jackhammer(TOOL_PROPERTIES)
-    );
+    public static final RegistryObject<Item> jackhammer = ITEMS
+            .register("jackhammer", () -> new Jackhammer(TOOL_PROPERTIES));
 
-    public static final RegistryObject<Item> paintbrush = ITEMS.register(
-        "paintbrush", () -> new Paintbrush(TOOL_PROPERTIES)
-    );
+    public static final RegistryObject<Item> paintbrush = ITEMS
+            .register("paintbrush", () -> new Paintbrush(TOOL_PROPERTIES));
 
-    public static final RegistryObject<Item> sledge = ITEMS.register(
-        "sledge", () -> new Sledge(TOOL_PROPERTIES)
-    );
+    public static final RegistryObject<Item> sledge = ITEMS.register("sledge", () -> new Sledge(TOOL_PROPERTIES));
 
-    public static final RegistryObject<Item> pliers = ITEMS.register(
-        "pliers", () -> new Pliers(TOOL_PROPERTIES)
-    );
+    public static final RegistryObject<Item> pliers = ITEMS.register("pliers", () -> new Pliers(TOOL_PROPERTIES));
 
-    public static final RegistryObject<Item> shovel = ITEMS.register(
-        "shovel", () -> new Shovel(TOOL_PROPERTIES)
-    );
+    public static final RegistryObject<Item> shovel = ITEMS.register("shovel", () -> new Shovel(TOOL_PROPERTIES));
 
-    public static final RegistryObject<Item> chainsaw = ITEMS.register(
-        "chainsaw", () -> new Chainsaw(TOOL_PROPERTIES)
-    );
+    public static final RegistryObject<Item> chainsaw = ITEMS.register("chainsaw", () -> new Chainsaw(TOOL_PROPERTIES));
 
-    public static final RegistryObject<Item> clock = ITEMS.register(
-        "clock", () -> new Clock(TOOL_PROPERTIES)
-    );
+    public static final RegistryObject<Item> clock = ITEMS.register("clock", () -> new Clock(TOOL_PROPERTIES));
 }

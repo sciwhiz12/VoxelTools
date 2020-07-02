@@ -1,11 +1,11 @@
 package sciwhiz12.voxeltools.net;
 
-import java.util.function.Supplier;
-
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
 import sciwhiz12.voxeltools.client.event.TimeInterceptor;
+
+import java.util.function.Supplier;
 
 /**
  * Server to client packet ONLY

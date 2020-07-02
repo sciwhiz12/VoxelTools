@@ -25,16 +25,11 @@ public class ScrollListener {
         for (Hand hand : Hand.values()) {
             ItemStack stack = player.getHeldItem(hand);
             if (stack.getItem() instanceof IScrollListener && !event.isCanceled()) {
-                boolean sendPacket = ((IScrollListener) stack.getItem()).shouldSendScrollEvent(
-                    player, event.getScrollDelta()
-                );
+                boolean sendPacket = ((IScrollListener) stack.getItem())
+                        .shouldSendScrollEvent(player, event.getScrollDelta());
                 if (sendPacket) {
                     event.setCanceled(true);
-                    VxNetwork.CHANNEL.send(
-                        PacketDistributor.SERVER.noArg(), new ScrollPacket(
-                            hand, event.getScrollDelta()
-                        )
-                    );
+                    VxNetwork.CHANNEL.send(PacketDistributor.SERVER.noArg(), new ScrollPacket(hand, event.getScrollDelta()));
                 }
             }
         }

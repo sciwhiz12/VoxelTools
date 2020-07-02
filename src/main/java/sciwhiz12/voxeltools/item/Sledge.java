@@ -20,14 +20,11 @@ public class Sledge extends Item implements ILeftClicker.OnBlock {
     }
 
     @Override
-    public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
-            Direction face) {
+    public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction face) {
         if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
             BlockPos target = pos.offset(face.getOpposite());
-            BlockUtil.moveBlock(
-                world, pos, target, (w, p) -> player.isCrouching() || w.isAirBlock(p) || w
-                    .getBlockState(p).getBlock() instanceof FlowingFluidBlock, (w, p) -> true
-            );
+            BlockUtil.moveBlock(world, pos, target, (w, p) -> player.isCrouching() || w.isAirBlock(p) || w.getBlockState(p)
+                    .getBlock() instanceof FlowingFluidBlock, (w, p) -> true);
         }
     }
 
@@ -36,8 +33,7 @@ public class Sledge extends Item implements ILeftClicker.OnBlock {
         return true;
     }
 
-    public boolean canPlayerBreakBlockWhileHolding(BlockState state, World worldIn, BlockPos pos,
-            PlayerEntity player) {
+    public boolean canPlayerBreakBlockWhileHolding(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
         return false;
     }
 
@@ -48,10 +44,8 @@ public class Sledge extends Item implements ILeftClicker.OnBlock {
         if (!world.isRemote && PermissionUtil.checkForPermission(player)) {
             BlockPos pos = context.getPos();
             BlockPos target = pos.offset(context.getFace());
-            BlockUtil.moveBlock(
-                world, pos, target, (w, p) -> player.isCrouching() || w.isAirBlock(p) || w
-                    .getBlockState(p).getBlock() instanceof FlowingFluidBlock, (w, p) -> true
-            );
+            BlockUtil.moveBlock(world, pos, target, (w, p) -> player.isCrouching() || w.isAirBlock(p) || w.getBlockState(p)
+                    .getBlock() instanceof FlowingFluidBlock, (w, p) -> true);
             return ActionResultType.SUCCESS;
         }
         return ActionResultType.PASS;

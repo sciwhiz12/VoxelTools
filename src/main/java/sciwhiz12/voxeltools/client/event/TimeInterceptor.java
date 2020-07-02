@@ -45,9 +45,7 @@ public class TimeInterceptor {
             if (hasClock) {
                 if (!freezeTime) {
                     freezeTime = true;
-                    frozenTime = (event.player.world.getDayTime() / 24000L) + Clock.getStoredTime(
-                        clockStack
-                    );
+                    frozenTime = (event.player.world.getDayTime() / 24000L) + Clock.getStoredTime(clockStack);
                 }
             } else {
                 freezeTime = false;

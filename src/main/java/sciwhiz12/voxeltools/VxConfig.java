@@ -1,9 +1,5 @@
 package sciwhiz12.voxeltools;
 
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
@@ -13,6 +9,9 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @EventBusSubscriber(modid = VoxelTools.MODID, bus = Bus.MOD)
 public final class VxConfig {
@@ -20,10 +19,9 @@ public final class VxConfig {
 
     static final ForgeConfigSpec serverSpec;
     public static final Server SERVER_CONFIG;
+
     static {
-        final Pair<Server, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(
-            Server::new
-        );
+        final Pair<Server, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Server::new);
         serverSpec = specPair.getRight();
         SERVER_CONFIG = specPair.getLeft();
     }
@@ -50,62 +48,58 @@ public final class VxConfig {
         public Server(ForgeConfigSpec.Builder builder) {
             builder.comment("General settings").push("general");
 
-            allowItemUse = builder.translation("voxeltools.config.allowItemUse").comment(
-                "Enables/disables the functionality of all items."
-            ).define("allowItemUse", true);
+            allowItemUse = builder.translation("voxeltools.config.allowItemUse")
+                    .comment("Enables/disables the functionality of all items.").define("allowItemUse", true);
 
             defaultPermLevel = builder.translation("voxeltools.config.defaultPermLevel").comment(
-                "The default permission level of the permission [voxeltools.item], which grants players access to VoxelTools."
-            ).defineEnum(
-                "defaultPermLevel", DefaultPermissionLevel.OP, DefaultPermissionLevel.values()
-            );
+                    "The default permission level of the permission [voxeltools.item], which grants players access to " +
+                            "VoxelTools.")
+                    .defineEnum("defaultPermLevel", DefaultPermissionLevel.OP, DefaultPermissionLevel.values());
 
             paintbrushRange = builder.translation("voxeltools.config.paintbrushRange").comment(
-                "The range of the Magical Paintbrush when remotely painting a block. Anything below the player's reach distance (default 5) will disable remote painting."
-            ).defineInRange("paintbrushRange", 16, 0, 48);
+                    "The range of the Magical Paintbrush when remotely painting a block. Anything below the player's reach" +
+                            " distance (default 5) will disable remote painting.")
+                    .defineInRange("paintbrushRange", 16, 0, 48);
 
             allowOverwrite = builder.translation("voxeltools.config.allowOverwrite").comment(
-                "Whether to allow block-moving items (ie Graviton Sledge) to destroy blocks in their way when the player is sneaking."
-            ).define("allowOverwrite", true);
+                    "Whether to allow block-moving items (ie Graviton Sledge) to destroy blocks in their way when the " +
+                            "player is sneaking.")
+                    .define("allowOverwrite", true);
 
             builder.push("shovel");
-            shovelDigRadiusX = builder.translation("voxeltools.config.shovelDigRadiusX").comment(
-                "The radius of the Auto-Shoveler 9001's dig ability on the X axis. Set to 0 to disable."
-            ).defineInRange("shovelDigRadiusX", 1, 0, 16);
+            shovelDigRadiusX = builder.translation("voxeltools.config.shovelDigRadiusX")
+                    .comment("The radius of the Auto-Shoveler 9001's dig ability on the X axis. Set to 0 to disable.")
+                    .defineInRange("shovelDigRadiusX", 1, 0, 16);
 
-            shovelDigRadiusY = builder.translation("voxeltools.config.shovelDigRadiusY").comment(
-                "The radius of the Auto-Shoveler 9001's dig ability on the Y axis. Set to 0 to disable."
-            ).defineInRange("shovelDigRadiusY", 1, 0, 16);
+            shovelDigRadiusY = builder.translation("voxeltools.config.shovelDigRadiusY")
+                    .comment("The radius of the Auto-Shoveler 9001's dig ability on the Y axis. Set to 0 to disable.")
+                    .defineInRange("shovelDigRadiusY", 1, 0, 16);
 
-            shovelDigRadiusZ = builder.translation("voxeltools.config.shovelDigRadiusZ").comment(
-                "The radius of the Auto-Shoveler 9001's dig ability on the Z axis. Set to 0 to disable."
-            ).defineInRange("shovelDigRadiusZ", 1, 0, 16);
+            shovelDigRadiusZ = builder.translation("voxeltools.config.shovelDigRadiusZ")
+                    .comment("The radius of the Auto-Shoveler 9001's dig ability on the Z axis. Set to 0 to disable.")
+                    .defineInRange("shovelDigRadiusZ", 1, 0, 16);
 
             shovelFlattenRadius = builder.translation("voxeltools.config.shovelFlattenRadius")
-                .comment(
-                    "The radius of the Auto-Shoveler 9001's flatten ability. Set to 0 to disable."
-                ).defineInRange("shovelFlattenRadius", 2, 0, 16);
+                    .comment("The radius of the Auto-Shoveler 9001's flatten ability. Set to 0 to disable.")
+                    .defineInRange("shovelFlattenRadius", 2, 0, 16);
             shovelFlattenHeight = builder.translation("voxeltools.config.shovelFlattenHeight")
-                .comment(
-                    "The height of the Auto-Shoveler 9001's flatten ability.",
-                    "Set to 0 to only flatten blocks on the same horizontal plane."
-                ).defineInRange("shovelFlattenHeight", 4, 0, 128);
-            shovelFlattenHeightOffset = builder.translation(
-                "voxeltools.config.shovelFlattenHeightOffset"
-            ).comment(
-                "The Auto-Shoveler 9001's flatten ability's height offset from the block clicked.",
-                "A value of 0 is the plane of the block clicked, and 'n' is the plane 'n' blocks above the block."
-            ).defineInRange("shovelFlattenHeightOffset", 1, 0, 8);
+                    .comment("The height of the Auto-Shoveler 9001's flatten ability.",
+                            "Set to 0 to only flatten blocks on the same horizontal plane.")
+                    .defineInRange("shovelFlattenHeight", 4, 0, 128);
+            shovelFlattenHeightOffset = builder.translation("voxeltools.config.shovelFlattenHeightOffset")
+                    .comment("The Auto-Shoveler 9001's flatten ability's height offset from the block clicked.",
+                            "A value of 0 is the plane of the block clicked, and 'n' is the plane 'n' blocks above the " +
+                                    "block.")
+                    .defineInRange("shovelFlattenHeightOffset", 1, 0, 8);
             builder.pop();
 
             builder.push("chainsaw");
-            chainsawCutRadius = builder.translation("voxeltools.config.chainsawCutRadius").comment(
-                "The radius of the A.S.H. Chainsaw's cutting (trees) ability. Set to 0 to disable."
-            ).defineInRange("chainsawCutRadius", 4, 0, 32);
-            chainsawCleanRadius = builder.translation("voxeltools.config.chainsawCleanRadius")
-                .comment(
-                    "The radius of the A.S.H. Chainsaw's cleaning (vegetation in general) ability. Set to 0 to disable."
-                ).defineInRange("chainsawCleanRadius", 5, 0, 32);
+            chainsawCutRadius = builder.translation("voxeltools.config.chainsawCutRadius")
+                    .comment("The radius of the A.S.H. Chainsaw's cutting (trees) ability. Set to 0 to disable.")
+                    .defineInRange("chainsawCutRadius", 4, 0, 32);
+            chainsawCleanRadius = builder.translation("voxeltools.config.chainsawCleanRadius").comment(
+                    "The radius of the A.S.H. Chainsaw's cleaning (vegetation in general) ability. Set to 0 to disable.")
+                    .defineInRange("chainsawCleanRadius", 5, 0, 32);
             builder.pop();
 
             builder.pop();

@@ -17,15 +17,11 @@ public class ChatUtil {
     @SuppressWarnings("resource")
     public static void sendIndexedMessage(PlayerEntity player, ITextComponent msg) {
         if (player instanceof ServerPlayerEntity) {
-            VxNetwork.CHANNEL.send(
-                PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player),
-                new IndexedChatPacket(msg)
-            );
+            VxNetwork.CHANNEL
+                    .send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new IndexedChatPacket(msg));
         } else {
             DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-                Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(
-                    msg, chatIndex
-                );
+                Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(msg, chatIndex);
             });
         }
     }

@@ -1,8 +1,8 @@
 {
-	"replace": false,
-	"values": [
-		"#minecraft:leaves",
-		"#minecraft:logs",
-		"#minecraft:saplings"
-	]
+  "replace": false,
+  "values": [
+    "#minecraft:leaves",
+    "#minecraft:logs",
+    "#minecraft:saplings"
+  ]
 }

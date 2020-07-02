@@ -19,9 +19,7 @@ public class InteractListener {
         // Client side event
         ItemStack stack = event.getItemStack();
         if (stack.isEmpty() || !(stack.getItem() instanceof ILeftClicker.OnEmpty)) { return; }
-        VxNetwork.CHANNEL.send(
-            PacketDistributor.SERVER.noArg(), new LeftClickEmptyPacket(event.getHand())
-        );
+        VxNetwork.CHANNEL.send(PacketDistributor.SERVER.noArg(), new LeftClickEmptyPacket(event.getHand()));
     }
 
     @SubscribeEvent
@@ -29,9 +27,7 @@ public class InteractListener {
         ItemStack stack = event.getItemStack();
         if (stack.isEmpty() || !(stack.getItem() instanceof ILeftClicker.OnBlock)) { return; }
         ILeftClicker.OnBlock item = (ILeftClicker.OnBlock) event.getItemStack().getItem();
-        item.onLeftClickBlock(
-            event.getPlayer(), event.getWorld(), event.getHand(), event.getPos(), event.getFace()
-        );
+        item.onLeftClickBlock(event.getPlayer(), event.getWorld(), event.getHand(), event.getPos(), event.getFace());
         event.setUseBlock(Result.DENY);
         // event.setUseItem(Result.DENY);
         // event.setCanceled(true);

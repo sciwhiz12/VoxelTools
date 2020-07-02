@@ -1,24 +1,19 @@
 package sciwhiz12.voxeltools.util;
 
-import java.util.Map.Entry;
-import java.util.function.BiPredicate;
-
 import com.google.common.collect.ImmutableMap;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.state.IProperty;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+
+import java.util.Map.Entry;
+import java.util.function.BiPredicate;
 
 public class BlockUtil {
     public static final String TAG_ID_STOREDBLOCK = "StoredBlock";
@@ -46,8 +41,8 @@ public class BlockUtil {
         return prop.getName((T) val);
     }
 
-    public static RayTraceResult rangedRayTrace(World worldIn, PlayerEntity player,
-            RayTraceContext.FluidMode fluidMode, double range) {
+    public static RayTraceResult rangedRayTrace(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode,
+            double range) {
         float f = player.rotationPitch;
         float f1 = player.rotationYaw;
         Vec3d vec3d = player.getEyePosition(1.0F);
@@ -58,26 +53,24 @@ public class BlockUtil {
         float f6 = f3 * f4;
         float f7 = f2 * f4;
         Vec3d vec3d1 = vec3d.add((double) f6 * range, (double) f5 * range, (double) f7 * range);
-        return worldIn.rayTraceBlocks(
-            new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player)
-        );
+        return worldIn
+                .rayTraceBlocks(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
     }
 
     /**
      * Moves a block in the world.
-     * 
+     *
      * @param world        The world where the move takes place
      * @param origin       The position of the original block
      * @param target       The target position
      * @param allowMove    A {@link BiPredicate} on whether to perform the move
-     *                         operation
+     *                     operation
      * @param deleteOrigin A {@link BiPredicate} on whether to delete the original
-     *                         block
+     *                     block
      * @return Whether the move operation was successful
      */
     public static boolean moveBlock(World world, BlockPos origin, BlockPos target,
-            BiPredicate<IWorldReader, BlockPos> allowMove,
-            BiPredicate<IWorldReader, BlockPos> deleteOrigin) {
+            BiPredicate<IWorldReader, BlockPos> allowMove, BiPredicate<IWorldReader, BlockPos> deleteOrigin) {
         boolean moveSuccess = false;
         if (allowMove.test(world, target)) {
             BlockState originState = world.getBlockState(origin);
@@ -87,9 +80,7 @@ public class BlockUtil {
 
             if (moveSuccess) {
                 if (deleteOrigin.test(world, origin)) {
-                    world.setBlockState(
-                        origin, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT
-                    );
+                    world.setBlockState(origin, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT);
                     if (originTile != null) { world.setTileEntity(origin, null); }
                 }
                 if (originTile != null) {
@@ -98,9 +89,7 @@ public class BlockUtil {
                     originTile.markDirty();
                     world.setTileEntity(target, originTile);
                 }
-                world.playEvent(
-                    Constants.WorldEvents.BREAK_BLOCK_EFFECTS, target, Block.getStateId(originState)
-                );
+                world.playEvent(Constants.WorldEvents.BREAK_BLOCK_EFFECTS, target, Block.getStateId(originState));
             }
         }
         return moveSuccess;

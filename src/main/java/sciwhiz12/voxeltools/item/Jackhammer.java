@@ -21,17 +21,11 @@ public class Jackhammer extends Item implements ILeftClicker.OnBlock {
     }
 
     @Override
-    public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
-            Direction face) {
+    public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction face) {
         if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
-            player.world.playEvent(
-                Constants.WorldEvents.BREAK_BLOCK_EFFECTS, pos, Block.getStateId(
-                    player.world.getBlockState(pos)
-                )
-            );
-            player.world.setBlockState(
-                pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT
-            );
+            player.world.playEvent(Constants.WorldEvents.BREAK_BLOCK_EFFECTS, pos,
+                    Block.getStateId(player.world.getBlockState(pos)));
+            player.world.setBlockState(pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT);
         }
     }
 
@@ -40,8 +34,7 @@ public class Jackhammer extends Item implements ILeftClicker.OnBlock {
         return true;
     }
 
-    public boolean canPlayerBreakBlockWhileHolding(BlockState state, World worldIn, BlockPos pos,
-            PlayerEntity player) {
+    public boolean canPlayerBreakBlockWhileHolding(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
         return false;
     }
 
@@ -50,16 +43,10 @@ public class Jackhammer extends Item implements ILeftClicker.OnBlock {
         World world = context.getWorld();
         if (!world.isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
             BlockPos pos = context.getPos();
-            world.playEvent(
-                Constants.WorldEvents.BREAK_BLOCK_EFFECTS, pos, Block.getStateId(
-                    context.getPlayer().world.getBlockState(pos)
-                )
-            );
-            world.setBlockState(
-                pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.BLOCK_UPDATE
-                        | Constants.BlockFlags.UPDATE_NEIGHBORS
-                        | Constants.BlockFlags.NO_NEIGHBOR_DROPS
-            );
+            world.playEvent(Constants.WorldEvents.BREAK_BLOCK_EFFECTS, pos,
+                    Block.getStateId(context.getPlayer().world.getBlockState(pos)));
+            world.setBlockState(pos, Blocks.AIR.getDefaultState(),
+                    Constants.BlockFlags.BLOCK_UPDATE | Constants.BlockFlags.UPDATE_NEIGHBORS | Constants.BlockFlags.NO_NEIGHBOR_DROPS);
             return ActionResultType.SUCCESS;
         }
         return ActionResultType.PASS;

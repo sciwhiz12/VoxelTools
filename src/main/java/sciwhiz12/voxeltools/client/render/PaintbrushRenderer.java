@@ -1,10 +1,7 @@
 package sciwhiz12.voxeltools.client.render;
 
-import java.util.Random;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
@@ -21,6 +18,8 @@ import net.minecraft.nbt.NBTUtil;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import sciwhiz12.voxeltools.client.model.ISTERWrapper;
 import sciwhiz12.voxeltools.item.Paintbrush;
+
+import java.util.Random;
 
 public class PaintbrushRenderer extends ItemStackTileEntityRenderer {
     @Override
@@ -48,23 +47,19 @@ public class PaintbrushRenderer extends ItemStackTileEntityRenderer {
                         matrixStack.scale(0.35F, 0.35F, 0.35F);
                         matrixStack.translate(-2D, 0.5D, -2D);
                     }
-                    Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
-                        matrixStack.getLast(), vertex, state, model, 0.F, 0.F, 0.F, combinedLight, combinedOverlay,
-                        EmptyModelData.INSTANCE
-                    );
+                    Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelRenderer()
+                            .renderModel(matrixStack.getLast(), vertex, state, model, 0.F, 0.F, 0.F, combinedLight,
+                                    combinedOverlay, EmptyModelData.INSTANCE);
                     matrixStack.pop();
                 }
             }
         }
         if (!renderingBlockFull) {
             matrixStack.push();
-            IVertexBuilder builder = ItemRenderer.getBuffer(
-                buffer, RenderTypeLookup.getRenderType(itemStack), true, itemStack.hasEffect()
-            );
-            itemRenderer.renderQuads(
-                matrixStack, builder, brushModel.getQuads(null, null, new Random(42L)), itemStack, combinedLight,
-                combinedOverlay
-            );
+            IVertexBuilder builder = ItemRenderer
+                    .getBuffer(buffer, RenderTypeLookup.getRenderType(itemStack), true, itemStack.hasEffect());
+            itemRenderer.renderQuads(matrixStack, builder, brushModel.getQuads(null, null, new Random(42L)), itemStack,
+                    combinedLight, combinedOverlay);
             matrixStack.pop();
         }
     }

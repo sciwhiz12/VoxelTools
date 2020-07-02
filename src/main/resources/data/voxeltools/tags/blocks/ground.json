@@ -1,17 +1,17 @@
 {
-	"replace": false,
-	"values": [
-		"#forge:cobblestone",
-		"#forge:dirt",
-		"#forge:stone",
-		"#forge:ores",
-		"#minecraft:sand",
-		"#minecraft:coral_blocks",
-		"minecraft:grass_block",
-		"minecraft:snow",
-		"minecraft:red_sand",
-		"minecraft:gravel",
-		"minecraft:mycelium",
-		"minecraft:clay"
-	]
+  "replace": false,
+  "values": [
+    "#forge:cobblestone",
+    "#forge:dirt",
+    "#forge:stone",
+    "#forge:ores",
+    "#minecraft:sand",
+    "#minecraft:coral_blocks",
+    "minecraft:grass_block",
+    "minecraft:snow",
+    "minecraft:red_sand",
+    "minecraft:gravel",
+    "minecraft:mycelium",
+    "minecraft:clay"
+  ]
 }

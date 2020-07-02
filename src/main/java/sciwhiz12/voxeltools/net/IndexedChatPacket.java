@@ -1,11 +1,11 @@
 package sciwhiz12.voxeltools.net;
 
-import java.util.function.Supplier;
-
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
 import sciwhiz12.voxeltools.util.ChatUtil;
+
+import java.util.function.Supplier;
 
 public class IndexedChatPacket {
     private final ITextComponent text;

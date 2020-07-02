@@ -27,15 +27,12 @@ public class Dooplicator extends Item {
                 ItemStack stack = new ItemStack(state.getBlock().asItem());
                 stack.setCount(stack.getMaxStackSize());
                 if (context.getPlayer().inventory.addItemStackToInventory(stack)) {
-                    ChatUtil.sendIndexedMessage(
-                        context.getPlayer(), new TranslationTextComponent(
-                            "voxeltools.dooplicator.dooped", new StringTextComponent(
-                                String.valueOf(stack.getMaxStackSize())
-                            ).applyTextStyle(TextFormatting.DARK_PURPLE),
-                            new TranslationTextComponent(state.getBlock().getTranslationKey())
-                                .applyTextStyle(TextFormatting.GREEN)
-                        ).applyTextStyle(TextFormatting.BLUE)
-                    );
+                    ChatUtil.sendIndexedMessage(context.getPlayer(),
+                            new TranslationTextComponent("voxeltools.dooplicator.dooped",
+                                    new StringTextComponent(String.valueOf(stack.getMaxStackSize()))
+                                            .applyTextStyle(TextFormatting.DARK_PURPLE),
+                                    new TranslationTextComponent(state.getBlock().getTranslationKey())
+                                            .applyTextStyle(TextFormatting.GREEN)).applyTextStyle(TextFormatting.BLUE));
                     return ActionResultType.SUCCESS;
                 }
             }

@@ -7,14 +7,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public interface ILeftClicker {
-    public interface OnEmpty extends ILeftClicker {
-        public void onLeftClickEmpty(PlayerEntity player, World world, Hand hand);
+    interface OnEmpty extends ILeftClicker {
+        void onLeftClickEmpty(PlayerEntity player, World world, Hand hand);
     }
 
-    public interface OnBlock extends ILeftClicker {
-        public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
-                Direction face);
+    interface OnBlock extends ILeftClicker {
+        void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction face);
     }
 
-    public interface OnBoth extends OnEmpty, OnBlock {}
+    interface OnBoth extends OnEmpty, OnBlock {}
 }

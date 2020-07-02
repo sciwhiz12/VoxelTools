@@ -1,11 +1,5 @@
 package sciwhiz12.voxeltools.item;
 
-import static sciwhiz12.voxeltools.util.BlockUtil.toStringFromState;
-
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
@@ -35,6 +29,11 @@ import sciwhiz12.voxeltools.client.render.PaintbrushRenderer;
 import sciwhiz12.voxeltools.util.BlockUtil;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
+import static sciwhiz12.voxeltools.util.BlockUtil.toStringFromState;
+
 public class Paintbrush extends Item implements ILeftClicker.OnBlock {
     public static final String TAG_ID_STOREDBLOCK = "StoredBlock";
 
@@ -44,45 +43,30 @@ public class Paintbrush extends Item implements ILeftClicker.OnBlock {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn,
-            List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (!stack.hasTag() || !stack.getTag().contains(TAG_ID_STOREDBLOCK)) {
             tooltip.add(
-                new TranslationTextComponent("tooltip.voxeltools.paintbrush.empty").applyTextStyle(
-                    TextFormatting.GRAY
-                )
-            );
+                    new TranslationTextComponent("tooltip.voxeltools.paintbrush.empty").applyTextStyle(TextFormatting.GRAY));
             return;
         }
         BlockState state = NBTUtil.readBlockState(stack.getChildTag(TAG_ID_STOREDBLOCK));
-        tooltip.add(
-            new TranslationTextComponent(
-                "tooltip.voxeltools.paintbrush.blockname", new TranslationTextComponent(
-                    state.getBlock().getTranslationKey()
-                ).applyTextStyle(TextFormatting.GREEN)
-            ).applyTextStyle(TextFormatting.GRAY)
-        );
+        tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.blockname",
+                new TranslationTextComponent(state.getBlock().getTranslationKey()).applyTextStyle(TextFormatting.GREEN))
+                .applyTextStyle(TextFormatting.GRAY));
         if (!state.getBlock().getStateContainer().getProperties().isEmpty()) {
             if (Screen.hasShiftDown()) {
-                tooltip.add(
-                    new TranslationTextComponent(
-                        "tooltip.voxeltools.paintbrush.blockstate", new StringTextComponent(
-                            toStringFromState(state)
-                        ).applyTextStyle(TextFormatting.GREEN)
-                    ).applyTextStyle(TextFormatting.GRAY)
-                );
+                tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.blockstate",
+                        new StringTextComponent(toStringFromState(state)).applyTextStyle(TextFormatting.GREEN))
+                        .applyTextStyle(TextFormatting.GRAY));
             } else {
-                tooltip.add(
-                    new TranslationTextComponent("tooltip.voxeltools.paintbrush.sneak")
-                        .applyTextStyle(TextFormatting.GRAY)
-                );
+                tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.sneak")
+                        .applyTextStyle(TextFormatting.GRAY));
             }
         }
     }
 
     @Override
-    public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
-            Direction face) {
+    public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction face) {
         if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
             ItemStack stack = player.getHeldItem(hand);
             if (player.isCrouching()) {
@@ -91,10 +75,8 @@ public class Paintbrush extends Item implements ILeftClicker.OnBlock {
             } else {
                 BlockState state = player.world.getBlockState(pos);
                 stack.setTagInfo(TAG_ID_STOREDBLOCK, NBTUtil.writeBlockState(state));
-                sendStatus(
-                    player, "status.voxeltools.paintbrush.saved", TextFormatting.BLUE, state
-                        .getBlock().getTranslationKey()
-                );
+                sendStatus(player, "status.voxeltools.paintbrush.saved", TextFormatting.BLUE,
+                        state.getBlock().getTranslationKey());
             }
         }
     }
@@ -133,18 +115,14 @@ public class Paintbrush extends Item implements ILeftClicker.OnBlock {
             if (player.isCrouching()) {
                 reach = Math.max(VxConfig.ServerConfig.paintbrushRange, reach);
             }
-            RayTraceResult trace = BlockUtil.rangedRayTrace(
-                world, player, RayTraceContext.FluidMode.ANY, reach
-            );
+            RayTraceResult trace = BlockUtil.rangedRayTrace(world, player, RayTraceContext.FluidMode.ANY, reach);
             if (trace != null && trace.getType() == Type.BLOCK) {
                 BlockPos pos = ((BlockRayTraceResult) trace).getPos();
                 world.setBlockState(pos, state);
                 player.swing(hand, true);
             } else if (trace == null || trace.getType() == Type.MISS) {
-                sendStatus(
-                    player, "status.voxeltools.paintbrush.current", TextFormatting.GRAY, state
-                        .getBlock().getTranslationKey()
-                );
+                sendStatus(player, "status.voxeltools.paintbrush.current", TextFormatting.GRAY,
+                        state.getBlock().getTranslationKey());
             }
             return ActionResult.resultSuccess(stack);
         }
@@ -155,21 +133,15 @@ public class Paintbrush extends Item implements ILeftClicker.OnBlock {
         sendStatus(player, "status.voxeltools.paintbrush.empty", TextFormatting.RED);
     }
 
-    private static void sendStatus(PlayerEntity player, String translationKey,
-            TextFormatting customColor) {
+    private static void sendStatus(PlayerEntity player, String translationKey, TextFormatting customColor) {
         sendStatus(player, translationKey, customColor, null);
     }
 
-    private static void sendStatus(PlayerEntity player, String translationKey,
-            TextFormatting customColor, String extraKey) {
+    private static void sendStatus(PlayerEntity player, String translationKey, TextFormatting customColor, String extraKey) {
         ITextComponent extra = null;
         if (extraKey != null) {
-            extra = new TranslationTextComponent((String) extraKey).applyTextStyle(
-                TextFormatting.GREEN
-            );
+            extra = new TranslationTextComponent(extraKey).applyTextStyle(TextFormatting.GREEN);
         }
-        player.sendStatusMessage(
-            new TranslationTextComponent(translationKey, extra).applyTextStyle(customColor), true
-        );
+        player.sendStatusMessage(new TranslationTextComponent(translationKey, extra).applyTextStyle(customColor), true);
     }
 }

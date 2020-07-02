@@ -7,9 +7,10 @@ import net.minecraft.item.ItemStack;
 public interface IScrollListener {
     /**
      * Client only method; only called on client-side
+     *
      * @return whether to cancel the scroll event and send a packet to server
      */
-    public boolean shouldSendScrollEvent(ClientPlayerEntity player, double scrollDelta);
-    
-    public void onScroll(ItemStack stack, PlayerEntity entity, double scrollDelta);
+    boolean shouldSendScrollEvent(ClientPlayerEntity player, double scrollDelta);
+
+    void onScroll(ItemStack stack, PlayerEntity entity, double scrollDelta);
 }

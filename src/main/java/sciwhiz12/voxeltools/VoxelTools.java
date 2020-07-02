@@ -1,8 +1,5 @@
 package sciwhiz12.voxeltools;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -13,6 +10,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.server.permission.PermissionAPI;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sciwhiz12.voxeltools.item.VxItems;
 import sciwhiz12.voxeltools.net.VxNetwork;
 
@@ -38,9 +37,7 @@ public class VoxelTools {
 
     @SubscribeEvent
     public void handleServerAboutToStartEvent(final FMLServerAboutToStartEvent event) {
-        PermissionAPI.registerNode(
-            VxConfig.ITEM_USE_PERMISSION, VxConfig.ServerConfig.defaultPermLevel,
-            "Allows the use of VoxelTools."
-        );
+        PermissionAPI.registerNode(VxConfig.ITEM_USE_PERMISSION, VxConfig.ServerConfig.defaultPermLevel,
+                "Allows the use of VoxelTools.");
     }
 }

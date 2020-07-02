@@ -19,17 +19,14 @@ import sciwhiz12.voxeltools.VxConfig;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
 public class Shovel extends Item implements ILeftClicker.OnBlock {
-    public static final ResourceLocation TAG_GROUND = new ResourceLocation(
-        VoxelTools.MODID, "ground"
-    );
+    public static final ResourceLocation TAG_GROUND = new ResourceLocation(VoxelTools.MODID, "ground");
 
     public Shovel(Properties properties) {
         super(properties);
     }
 
     @Override
-    public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos,
-            Direction face) {
+    public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction face) {
         if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
             Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
             for (BlockPos targetPos : getDigRadius(pos)) {
@@ -48,8 +45,8 @@ public class Shovel extends Item implements ILeftClicker.OnBlock {
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
         World world = context.getWorld();
-        if (!world.isRemote && PermissionUtil.checkForPermission(context.getPlayer())
-                && VxConfig.ServerConfig.shovelFlattenRadius != 0) {
+        if (!world.isRemote && PermissionUtil
+                .checkForPermission(context.getPlayer()) && VxConfig.ServerConfig.shovelFlattenRadius != 0) {
             BlockPos pos = context.getPos();
             if (context.getPlayer().isCrouching()) {
                 Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);

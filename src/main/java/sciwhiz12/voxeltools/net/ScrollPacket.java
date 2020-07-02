@@ -1,12 +1,12 @@
 package sciwhiz12.voxeltools.net;
 
-import java.util.function.Supplier;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Hand;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
 import sciwhiz12.voxeltools.item.IScrollListener;
+
+import java.util.function.Supplier;
 
 public class ScrollPacket {
     private final Hand hand;
@@ -30,9 +30,7 @@ public class ScrollPacket {
         ctx.get().enqueueWork(() -> {
             ItemStack stack = ctx.get().getSender().getHeldItem(pkt.hand);
             if (stack.getItem() instanceof IScrollListener) {
-                ((IScrollListener) stack.getItem()).onScroll(
-                    stack, ctx.get().getSender(), pkt.scrollDelta
-                );
+                ((IScrollListener) stack.getItem()).onScroll(stack, ctx.get().getSender(), pkt.scrollDelta);
             }
         });
         ctx.get().setPacketHandled(true);

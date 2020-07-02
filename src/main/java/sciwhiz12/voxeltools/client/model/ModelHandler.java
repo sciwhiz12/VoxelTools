@@ -1,7 +1,5 @@
 package sciwhiz12.voxeltools.client.model;
 
-import java.util.function.Function;
-
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -12,6 +10,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import sciwhiz12.voxeltools.VoxelTools;
 import sciwhiz12.voxeltools.item.VxItems;
+
+import java.util.function.Function;
 
 @EventBusSubscriber(value = Dist.CLIENT, bus = Bus.MOD, modid = VoxelTools.MODID)
 public class ModelHandler {

@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "voxeltools:item/clock/clock_51"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "voxeltools:item/clock/clock_51"
+  }
 }
