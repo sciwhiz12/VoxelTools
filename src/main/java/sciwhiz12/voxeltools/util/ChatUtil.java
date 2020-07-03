@@ -16,13 +16,13 @@ public class ChatUtil {
 
     @SuppressWarnings("resource")
     public static void sendIndexedMessage(PlayerEntity player, ITextComponent msg) {
+        // TODO: make this more side-safe
         if (player instanceof ServerPlayerEntity) {
             VxNetwork.CHANNEL
                     .send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new IndexedChatPacket(msg));
         } else {
-            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-                Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(msg, chatIndex);
-            });
+            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().ingameGUI.getChatGUI()
+                    .printChatMessageWithOptionalDeletion(msg, chatIndex));
         }
     }
 }

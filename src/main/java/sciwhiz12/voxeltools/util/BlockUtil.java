@@ -5,9 +5,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.state.IProperty;
+import net.minecraft.state.Property;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -22,22 +26,22 @@ public class BlockUtil {
         StringBuilder str = new StringBuilder();
         str.append("[");
         boolean first = true;
-        ImmutableMap<IProperty<?>, Comparable<?>> immutablemap = state.getValues();
+        ImmutableMap<Property<?>, Comparable<?>> immutablemap = state.getValues();
         if (!immutablemap.isEmpty()) {
-            for (Entry<IProperty<?>, Comparable<?>> entry : immutablemap.entrySet()) {
+            for (Entry<Property<?>, Comparable<?>> entry : immutablemap.entrySet()) {
                 if (!first) str.append(",");
                 first = false;
-                IProperty<?> iproperty = entry.getKey();
-                str.append(iproperty.getName());
+                Property<?> prop = entry.getKey();
+                str.append(prop.getName());
                 str.append("=");
-                str.append(getName(iproperty, entry.getValue()));
+                str.append(getName(prop, entry.getValue()));
             }
         }
         return str.append("]").toString();
     }
 
     @SuppressWarnings("unchecked")
-    private static <T extends Comparable<T>> String getName(IProperty<T> prop, Comparable<?> val) {
+    private static <T extends Comparable<T>> String getName(Property<T> prop, Comparable<?> val) {
         return prop.getName((T) val);
     }
 
@@ -45,14 +49,14 @@ public class BlockUtil {
             double range) {
         float f = player.rotationPitch;
         float f1 = player.rotationYaw;
-        Vec3d vec3d = player.getEyePosition(1.0F);
+        Vector3d vec3d = player.getEyePosition(1.0F);
         float f2 = MathHelper.cos(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
         float f3 = MathHelper.sin(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
         float f4 = -MathHelper.cos(-f * ((float) Math.PI / 180F));
         float f5 = MathHelper.sin(-f * ((float) Math.PI / 180F));
         float f6 = f3 * f4;
         float f7 = f2 * f4;
-        Vec3d vec3d1 = vec3d.add((double) f6 * range, (double) f5 * range, (double) f7 * range);
+        Vector3d vec3d1 = vec3d.add((double) f6 * range, (double) f5 * range, (double) f7 * range);
         return worldIn
                 .rayTraceBlocks(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
     }

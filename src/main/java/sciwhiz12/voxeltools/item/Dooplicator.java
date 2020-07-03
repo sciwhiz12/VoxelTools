@@ -1,6 +1,7 @@
 package sciwhiz12.voxeltools.item;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -20,21 +21,20 @@ public class Dooplicator extends Item {
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
         World world = context.getWorld();
-        if (!world.isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
+        PlayerEntity player = context.getPlayer();
+        if (!world.isRemote && player != null && PermissionUtil.checkForPermission(player)) {
             BlockState state = world.getBlockState(context.getPos());
             Item i = state.getBlock().asItem();
-            if (i != null) {
-                ItemStack stack = new ItemStack(state.getBlock().asItem());
-                stack.setCount(stack.getMaxStackSize());
-                if (context.getPlayer().inventory.addItemStackToInventory(stack)) {
-                    ChatUtil.sendIndexedMessage(context.getPlayer(),
-                            new TranslationTextComponent("voxeltools.dooplicator.dooped",
-                                    new StringTextComponent(String.valueOf(stack.getMaxStackSize()))
-                                            .applyTextStyle(TextFormatting.DARK_PURPLE),
-                                    new TranslationTextComponent(state.getBlock().getTranslationKey())
-                                            .applyTextStyle(TextFormatting.GREEN)).applyTextStyle(TextFormatting.BLUE));
-                    return ActionResultType.SUCCESS;
-                }
+            ItemStack stack = new ItemStack(state.getBlock().asItem());
+            stack.setCount(stack.getMaxStackSize());
+            if (player.inventory.addItemStackToInventory(stack)) {
+                ChatUtil.sendIndexedMessage(context.getPlayer(),
+                        new TranslationTextComponent("voxeltools.dooplicator.dooped",
+                                new StringTextComponent(String.valueOf(stack.getMaxStackSize()))
+                                        .func_240699_a_(TextFormatting.DARK_PURPLE),
+                                new TranslationTextComponent(state.getBlock().getTranslationKey())
+                                        .func_240699_a_(TextFormatting.GREEN)).func_240699_a_(TextFormatting.BLUE));
+                return ActionResultType.SUCCESS;
             }
         }
         return ActionResultType.PASS;

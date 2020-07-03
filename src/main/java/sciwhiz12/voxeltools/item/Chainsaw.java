@@ -7,7 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -31,9 +31,9 @@ public class Chainsaw extends Item implements ILeftClicker.OnBlock {
     @Override
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction face) {
         if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
-            Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_TREE_STUFF);
+            ITag<Block> col = BlockTags.getCollection().getOrCreate(TAG_TREE_STUFF);
             for (BlockPos targetPos : getDestroyRadius(VxConfig.Server.chainsawCutRadius, pos)) {
-                if (col.contains(player.world.getBlockState(targetPos).getBlock())) {
+                if (col.func_230235_a_(player.world.getBlockState(targetPos).getBlock())) {
                     player.world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
                 }
             }
@@ -48,11 +48,12 @@ public class Chainsaw extends Item implements ILeftClicker.OnBlock {
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
         World world = context.getWorld();
-        if (!world.isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
-            if (!context.getPlayer().isCrouching()) {
-                Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_VEGETATION);
+        PlayerEntity player = context.getPlayer();
+        if (!world.isRemote && player != null && PermissionUtil.checkForPermission(player)) {
+            if (!player.isCrouching()) {
+                ITag<Block> col = BlockTags.getCollection().getOrCreate(TAG_VEGETATION);
                 for (BlockPos targetPos : getDestroyRadius(VxConfig.Server.chainsawCleanRadius, context.getPos())) {
-                    if (col.contains(world.getBlockState(targetPos).getBlock())) {
+                    if (col.func_230235_a_(world.getBlockState(targetPos).getBlock())) {
                         world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
                     }
                 }

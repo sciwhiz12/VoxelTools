@@ -3,6 +3,7 @@ package sciwhiz12.voxeltools.item;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,6 +25,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeMod;
 import sciwhiz12.voxeltools.VxConfig;
 import sciwhiz12.voxeltools.client.render.PaintbrushRenderer;
 import sciwhiz12.voxeltools.util.BlockUtil;
@@ -44,23 +46,23 @@ public class Paintbrush extends Item implements ILeftClicker.OnBlock {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if (!stack.hasTag() || !stack.getTag().contains(TAG_ID_STOREDBLOCK)) {
+        if (!stack.hasTag() || !stack.getOrCreateTag().contains(TAG_ID_STOREDBLOCK)) {
             tooltip.add(
-                    new TranslationTextComponent("tooltip.voxeltools.paintbrush.empty").applyTextStyle(TextFormatting.GRAY));
+                    new TranslationTextComponent("tooltip.voxeltools.paintbrush.empty").func_240699_a_(TextFormatting.GRAY));
             return;
         }
-        BlockState state = NBTUtil.readBlockState(stack.getChildTag(TAG_ID_STOREDBLOCK));
+        BlockState state = NBTUtil.readBlockState(stack.getOrCreateChildTag(TAG_ID_STOREDBLOCK));
         tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.blockname",
-                new TranslationTextComponent(state.getBlock().getTranslationKey()).applyTextStyle(TextFormatting.GREEN))
-                .applyTextStyle(TextFormatting.GRAY));
+                new TranslationTextComponent(state.getBlock().getTranslationKey()).func_240699_a_(TextFormatting.GREEN))
+                .func_240699_a_(TextFormatting.GRAY));
         if (!state.getBlock().getStateContainer().getProperties().isEmpty()) {
-            if (Screen.hasShiftDown()) {
+            if (Screen.func_231173_s_()) {
                 tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.blockstate",
-                        new StringTextComponent(toStringFromState(state)).applyTextStyle(TextFormatting.GREEN))
-                        .applyTextStyle(TextFormatting.GRAY));
+                        new StringTextComponent(toStringFromState(state)).func_240699_a_(TextFormatting.GREEN))
+                        .func_240699_a_(TextFormatting.GRAY));
             } else {
                 tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.sneak")
-                        .applyTextStyle(TextFormatting.GRAY));
+                        .func_240699_a_(TextFormatting.GRAY));
             }
         }
     }
@@ -91,11 +93,11 @@ public class Paintbrush extends Item implements ILeftClicker.OnBlock {
         World world = context.getWorld();
         if (!world.isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
             ItemStack stack = context.getItem();
-            if (!stack.hasTag() || !stack.getTag().contains(TAG_ID_STOREDBLOCK)) {
+            if (!stack.hasTag() || !stack.getOrCreateTag().contains(TAG_ID_STOREDBLOCK)) {
                 sendEmptyStatus(context.getPlayer());
                 return ActionResultType.PASS;
             }
-            BlockState state = NBTUtil.readBlockState(stack.getChildTag(TAG_ID_STOREDBLOCK));
+            BlockState state = NBTUtil.readBlockState(stack.getOrCreateChildTag(TAG_ID_STOREDBLOCK));
             world.setBlockState(context.getPos(), state);
             return ActionResultType.SUCCESS;
         }
@@ -106,21 +108,25 @@ public class Paintbrush extends Item implements ILeftClicker.OnBlock {
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
         if (!world.isRemote && PermissionUtil.checkForPermission(player)) {
-            if (!stack.hasTag() || !stack.getTag().contains(TAG_ID_STOREDBLOCK)) {
+            if (!stack.hasTag() || !stack.getOrCreateTag().contains(TAG_ID_STOREDBLOCK)) {
                 sendEmptyStatus(player);
                 return ActionResult.resultPass(stack);
             }
-            BlockState state = NBTUtil.readBlockState(stack.getChildTag(TAG_ID_STOREDBLOCK));
-            double reach = player.getAttribute(PlayerEntity.REACH_DISTANCE).getValue();
+            BlockState state = NBTUtil.readBlockState(stack.getOrCreateChildTag(TAG_ID_STOREDBLOCK));
+            double reach = 5.0F;
+            ModifiableAttributeInstance reachAttr = player.getAttribute(ForgeMod.REACH_DISTANCE.get());
+            if (reachAttr != null) {
+                reach = reachAttr.getValue();
+            }
             if (player.isCrouching()) {
                 reach = Math.max(VxConfig.Server.paintbrushRange, reach);
             }
             RayTraceResult trace = BlockUtil.rangedRayTrace(world, player, RayTraceContext.FluidMode.ANY, reach);
-            if (trace != null && trace.getType() == Type.BLOCK) {
+            if (trace.getType() == Type.BLOCK) {
                 BlockPos pos = ((BlockRayTraceResult) trace).getPos();
                 world.setBlockState(pos, state);
                 player.swing(hand, true);
-            } else if (trace == null || trace.getType() == Type.MISS) {
+            } else if (trace.getType() == Type.MISS) {
                 sendStatus(player, "status.voxeltools.paintbrush.current", TextFormatting.GRAY,
                         state.getBlock().getTranslationKey());
             }
@@ -140,8 +146,8 @@ public class Paintbrush extends Item implements ILeftClicker.OnBlock {
     private static void sendStatus(PlayerEntity player, String translationKey, TextFormatting customColor, String extraKey) {
         ITextComponent extra = null;
         if (extraKey != null) {
-            extra = new TranslationTextComponent(extraKey).applyTextStyle(TextFormatting.GREEN);
+            extra = new TranslationTextComponent(extraKey).func_240699_a_(TextFormatting.GREEN);
         }
-        player.sendStatusMessage(new TranslationTextComponent(translationKey, extra).applyTextStyle(customColor), true);
+        player.sendStatusMessage(new TranslationTextComponent(translationKey, extra).func_240699_a_(customColor), true);
     }
 }

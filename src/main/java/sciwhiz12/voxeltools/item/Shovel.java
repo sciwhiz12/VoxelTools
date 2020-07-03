@@ -7,7 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -28,9 +28,9 @@ public class Shovel extends Item implements ILeftClicker.OnBlock {
     @Override
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction face) {
         if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
-            Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
+            ITag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
             for (BlockPos targetPos : getDigRadius(pos)) {
-                if (col.contains(world.getBlockState(targetPos).getBlock())) {
+                if (col.func_230235_a_(world.getBlockState(targetPos).getBlock())) {
                     world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
                 }
             }
@@ -45,13 +45,14 @@ public class Shovel extends Item implements ILeftClicker.OnBlock {
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
         World world = context.getWorld();
-        if (!world.isRemote && PermissionUtil
-                .checkForPermission(context.getPlayer()) && VxConfig.Server.shovelFlattenRadius != 0) {
+        PlayerEntity player = context.getPlayer();
+        if (!world.isRemote && player != null && PermissionUtil
+                .checkForPermission(player) && VxConfig.Server.shovelFlattenRadius != 0) {
             BlockPos pos = context.getPos();
-            if (context.getPlayer().isCrouching()) {
-                Tag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
+            if (player.isCrouching()) {
+                ITag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
                 for (BlockPos targetPos : getFlattenRadius(pos)) {
-                    if (col.contains(world.getBlockState(targetPos).getBlock())) {
+                    if (col.func_230235_a_(world.getBlockState(targetPos).getBlock())) {
                         world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
                     }
                 }

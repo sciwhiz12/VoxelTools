@@ -3,15 +3,13 @@ package sciwhiz12.voxeltools.item;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -21,8 +19,6 @@ import sciwhiz12.voxeltools.net.SetFreezeTimePacket;
 import sciwhiz12.voxeltools.net.VxNetwork;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
-import javax.annotation.Nullable;
-
 public class Clock extends Item implements IScrollListener {
     public static final String TAG_ENABLED = "Active";
     public static final String TAG_FIXED_TIME = "StoredTime";
@@ -30,20 +26,6 @@ public class Clock extends Item implements IScrollListener {
 
     public Clock(Properties properties) {
         super(properties);
-        this.addPropertyOverride(new ResourceLocation("time"), new IItemPropertyGetter() {
-            public float call(ItemStack stack, @Nullable World world, @Nullable LivingEntity livingEntity) {
-                Entity entity = livingEntity != null ? livingEntity : stack.getItemFrame();
-                if (world == null && entity != null) { world = entity.world; }
-                double value = 0.0F;
-                if (world != null) {
-                    if (world.dimension.isSurfaceWorld()) {
-                        value = world.dimension
-                                .calculateCelestialAngle(stack.getOrCreateTag().getLong(TAG_FIXED_TIME), 1.0F);
-                    }
-                }
-                return (float) value;
-            }
-        });
     }
 
     @Override
@@ -106,19 +88,20 @@ public class Clock extends Item implements IScrollListener {
     }
 
     public void printStatus(PlayerEntity player, ItemStack stack) {
-        ITextComponent status = null;
+        IFormattableTextComponent status;
         if (isActive(stack)) {
-            status = new TranslationTextComponent("status.voxeltools.clock.active").applyTextStyle(TextFormatting.GREEN);
+            status = new TranslationTextComponent("status.voxeltools.clock.active").func_240699_a_(TextFormatting.GREEN);
         } else {
-            status = new TranslationTextComponent("status.voxeltools.clock.inactive").applyTextStyle(TextFormatting.RED);
+            status = new TranslationTextComponent("status.voxeltools.clock.inactive").func_240699_a_(TextFormatting.RED);
         }
-        ITextComponent worldTime = new StringTextComponent(String.valueOf(parseTime(player.world.getDayTime() % 24000L)))
-                .applyTextStyles(TextFormatting.BLUE, TextFormatting.BOLD);
-        ITextComponent storedTime = new StringTextComponent(String.valueOf(parseTime(getStoredTime(stack))))
-                .applyTextStyles(TextFormatting.GOLD, TextFormatting.BOLD);
+        IFormattableTextComponent worldTime = new StringTextComponent(
+                String.valueOf(parseTime(player.world.getDayTime() % 24000L)))
+                .func_240701_a_(TextFormatting.BLUE, TextFormatting.BOLD);
+        IFormattableTextComponent storedTime = new StringTextComponent(String.valueOf(parseTime(getStoredTime(stack))))
+                .func_240701_a_(TextFormatting.GOLD, TextFormatting.BOLD);
 
         player.sendStatusMessage(new TranslationTextComponent("status.voxeltools.clock", worldTime, storedTime,
-                status.applyTextStyle(TextFormatting.BOLD)).applyTextStyle(TextFormatting.DARK_GRAY), true);
+                status.func_240699_a_(TextFormatting.BOLD)).func_240699_a_(TextFormatting.DARK_GRAY), true);
     }
 
     public static void setStoredTime(ItemStack stack, long time) {

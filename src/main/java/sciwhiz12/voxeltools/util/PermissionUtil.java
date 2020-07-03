@@ -1,6 +1,7 @@
 package sciwhiz12.voxeltools.util;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.server.permission.PermissionAPI;
@@ -15,13 +16,15 @@ public class PermissionUtil {
         if (!VxConfig.Server.enableItems) {
             if (player.shouldReceiveErrors() && player.shouldReceiveFeedback()) {
                 player.sendMessage(
-                        new TranslationTextComponent("error.voxeltools.disabled").applyTextStyle(TextFormatting.RED));
+                        new TranslationTextComponent("error.voxeltools.disabled").func_240699_a_(TextFormatting.RED),
+                        Util.field_240973_b_);
             }
             return false;
         } else if (!PermissionAPI.hasPermission(player, VxConfig.ITEM_USE_PERMISSION)) {
             if (player.shouldReceiveErrors() && player.shouldReceiveFeedback()) {
                 player.sendMessage(
-                        new TranslationTextComponent("error.voxeltools.noPermission").applyTextStyle(TextFormatting.RED));
+                        new TranslationTextComponent("error.voxeltools.noPermission").func_240699_a_(TextFormatting.RED),
+                        Util.field_240973_b_);
             }
             return false;
         }

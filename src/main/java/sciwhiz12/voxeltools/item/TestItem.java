@@ -9,7 +9,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import sciwhiz12.voxeltools.util.ChatUtil;
 
 import javax.annotation.Nullable;
+import java.util.function.UnaryOperator;
 
 public class TestItem extends Item implements ILeftClicker.OnBoth {
     public TestItem(Properties properties) {
@@ -35,8 +36,10 @@ public class TestItem extends Item implements ILeftClicker.OnBoth {
 
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
-        printInfo("onItemUse: RightClick on Block", context.getPlayer(), context.getWorld(), context.getHand(),
-                context.getPos(), context.getFace());
+        if (context.getPlayer() != null) {
+            printInfo("onItemUse: RightClick on Block", context.getPlayer(), context.getWorld(), context.getHand(),
+                    context.getPos(), context.getFace());
+        }
         return ActionResultType.SUCCESS;
     }
 
@@ -48,31 +51,32 @@ public class TestItem extends Item implements ILeftClicker.OnBoth {
 
     public static void printInfo(String infoString, PlayerEntity player, World world, Hand hand, @Nullable BlockPos pos,
             @Nullable Direction face) {
-        Style whiteBold = new Style().setBold(true).setColor(TextFormatting.WHITE);
-        ITextComponent text = new StringTextComponent("").appendSibling(
-                new StringTextComponent("[TEST_ITEM] ").applyTextStyles(TextFormatting.GREEN, TextFormatting.BOLD)
-                        .appendSibling(new StringTextComponent(infoString).setStyle(whiteBold))).appendText("\n")
-                .appendSibling(new StringTextComponent("  logical side: ").applyTextStyle(TextFormatting.DARK_AQUA)
-                        .appendSibling(new StringTextComponent(world.isRemote ? "CLIENT" : "SERVER")
-                                .applyTextStyles(TextFormatting.ITALIC, TextFormatting.WHITE))).appendText("\n")
-                .appendSibling(new StringTextComponent("  player: ").applyTextStyle(TextFormatting.DARK_AQUA)
-                        .appendSibling(player.getName().applyTextStyles(TextFormatting.ITALIC, TextFormatting.WHITE)));
+        UnaryOperator<Style> whiteBold = style -> style.func_240713_a_(true).func_240712_a_(TextFormatting.WHITE);
+        IFormattableTextComponent text = new StringTextComponent("").func_230529_a_(
+                new StringTextComponent("[TEST_ITEM] ").func_240701_a_(TextFormatting.GREEN, TextFormatting.BOLD)
+                        .func_230529_a_(new StringTextComponent(infoString).func_240700_a_(whiteBold))).func_240702_b_("\n")
+                .func_230529_a_(new StringTextComponent("  logical side: ").func_240699_a_(TextFormatting.DARK_AQUA)
+                        .func_230529_a_(new StringTextComponent(world.isRemote ? "CLIENT" : "SERVER")
+                                .func_240701_a_(TextFormatting.ITALIC, TextFormatting.WHITE))).func_240702_b_("\n")
+                .func_230529_a_(new StringTextComponent("  player: ").func_240699_a_(TextFormatting.DARK_AQUA)
+                        .func_230529_a_(player.getName().func_230532_e_()
+                                .func_240701_a_(TextFormatting.ITALIC, TextFormatting.WHITE)));
         if (hand != null) {
-            text.appendText("\n").appendSibling(new StringTextComponent("  hand: ").applyTextStyle(TextFormatting.DARK_AQUA)
-                    .appendSibling(new StringTextComponent(hand.toString())
-                            .applyTextStyles(TextFormatting.ITALIC, TextFormatting.WHITE)));
+            text.func_240702_b_("\n").func_230529_a_(
+                    new StringTextComponent("  hand: ").func_240699_a_(TextFormatting.DARK_AQUA).func_230529_a_(
+                            new StringTextComponent(hand.toString())
+                                    .func_240701_a_(TextFormatting.ITALIC, TextFormatting.WHITE)));
         }
         if (pos != null) {
-            text.appendText("\n").appendSibling(new StringTextComponent("  pos: ").applyTextStyle(TextFormatting.DARK_AQUA)
-                    .appendSibling(new StringTextComponent(pos.toString())
-                            .applyTextStyles(TextFormatting.ITALIC, TextFormatting.WHITE)));
+            text.func_240702_b_("\n").func_230529_a_(
+                    new StringTextComponent("  pos: ").func_240699_a_(TextFormatting.DARK_AQUA).func_230529_a_(
+                            new StringTextComponent(pos.toString())
+                                    .func_240701_a_(TextFormatting.ITALIC, TextFormatting.WHITE)));
         }
-        if (world != null) {
-            text.appendText("\n").appendSibling(
-                    new StringTextComponent("  dimension: ").applyTextStyle(TextFormatting.DARK_AQUA).appendSibling(
-                            new StringTextComponent(player.dimension.getRegistryName().toString())
-                                    .applyTextStyles(TextFormatting.ITALIC, TextFormatting.WHITE)));
-        }
+        text.func_240702_b_("\n").func_230529_a_(
+                new StringTextComponent("  dimension: ").func_240699_a_(TextFormatting.DARK_AQUA).func_230529_a_(
+                        new StringTextComponent(player.world.func_234922_V_().func_240901_a_().toString())
+                                .func_240701_a_(TextFormatting.ITALIC, TextFormatting.WHITE)));
         ChatUtil.sendIndexedMessage(player, text);
     }
 }
