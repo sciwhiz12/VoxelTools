@@ -1,29 +1,25 @@
-# Based on GitHub's Eclipse .gitignore
-
-run/
-.gradle/
-build/
-gradle-app.setting
-
-# Eclipse
-
-eclipse/
-*.pydevproject
-.project
-.metadata
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.classpath
-.settings/
-.loadpath
-
-# Locally stored "Eclipse launch configurations"
+# eclipse
+bin
 *.launch
+.settings
+.metadata
+.classpath
+.project
 
-# IntelliJ IDEA
-.idea/
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run
+
+# Files from Forge MDK
+forge*changelog.txt
