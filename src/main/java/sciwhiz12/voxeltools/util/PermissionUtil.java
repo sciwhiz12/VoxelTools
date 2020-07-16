@@ -17,14 +17,14 @@ public class PermissionUtil {
             if (player.shouldReceiveErrors() && player.shouldReceiveFeedback()) {
                 player.sendMessage(
                         new TranslationTextComponent("error.voxeltools.disabled").func_240699_a_(TextFormatting.RED),
-                        Util.field_240973_b_);
+                        Util.DUMMY_UUID);
             }
             return false;
         } else if (!PermissionAPI.hasPermission(player, VxConfig.ITEM_USE_PERMISSION)) {
             if (player.shouldReceiveErrors() && player.shouldReceiveFeedback()) {
                 player.sendMessage(
                         new TranslationTextComponent("error.voxeltools.noPermission").func_240699_a_(TextFormatting.RED),
-                        Util.field_240973_b_);
+                        Util.DUMMY_UUID);
             }
             return false;
         }

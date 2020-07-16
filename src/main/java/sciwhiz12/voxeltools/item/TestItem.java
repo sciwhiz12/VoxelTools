@@ -51,7 +51,7 @@ public class TestItem extends Item implements ILeftClicker.OnBoth {
 
     public static void printInfo(String infoString, PlayerEntity player, World world, Hand hand, @Nullable BlockPos pos,
             @Nullable Direction face) {
-        UnaryOperator<Style> whiteBold = style -> style.func_240713_a_(true).func_240712_a_(TextFormatting.WHITE);
+        UnaryOperator<Style> whiteBold = style -> style.setBold(true).applyFormatting(TextFormatting.WHITE);
         IFormattableTextComponent text = new StringTextComponent("").func_230529_a_(
                 new StringTextComponent("[TEST_ITEM] ").func_240701_a_(TextFormatting.GREEN, TextFormatting.BOLD)
                         .func_230529_a_(new StringTextComponent(infoString).func_240700_a_(whiteBold))).func_240702_b_("\n")
@@ -59,7 +59,7 @@ public class TestItem extends Item implements ILeftClicker.OnBoth {
                         .func_230529_a_(new StringTextComponent(world.isRemote ? "CLIENT" : "SERVER")
                                 .func_240701_a_(TextFormatting.ITALIC, TextFormatting.WHITE))).func_240702_b_("\n")
                 .func_230529_a_(new StringTextComponent("  player: ").func_240699_a_(TextFormatting.DARK_AQUA)
-                        .func_230529_a_(player.getName().func_230532_e_()
+                        .func_230529_a_(player.getName().copyRaw()
                                 .func_240701_a_(TextFormatting.ITALIC, TextFormatting.WHITE)));
         if (hand != null) {
             text.func_240702_b_("\n").func_230529_a_(

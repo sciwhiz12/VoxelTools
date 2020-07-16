@@ -33,7 +33,7 @@ public class Chainsaw extends Item implements ILeftClicker.OnBlock {
         if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
             ITag<Block> col = BlockTags.getCollection().getOrCreate(TAG_TREE_STUFF);
             for (BlockPos targetPos : getDestroyRadius(VxConfig.Server.chainsawCutRadius, pos)) {
-                if (col.func_230235_a_(player.world.getBlockState(targetPos).getBlock())) {
+                if (col.contains(player.world.getBlockState(targetPos).getBlock())) {
                     player.world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
                 }
             }
@@ -53,7 +53,7 @@ public class Chainsaw extends Item implements ILeftClicker.OnBlock {
             if (!player.isCrouching()) {
                 ITag<Block> col = BlockTags.getCollection().getOrCreate(TAG_VEGETATION);
                 for (BlockPos targetPos : getDestroyRadius(VxConfig.Server.chainsawCleanRadius, context.getPos())) {
-                    if (col.func_230235_a_(world.getBlockState(targetPos).getBlock())) {
+                    if (col.contains(world.getBlockState(targetPos).getBlock())) {
                         world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
                     }
                 }

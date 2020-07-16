@@ -35,7 +35,7 @@ public class PaintbrushRenderer extends ItemStackTileEntityRenderer {
                 matrixStack.push();
                 matrixStack.rotate(Vector3f.XP.rotationDegrees(30));
                 matrixStack.rotate(Vector3f.YP.rotationDegrees(225));
-                if (Screen.func_231173_s_()) {
+                if (Screen.hasShiftDown()) {
                     renderItem = false;
                     matrixStack.translate(-0.66D, 0.25D, -0.66D);
                     matrixStack.scale(0.625F, 0.625F, 0.625F);

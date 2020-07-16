@@ -56,7 +56,7 @@ public class Paintbrush extends Item implements ILeftClicker.OnBlock {
                 new TranslationTextComponent(state.getBlock().getTranslationKey()).func_240699_a_(TextFormatting.GREEN))
                 .func_240699_a_(TextFormatting.GRAY));
         if (!state.getBlock().getStateContainer().getProperties().isEmpty()) {
-            if (Screen.func_231173_s_()) {
+            if (Screen.hasShiftDown()) {
                 tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.blockstate",
                         new StringTextComponent(toStringFromState(state)).func_240699_a_(TextFormatting.GREEN))
                         .func_240699_a_(TextFormatting.GRAY));
