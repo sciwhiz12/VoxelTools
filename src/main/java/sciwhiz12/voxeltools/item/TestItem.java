@@ -52,31 +52,31 @@ public class TestItem extends Item implements ILeftClicker.OnBoth {
     public static void printInfo(String infoString, PlayerEntity player, World world, Hand hand, @Nullable BlockPos pos,
             @Nullable Direction face) {
         UnaryOperator<Style> whiteBold = style -> style.setBold(true).applyFormatting(TextFormatting.WHITE);
-        IFormattableTextComponent text = new StringTextComponent("").func_230529_a_(
-                new StringTextComponent("[TEST_ITEM] ").func_240701_a_(TextFormatting.GREEN, TextFormatting.BOLD)
-                        .func_230529_a_(new StringTextComponent(infoString).func_240700_a_(whiteBold))).func_240702_b_("\n")
-                .func_230529_a_(new StringTextComponent("  logical side: ").func_240699_a_(TextFormatting.DARK_AQUA)
-                        .func_230529_a_(new StringTextComponent(world.isRemote ? "CLIENT" : "SERVER")
-                                .func_240701_a_(TextFormatting.ITALIC, TextFormatting.WHITE))).func_240702_b_("\n")
-                .func_230529_a_(new StringTextComponent("  player: ").func_240699_a_(TextFormatting.DARK_AQUA)
-                        .func_230529_a_(player.getName().copyRaw()
-                                .func_240701_a_(TextFormatting.ITALIC, TextFormatting.WHITE)));
+        IFormattableTextComponent text = new StringTextComponent("").append(
+                new StringTextComponent("[TEST_ITEM] ").mergeStyle(TextFormatting.GREEN, TextFormatting.BOLD)
+                        .append(new StringTextComponent(infoString).modifyStyle(whiteBold))).appendString("\n")
+                .append(new StringTextComponent("  logical side: ").mergeStyle(TextFormatting.DARK_AQUA)
+                        .append(new StringTextComponent(world.isRemote ? "CLIENT" : "SERVER")
+                                .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE))).appendString("\n")
+                .append(new StringTextComponent("  player: ").mergeStyle(TextFormatting.DARK_AQUA)
+                        .append(player.getName().copyRaw()
+                                .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
         if (hand != null) {
-            text.func_240702_b_("\n").func_230529_a_(
-                    new StringTextComponent("  hand: ").func_240699_a_(TextFormatting.DARK_AQUA).func_230529_a_(
+            text.appendString("\n").append(
+                    new StringTextComponent("  hand: ").mergeStyle(TextFormatting.DARK_AQUA).append(
                             new StringTextComponent(hand.toString())
-                                    .func_240701_a_(TextFormatting.ITALIC, TextFormatting.WHITE)));
+                                    .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
         }
         if (pos != null) {
-            text.func_240702_b_("\n").func_230529_a_(
-                    new StringTextComponent("  pos: ").func_240699_a_(TextFormatting.DARK_AQUA).func_230529_a_(
+            text.appendString("\n").append(
+                    new StringTextComponent("  pos: ").mergeStyle(TextFormatting.DARK_AQUA).append(
                             new StringTextComponent(pos.toString())
-                                    .func_240701_a_(TextFormatting.ITALIC, TextFormatting.WHITE)));
+                                    .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
         }
-        text.func_240702_b_("\n").func_230529_a_(
-                new StringTextComponent("  dimension: ").func_240699_a_(TextFormatting.DARK_AQUA).func_230529_a_(
+        text.appendString("\n").append(
+                new StringTextComponent("  dimension: ").mergeStyle(TextFormatting.DARK_AQUA).append(
                         new StringTextComponent(player.world.func_234922_V_().func_240901_a_().toString())
-                                .func_240701_a_(TextFormatting.ITALIC, TextFormatting.WHITE)));
+                                .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
         ChatUtil.sendIndexedMessage(player, text);
     }
 }

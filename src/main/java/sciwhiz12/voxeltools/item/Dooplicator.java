@@ -31,9 +31,9 @@ public class Dooplicator extends Item {
                 ChatUtil.sendIndexedMessage(context.getPlayer(),
                         new TranslationTextComponent("voxeltools.dooplicator.dooped",
                                 new StringTextComponent(String.valueOf(stack.getMaxStackSize()))
-                                        .func_240699_a_(TextFormatting.DARK_PURPLE),
+                                        .mergeStyle(TextFormatting.DARK_PURPLE),
                                 new TranslationTextComponent(state.getBlock().getTranslationKey())
-                                        .func_240699_a_(TextFormatting.GREEN)).func_240699_a_(TextFormatting.BLUE));
+                                        .mergeStyle(TextFormatting.GREEN)).mergeStyle(TextFormatting.BLUE));
                 return ActionResultType.SUCCESS;
             }
         }

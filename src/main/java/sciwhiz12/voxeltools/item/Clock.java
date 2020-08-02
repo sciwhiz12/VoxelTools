@@ -90,18 +90,18 @@ public class Clock extends Item implements IScrollListener {
     public void printStatus(PlayerEntity player, ItemStack stack) {
         IFormattableTextComponent status;
         if (isActive(stack)) {
-            status = new TranslationTextComponent("status.voxeltools.clock.active").func_240699_a_(TextFormatting.GREEN);
+            status = new TranslationTextComponent("status.voxeltools.clock.active").mergeStyle(TextFormatting.GREEN);
         } else {
-            status = new TranslationTextComponent("status.voxeltools.clock.inactive").func_240699_a_(TextFormatting.RED);
+            status = new TranslationTextComponent("status.voxeltools.clock.inactive").mergeStyle(TextFormatting.RED);
         }
         IFormattableTextComponent worldTime = new StringTextComponent(
                 String.valueOf(parseTime(player.world.getDayTime() % 24000L)))
-                .func_240701_a_(TextFormatting.BLUE, TextFormatting.BOLD);
+                .mergeStyle(TextFormatting.BLUE, TextFormatting.BOLD);
         IFormattableTextComponent storedTime = new StringTextComponent(String.valueOf(parseTime(getStoredTime(stack))))
-                .func_240701_a_(TextFormatting.GOLD, TextFormatting.BOLD);
+                .mergeStyle(TextFormatting.GOLD, TextFormatting.BOLD);
 
         player.sendStatusMessage(new TranslationTextComponent("status.voxeltools.clock", worldTime, storedTime,
-                status.func_240699_a_(TextFormatting.BOLD)).func_240699_a_(TextFormatting.DARK_GRAY), true);
+                status.mergeStyle(TextFormatting.BOLD)).mergeStyle(TextFormatting.DARK_GRAY), true);
     }
 
     public static void setStoredTime(ItemStack stack, long time) {

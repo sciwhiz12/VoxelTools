@@ -48,21 +48,21 @@ public class Paintbrush extends Item implements ILeftClicker.OnBlock {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (!stack.hasTag() || !stack.getOrCreateTag().contains(TAG_ID_STOREDBLOCK)) {
             tooltip.add(
-                    new TranslationTextComponent("tooltip.voxeltools.paintbrush.empty").func_240699_a_(TextFormatting.GRAY));
+                    new TranslationTextComponent("tooltip.voxeltools.paintbrush.empty").mergeStyle(TextFormatting.GRAY));
             return;
         }
         BlockState state = NBTUtil.readBlockState(stack.getOrCreateChildTag(TAG_ID_STOREDBLOCK));
         tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.blockname",
-                new TranslationTextComponent(state.getBlock().getTranslationKey()).func_240699_a_(TextFormatting.GREEN))
-                .func_240699_a_(TextFormatting.GRAY));
+                new TranslationTextComponent(state.getBlock().getTranslationKey()).mergeStyle(TextFormatting.GREEN))
+                .mergeStyle(TextFormatting.GRAY));
         if (!state.getBlock().getStateContainer().getProperties().isEmpty()) {
             if (Screen.hasShiftDown()) {
                 tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.blockstate",
-                        new StringTextComponent(toStringFromState(state)).func_240699_a_(TextFormatting.GREEN))
-                        .func_240699_a_(TextFormatting.GRAY));
+                        new StringTextComponent(toStringFromState(state)).mergeStyle(TextFormatting.GREEN))
+                        .mergeStyle(TextFormatting.GRAY));
             } else {
                 tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.sneak")
-                        .func_240699_a_(TextFormatting.GRAY));
+                        .mergeStyle(TextFormatting.GRAY));
             }
         }
     }
@@ -146,8 +146,8 @@ public class Paintbrush extends Item implements ILeftClicker.OnBlock {
     private static void sendStatus(PlayerEntity player, String translationKey, TextFormatting customColor, String extraKey) {
         ITextComponent extra = null;
         if (extraKey != null) {
-            extra = new TranslationTextComponent(extraKey).func_240699_a_(TextFormatting.GREEN);
+            extra = new TranslationTextComponent(extraKey).mergeStyle(TextFormatting.GREEN);
         }
-        player.sendStatusMessage(new TranslationTextComponent(translationKey, extra).func_240699_a_(customColor), true);
+        player.sendStatusMessage(new TranslationTextComponent(translationKey, extra).mergeStyle(customColor), true);
     }
 }
