@@ -50,7 +50,7 @@ public class Clock extends Item implements IScrollListener {
     // Client side only
     @Override
     public boolean shouldSendScrollEvent(ClientPlayerEntity player, double scrollDelta) {
-        return player.isSneaking();
+        return player.isSneaking() && !player.isSpectator();
     }
 
     @Override
