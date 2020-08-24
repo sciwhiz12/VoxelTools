@@ -14,7 +14,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import sciwhiz12.voxeltools.util.ChatUtil;
 
 import javax.annotation.Nullable;
 import java.util.function.UnaryOperator;
@@ -77,6 +76,6 @@ public class TestItem extends Item implements ILeftClicker.OnBoth {
                 new StringTextComponent("  dimension: ").mergeStyle(TextFormatting.DARK_AQUA).append(
                         new StringTextComponent(player.world.getDimensionKey().func_240901_a_().toString())
                                 .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
-        ChatUtil.sendIndexedMessage(player, text);
+        player.sendStatusMessage(text, false);
     }
 }

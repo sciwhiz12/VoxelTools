@@ -10,7 +10,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import sciwhiz12.voxeltools.util.ChatUtil;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
 public class Dooplicator extends Item {
@@ -28,12 +27,11 @@ public class Dooplicator extends Item {
             ItemStack stack = new ItemStack(state.getBlock().asItem());
             stack.setCount(stack.getMaxStackSize());
             if (player.inventory.addItemStackToInventory(stack)) {
-                ChatUtil.sendIndexedMessage(context.getPlayer(),
-                        new TranslationTextComponent("voxeltools.dooplicator.dooped",
-                                new StringTextComponent(String.valueOf(stack.getMaxStackSize()))
-                                        .mergeStyle(TextFormatting.DARK_PURPLE),
-                                new TranslationTextComponent(state.getBlock().getTranslationKey())
-                                        .mergeStyle(TextFormatting.GREEN)).mergeStyle(TextFormatting.BLUE));
+                player.sendStatusMessage(new TranslationTextComponent("voxeltools.dooplicator.dooped",
+                        new StringTextComponent(String.valueOf(stack.getMaxStackSize()))
+                                .mergeStyle(TextFormatting.DARK_PURPLE),
+                        new TranslationTextComponent(state.getBlock().getTranslationKey()).mergeStyle(TextFormatting.GREEN))
+                        .mergeStyle(TextFormatting.BLUE), false);
                 return ActionResultType.SUCCESS;
             }
         }
