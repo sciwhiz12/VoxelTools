@@ -1,6 +1,7 @@
 package sciwhiz12.voxeltools.net;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import sciwhiz12.voxeltools.VoxelTools;
@@ -14,11 +15,20 @@ public class VxNetwork {
     private static int id = 1;
 
     public static void registerPackets() {
-        CHANNEL.registerMessage(id++, LeftClickEmptyPacket.class, LeftClickEmptyPacket::encode, LeftClickEmptyPacket::decode,
-                LeftClickEmptyPacket::handlePacket);
-        CHANNEL.registerMessage(id++, ScrollPacket.class, ScrollPacket::encode, ScrollPacket::decode,
-                ScrollPacket::handlePacket);
-        CHANNEL.registerMessage(id++, SetFreezeTimePacket.class, SetFreezeTimePacket::encode, SetFreezeTimePacket::decode,
-                SetFreezeTimePacket::handlePacket);
+        CHANNEL.messageBuilder(LeftClickEmptyPacket.class, id++, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(LeftClickEmptyPacket::encode)
+                .decoder(LeftClickEmptyPacket::decode)
+                .consumer(LeftClickEmptyPacket::handlePacket)
+                .add();
+        CHANNEL.messageBuilder(ScrollPacket.class, id++, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(ScrollPacket::encode)
+                .decoder(ScrollPacket::decode)
+                .consumer(ScrollPacket::handlePacket)
+                .add();
+        CHANNEL.messageBuilder(SetFreezeTimePacket.class, id++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(SetFreezeTimePacket::encode)
+                .decoder(SetFreezeTimePacket::decode)
+                .consumer(SetFreezeTimePacket::handlePacket)
+                .add();
     }
 }
