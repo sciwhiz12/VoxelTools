@@ -28,7 +28,7 @@ public class Shovel extends Item implements ILeftClicker.OnBlock {
     @Override
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction face) {
         if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
-            ITag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
+            ITag<Block> col = BlockTags.getCollection().func_241834_b(TAG_GROUND);
             for (BlockPos targetPos : getDigRadius(pos)) {
                 if (col.contains(world.getBlockState(targetPos).getBlock())) {
                     world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
@@ -50,7 +50,7 @@ public class Shovel extends Item implements ILeftClicker.OnBlock {
                 .checkForPermission(player) && VxConfig.Server.shovelFlattenRadius != 0) {
             BlockPos pos = context.getPos();
             if (player.isCrouching()) {
-                ITag<Block> col = BlockTags.getCollection().getOrCreate(TAG_GROUND);
+                ITag<Block> col = BlockTags.getCollection().func_241834_b(TAG_GROUND);
                 for (BlockPos targetPos : getFlattenRadius(pos)) {
                     if (col.contains(world.getBlockState(targetPos).getBlock())) {
                         world.setBlockState(targetPos, Blocks.AIR.getDefaultState());

@@ -21,8 +21,9 @@ public class ChatUtil {
             VxNetwork.CHANNEL
                     .send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new IndexedChatPacket(msg));
         } else {
-            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().ingameGUI.getChatGUI()
-                    .printChatMessageWithOptionalDeletion(msg, chatIndex));
+            DistExecutor.runWhenOn(Dist.CLIENT,
+                    () -> () -> Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(msg));
+            // TODO: maybe remove the chat indexing?
         }
     }
 }

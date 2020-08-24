@@ -75,7 +75,7 @@ public class TestItem extends Item implements ILeftClicker.OnBoth {
         }
         text.appendString("\n").append(
                 new StringTextComponent("  dimension: ").mergeStyle(TextFormatting.DARK_AQUA).append(
-                        new StringTextComponent(player.world.func_234922_V_().func_240901_a_().toString())
+                        new StringTextComponent(player.world.getDimensionKey().func_240901_a_().toString())
                                 .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
         ChatUtil.sendIndexedMessage(player, text);
     }

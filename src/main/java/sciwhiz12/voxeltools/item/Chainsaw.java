@@ -14,6 +14,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import sciwhiz12.voxeltools.VoxelTools;
 import sciwhiz12.voxeltools.VxConfig;
 import sciwhiz12.voxeltools.util.PermissionUtil;
@@ -31,7 +32,7 @@ public class Chainsaw extends Item implements ILeftClicker.OnBlock {
     @Override
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction face) {
         if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
-            ITag<Block> col = BlockTags.getCollection().getOrCreate(TAG_TREE_STUFF);
+            ITag<Block> col = BlockTags.getCollection().func_241834_b(TAG_TREE_STUFF);
             for (BlockPos targetPos : getDestroyRadius(VxConfig.Server.chainsawCutRadius, pos)) {
                 if (col.contains(player.world.getBlockState(targetPos).getBlock())) {
                     player.world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
@@ -50,8 +51,10 @@ public class Chainsaw extends Item implements ILeftClicker.OnBlock {
         World world = context.getWorld();
         PlayerEntity player = context.getPlayer();
         if (!world.isRemote && player != null && PermissionUtil.checkForPermission(player)) {
+            ServerWorld serverWorld = (ServerWorld) world;
+
             if (!player.isCrouching()) {
-                ITag<Block> col = BlockTags.getCollection().getOrCreate(TAG_VEGETATION);
+                ITag<Block> col = BlockTags.getCollection().func_241834_b(TAG_VEGETATION);
                 for (BlockPos targetPos : getDestroyRadius(VxConfig.Server.chainsawCleanRadius, context.getPos())) {
                     if (col.contains(world.getBlockState(targetPos).getBlock())) {
                         world.setBlockState(targetPos, Blocks.AIR.getDefaultState());

@@ -2,30 +2,50 @@ buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
-        mavenCentral()
+        maven {
+            name 'maven_central'
+            url 'https://repo.maven.apache.org/maven2/'
+        }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'org.ajoberstar.grgit', name: 'grgit-gradle', 'version': '3.1.1'
     }
 }
+apply plugin: 'org.ajoberstar.grgit'
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'maven-publish'
 
-version = '0.0.2-DEV'
+def mod_version = grgit.describe(longDescr: false, tags: true)
+version = "${mc_version}-${mod_version}"
 group = 'sciwhiz12.voxeltools'
 archivesBaseName = 'voxeltools'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
+println("Mod version: ${mod_version}")
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+
+sourceSets {
+    main.resources.srcDirs += 'src/generated/resources/'
+}
+
+repositories {
+    maven {
+        url 'https://www.dogforce-games.com/maven/'
+    }
+}
+
 minecraft {
-    mappings channel: 'snapshot', version: '20200723-1.16.1'
+    mappings channel: 'snapshot', version: "${mappings_version}"
 
     runs {
         client {
             workingDirectory project.file('run/client')
 
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.markers', "${logging_markers}"
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -38,7 +58,7 @@ minecraft {
         server {
             workingDirectory project.file('run/server')
 
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.markers', "${logging_markers}"
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -51,7 +71,7 @@ minecraft {
         data {
             workingDirectory project.file('run/data')
 
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.markers', "${logging_markers}"
             property 'forge.logging.console.level', 'debug'
 
             args '--mod', 'voxeltools', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources')
@@ -66,7 +86,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.1-32.0.98'
+    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 }
 
 jar {
@@ -76,32 +96,29 @@ jar {
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : "${version}",
                 "Implementation-Vendor"   : "sciwhiz12",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "Git-Commit"              : grgit.head().id,
+                "Git-Commit-Timestamp"    : grgit.head().date.format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 }
 
 jar.finalizedBy('reobfJar')
+jar.finalizedBy('sourcesJar')
 
-task deobfJar(type: Jar, dependsOn: 'jar') {
-    from sourceSets.main.output
-    classifier "dev"
-}
 task sourcesJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.allSource
     classifier "sources"
 }
+
 artifacts {
-    archives deobfJar
     archives sourcesJar
 }
+
 publishing {
     publications {
         pub_reobfJar(MavenPublication) {
             artifact jar
-        }
-        pub_deobfJar(MavenPublication) {
-            artifact deobfJar
         }
         pub_sourcesJar(MavenPublication) {
             artifact sourcesJar
