@@ -47,8 +47,7 @@ public class Paintbrush extends Item implements ILeftClicker.OnBlock {
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (!stack.hasTag() || !stack.getOrCreateTag().contains(TAG_ID_STOREDBLOCK)) {
-            tooltip.add(
-                    new TranslationTextComponent("tooltip.voxeltools.paintbrush.empty").mergeStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.empty").mergeStyle(TextFormatting.GRAY));
             return;
         }
         BlockState state = NBTUtil.readBlockState(stack.getOrCreateChildTag(TAG_ID_STOREDBLOCK));
@@ -61,8 +60,8 @@ public class Paintbrush extends Item implements ILeftClicker.OnBlock {
                         new StringTextComponent(toStringFromState(state)).mergeStyle(TextFormatting.GREEN))
                         .mergeStyle(TextFormatting.GRAY));
             } else {
-                tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.sneak")
-                        .mergeStyle(TextFormatting.GRAY));
+                tooltip.add(
+                        new TranslationTextComponent("tooltip.voxeltools.paintbrush.sneak").mergeStyle(TextFormatting.GRAY));
             }
         }
     }

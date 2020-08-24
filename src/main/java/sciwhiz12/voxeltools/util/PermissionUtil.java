@@ -15,8 +15,7 @@ public class PermissionUtil {
     public static boolean checkForPermission(PlayerEntity player) {
         if (!VxConfig.Server.enableItems) {
             if (player.isServerWorld() && player.shouldReceiveErrors() && player.shouldReceiveFeedback()) {
-                player.sendMessage(
-                        new TranslationTextComponent("error.voxeltools.disabled").mergeStyle(TextFormatting.RED),
+                player.sendMessage(new TranslationTextComponent("error.voxeltools.disabled").mergeStyle(TextFormatting.RED),
                         Util.DUMMY_UUID);
             }
             return false;

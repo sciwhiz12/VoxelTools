@@ -51,31 +51,27 @@ public class TestItem extends Item implements ILeftClicker.OnBoth {
     public static void printInfo(String infoString, PlayerEntity player, World world, Hand hand, @Nullable BlockPos pos,
             @Nullable Direction face) {
         UnaryOperator<Style> whiteBold = style -> style.setBold(true).applyFormatting(TextFormatting.WHITE);
-        IFormattableTextComponent text = new StringTextComponent("").append(
-                new StringTextComponent("[TEST_ITEM] ").mergeStyle(TextFormatting.GREEN, TextFormatting.BOLD)
+        IFormattableTextComponent text = new StringTextComponent("")
+                .append(new StringTextComponent("[TEST_ITEM] ").mergeStyle(TextFormatting.GREEN, TextFormatting.BOLD)
                         .append(new StringTextComponent(infoString).modifyStyle(whiteBold))).appendString("\n")
                 .append(new StringTextComponent("  logical side: ").mergeStyle(TextFormatting.DARK_AQUA)
                         .append(new StringTextComponent(world.isRemote ? "CLIENT" : "SERVER")
                                 .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE))).appendString("\n")
                 .append(new StringTextComponent("  player: ").mergeStyle(TextFormatting.DARK_AQUA)
-                        .append(player.getName().copyRaw()
-                                .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
+                        .append(player.getName().copyRaw().mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
         if (hand != null) {
-            text.appendString("\n").append(
-                    new StringTextComponent("  hand: ").mergeStyle(TextFormatting.DARK_AQUA).append(
-                            new StringTextComponent(hand.toString())
-                                    .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
+            text.appendString("\n").append(new StringTextComponent("  hand: ").mergeStyle(TextFormatting.DARK_AQUA)
+                    .append(new StringTextComponent(hand.toString())
+                            .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
         }
         if (pos != null) {
-            text.appendString("\n").append(
-                    new StringTextComponent("  pos: ").mergeStyle(TextFormatting.DARK_AQUA).append(
-                            new StringTextComponent(pos.toString())
-                                    .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
+            text.appendString("\n").append(new StringTextComponent("  pos: ").mergeStyle(TextFormatting.DARK_AQUA)
+                    .append(new StringTextComponent(pos.toString())
+                            .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
         }
-        text.appendString("\n").append(
-                new StringTextComponent("  dimension: ").mergeStyle(TextFormatting.DARK_AQUA).append(
-                        new StringTextComponent(player.world.getDimensionKey().func_240901_a_().toString())
-                                .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
+        text.appendString("\n").append(new StringTextComponent("  dimension: ").mergeStyle(TextFormatting.DARK_AQUA)
+                .append(new StringTextComponent(player.world.getDimensionKey().func_240901_a_().toString())
+                        .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
         player.sendStatusMessage(text, false);
     }
 }
