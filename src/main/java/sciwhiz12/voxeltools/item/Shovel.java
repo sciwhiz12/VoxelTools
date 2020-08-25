@@ -16,11 +16,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import sciwhiz12.voxeltools.VoxelTools;
 import sciwhiz12.voxeltools.VxConfig;
+import sciwhiz12.voxeltools.VxTags;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
 public class Shovel extends Item implements ILeftClicker.OnBlock {
-    public static final ResourceLocation TAG_GROUND = new ResourceLocation(VoxelTools.MODID, "ground");
-
     public Shovel(Properties properties) {
         super(properties);
     }
@@ -28,9 +27,8 @@ public class Shovel extends Item implements ILeftClicker.OnBlock {
     @Override
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction face) {
         if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
-            ITag<Block> col = BlockTags.getCollection().func_241834_b(TAG_GROUND);
             for (BlockPos targetPos : getDigRadius(pos)) {
-                if (col.contains(world.getBlockState(targetPos).getBlock())) {
+                if (VxTags.GROUND.contains(world.getBlockState(targetPos).getBlock())) {
                     world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
                 }
             }
@@ -50,9 +48,8 @@ public class Shovel extends Item implements ILeftClicker.OnBlock {
                 .checkForPermission(player) && VxConfig.Server.shovelFlattenRadius != 0) {
             BlockPos pos = context.getPos();
             if (player.isCrouching()) {
-                ITag<Block> col = BlockTags.getCollection().func_241834_b(TAG_GROUND);
                 for (BlockPos targetPos : getFlattenRadius(pos)) {
-                    if (col.contains(world.getBlockState(targetPos).getBlock())) {
+                    if (VxTags.GROUND.contains(world.getBlockState(targetPos).getBlock())) {
                         world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
                     }
                 }

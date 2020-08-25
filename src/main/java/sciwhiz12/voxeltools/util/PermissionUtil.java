@@ -22,7 +22,7 @@ public class PermissionUtil {
         } else if (!PermissionAPI.hasPermission(player, VxConfig.ITEM_USE_PERMISSION)) {
             if (player.isServerWorld() && player.shouldReceiveErrors() && player.shouldReceiveFeedback()) {
                 player.sendMessage(
-                        new TranslationTextComponent("error.voxeltools.noPermission").mergeStyle(TextFormatting.RED),
+                        new TranslationTextComponent("error.voxeltools.no_permission").mergeStyle(TextFormatting.RED),
                         Util.DUMMY_UUID);
             }
             return false;

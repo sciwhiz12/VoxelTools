@@ -1,30 +1,23 @@
 package sciwhiz12.voxeltools.item;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import sciwhiz12.voxeltools.VoxelTools;
 import sciwhiz12.voxeltools.VxConfig;
+import sciwhiz12.voxeltools.VxTags;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
 import java.util.Collections;
 
 public class Chainsaw extends Item implements ILeftClicker.OnBlock {
-    public static final ResourceLocation TAG_VEGETATION = new ResourceLocation(VoxelTools.MODID, "vegetation");
-    public static final ResourceLocation TAG_TREE_STUFF = new ResourceLocation(VoxelTools.MODID, "tree_stuff");
-
     public Chainsaw(Properties properties) {
         super(properties);
     }
@@ -32,9 +25,8 @@ public class Chainsaw extends Item implements ILeftClicker.OnBlock {
     @Override
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction face) {
         if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
-            ITag<Block> col = BlockTags.getCollection().func_241834_b(TAG_TREE_STUFF);
             for (BlockPos targetPos : getDestroyRadius(VxConfig.Server.chainsawCutRadius, pos)) {
-                if (col.contains(player.world.getBlockState(targetPos).getBlock())) {
+                if (VxTags.TREE_MATTER.contains(player.world.getBlockState(targetPos).getBlock())) {
                     player.world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
                 }
             }
@@ -54,9 +46,8 @@ public class Chainsaw extends Item implements ILeftClicker.OnBlock {
             ServerWorld serverWorld = (ServerWorld) world;
 
             if (!player.isCrouching()) {
-                ITag<Block> col = BlockTags.getCollection().func_241834_b(TAG_VEGETATION);
                 for (BlockPos targetPos : getDestroyRadius(VxConfig.Server.chainsawCleanRadius, context.getPos())) {
-                    if (col.contains(world.getBlockState(targetPos).getBlock())) {
+                    if (VxTags.VEGETATION.contains(world.getBlockState(targetPos).getBlock())) {
                         world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
                     }
                 }

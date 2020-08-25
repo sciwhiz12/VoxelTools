@@ -1,0 +1,28 @@
+{
+  "replace": false,
+  "values": [
+    "#voxeltools:nether_vegetation",
+    "#voxeltools:tree_matter",
+    "#minecraft:crops",
+    "#minecraft:flowers",
+    "#minecraft:underwater_bonemeals",
+    "minecraft:brown_mushroom",
+    "minecraft:brown_mushroom_block",
+    "minecraft:cactus",
+    "minecraft:dead_bush",
+    "minecraft:fern",
+    "minecraft:grass",
+    "minecraft:kelp",
+    "minecraft:large_fern",
+    "minecraft:melon",
+    "minecraft:red_mushroom",
+    "minecraft:red_mushroom_block",
+    "minecraft:pumpkin",
+    "minecraft:sea_pickle",
+    "minecraft:sugar_cane",
+    "minecraft:tall_grass",
+    "minecraft:tall_seagrass",
+    "minecraft:vine",
+    "minecraft:wheat"
+  ]
+}

@@ -4,7 +4,6 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemModelsProperties;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -34,6 +33,6 @@ public class ClientSetup {
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
         VoxelTools.LOGGER.debug("Setting up client...");
-        ItemModelsProperties.func_239418_a_(VxItems.clock.get(), new ResourceLocation("time"), CLOCK_PROPERTY);
+        ItemModelsProperties.func_239418_a_(VxItems.clock.get(), Clock.TIME_PREDICATE, CLOCK_PROPERTY);
     }
 }

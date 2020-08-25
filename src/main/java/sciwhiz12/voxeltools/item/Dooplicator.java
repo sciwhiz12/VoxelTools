@@ -27,7 +27,7 @@ public class Dooplicator extends Item {
             ItemStack stack = new ItemStack(state.getBlock().asItem());
             stack.setCount(stack.getMaxStackSize());
             if (player.inventory.addItemStackToInventory(stack)) {
-                player.sendStatusMessage(new TranslationTextComponent("voxeltools.dooplicator.dooped",
+                player.sendStatusMessage(new TranslationTextComponent("status.voxeltools.dooplicator.dooped",
                         new StringTextComponent(String.valueOf(stack.getMaxStackSize()))
                                 .mergeStyle(TextFormatting.DARK_PURPLE),
                         new TranslationTextComponent(state.getBlock().getTranslationKey()).mergeStyle(TextFormatting.GREEN))

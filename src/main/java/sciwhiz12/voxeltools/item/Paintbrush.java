@@ -51,12 +51,12 @@ public class Paintbrush extends Item implements ILeftClicker.OnBlock {
             return;
         }
         BlockState state = NBTUtil.readBlockState(stack.getOrCreateChildTag(TAG_ID_STOREDBLOCK));
-        tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.blockname",
+        tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.block.name",
                 new TranslationTextComponent(state.getBlock().getTranslationKey()).mergeStyle(TextFormatting.GREEN))
                 .mergeStyle(TextFormatting.GRAY));
         if (!state.getBlock().getStateContainer().getProperties().isEmpty()) {
             if (Screen.hasShiftDown()) {
-                tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.blockstate",
+                tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.block.state",
                         new StringTextComponent(toStringFromState(state)).mergeStyle(TextFormatting.GREEN))
                         .mergeStyle(TextFormatting.GRAY));
             } else {

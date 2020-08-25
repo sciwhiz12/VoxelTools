@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.IFormattableTextComponent;
@@ -24,6 +25,7 @@ import sciwhiz12.voxeltools.net.VxNetwork;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
 public class Clock extends Item implements IScrollListener {
+    public static final ResourceLocation TIME_PREDICATE = new ResourceLocation("time");
     public static final String TAG_ENABLED = "Active";
     public static final String TAG_FIXED_TIME = "StoredTime";
     public static final long TIME_SCROLL_INCREMENT = 500;

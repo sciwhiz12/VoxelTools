@@ -1,0 +1,27 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:cobblestone",
+    "#forge:dirt",
+    "#forge:end_stones",
+    "#forge:ores",
+    "#forge:stone",
+    "#forge:sandstone",
+    "#minecraft:base_stone_nether",
+    "#minecraft:coral_blocks",
+    "#minecraft:ice",
+    "#minecraft:mushroom_grow_block",
+    "#minecraft:sand",
+    "minecraft:bone_block",
+    "minecraft:clay",
+    "minecraft:farmland",
+    "minecraft:glowstone",
+    "minecraft:grass_path",
+    "minecraft:gravel",
+    "minecraft:magma_block",
+    "minecraft:snow",
+    "minecraft:snow_block",
+    "minecraft:soul_sand",
+    "minecraft:soul_soil"
+  ]
+}
