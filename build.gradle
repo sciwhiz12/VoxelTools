@@ -20,11 +20,14 @@ apply plugin: 'maven-publish'
 
 def mod_version = "unknown"
 if (System.hasProperty("MOD_VERSION")) {
+    println("MOD_VERSION property")
     mod_version = System.getProperty("MOD_VERSION", "unknown")
 } else {
     if (grgit == null) {
+        print("Grgit not found, using command")
         modversion = "git describe --tags".execute().text.trim()
     } else {
+        print("Grgit found")
         mod_version = grgit.describe(longDescr: false, tags: true)
     }
 }
