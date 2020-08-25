@@ -57,13 +57,6 @@ jobs:
           name: Build artifacts
           path: artifacts
 
-      - name: Generate changelog
-        id: changelog
-        uses: metcalfc/changelog-generator@v0.4.1
-        with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
-          head-ref: ${{ github.ref }}
-
       - name: Create release
         id: create-release
         uses: actions/create-release@v1
