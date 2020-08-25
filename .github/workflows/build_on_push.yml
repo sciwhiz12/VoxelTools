@@ -42,7 +42,7 @@ jobs:
         run: git fetch --all --tags && git checkout ${{ github.ref }} && git describe --all
 
       - name: Put version into MOD_VERSION env variable
-        run: echo '::set-env name=MOD_VERSION::${{ steps.git-describe.outputs.* }}'
+        run: echo '::set-env name=MOD_VERSION::${{ join(steps.git-describe.outputs.*, '') }}'
 
       - name: Build using Gradle
         run: ./gradlew build
