@@ -19,7 +19,6 @@ apply plugin: 'idea'
 apply plugin: 'maven-publish'
 
 def mod_version = grgit.describe(commit: grgit.head(), longDescr: false, tags: true)
-if (mod_version == null && System.getenv("MOD_VERSION") != null) mod_version = System.getenv("MOD_VERSION")
 if (mod_version == null) mod_version = "unknown"
 version = "${mc_version}-${mod_version}"
 group = 'sciwhiz12.voxeltools'
