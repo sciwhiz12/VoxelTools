@@ -18,6 +18,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'maven-publish'
 
+println(grgit.head())
 def mod_version = grgit.describe(longDescr: false, tags: true)
 if (mod_version == null) mod_version = "unknown"
 version = "${mc_version}-${mod_version}"
