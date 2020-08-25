@@ -26,22 +26,23 @@ public class VxItems {
 
     public static final RegistryObject<Item> test_item = ITEMS.register("test_item", () -> new TestItem(TOOL_PROPERTIES));
 
-    public static final RegistryObject<Item> dooplicator = ITEMS
-            .register("dooplicator", () -> new Dooplicator(TOOL_PROPERTIES));
+    public static final RegistryObject<DooplicatorItem> dooplicator = ITEMS
+            .register("dooplicator", () -> new DooplicatorItem(TOOL_PROPERTIES));
 
-    public static final RegistryObject<Item> jackhammer = ITEMS
-            .register("jackhammer", () -> new Jackhammer(TOOL_PROPERTIES));
+    public static final RegistryObject<JackhammerItem> jackhammer = ITEMS
+            .register("jackhammer", () -> new JackhammerItem(TOOL_PROPERTIES));
 
-    public static final RegistryObject<Item> paintbrush = ITEMS
-            .register("paintbrush", () -> new Paintbrush(TOOL_PROPERTIES));
+    public static final RegistryObject<PaintbrushItem> paintbrush = ITEMS
+            .register("paintbrush", () -> new PaintbrushItem(TOOL_PROPERTIES));
 
-    public static final RegistryObject<Item> sledge = ITEMS.register("sledge", () -> new Sledge(TOOL_PROPERTIES));
+    public static final RegistryObject<SledgeItem> sledge = ITEMS.register("sledge", () -> new SledgeItem(TOOL_PROPERTIES));
 
-    public static final RegistryObject<Item> pliers = ITEMS.register("pliers", () -> new Pliers(TOOL_PROPERTIES));
+    public static final RegistryObject<PliersItem> pliers = ITEMS.register("pliers", () -> new PliersItem(TOOL_PROPERTIES));
 
-    public static final RegistryObject<Item> shovel = ITEMS.register("shovel", () -> new Shovel(TOOL_PROPERTIES));
+    public static final RegistryObject<ShovelItem> shovel = ITEMS.register("shovel", () -> new ShovelItem(TOOL_PROPERTIES));
 
-    public static final RegistryObject<Item> chainsaw = ITEMS.register("chainsaw", () -> new Chainsaw(TOOL_PROPERTIES));
+    public static final RegistryObject<ChainsawItem> chainsaw = ITEMS
+            .register("chainsaw", () -> new ChainsawItem(TOOL_PROPERTIES));
 
-    public static final RegistryObject<Item> clock = ITEMS.register("clock", () -> new Clock(TOOL_PROPERTIES));
+    public static final RegistryObject<ClockItem> clock = ITEMS.register("clock", () -> new ClockItem(TOOL_PROPERTIES));
 }

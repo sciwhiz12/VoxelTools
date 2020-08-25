@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import sciwhiz12.voxeltools.VoxelTools;
-import sciwhiz12.voxeltools.item.Clock;
+import sciwhiz12.voxeltools.item.ClockItem;
 import sciwhiz12.voxeltools.item.VxItems;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = VoxelTools.MODID, bus = Bus.MOD)
@@ -24,7 +24,7 @@ public class ClientSetup {
                 clientWorld = (ClientWorld) entity.world;
             }
             if (clientWorld != null) {
-                value = clientWorld.func_230315_m_().func_236032_b_(stack.getOrCreateTag().getLong(Clock.TAG_FIXED_TIME));
+                value = clientWorld.func_230315_m_().func_236032_b_(stack.getOrCreateTag().getLong(ClockItem.TAG_FIXED_TIME));
             }
         }
         return (float) value;
@@ -33,6 +33,6 @@ public class ClientSetup {
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
         VoxelTools.LOGGER.debug("Setting up client...");
-        ItemModelsProperties.func_239418_a_(VxItems.clock.get(), Clock.TIME_PREDICATE, CLOCK_PROPERTY);
+        ItemModelsProperties.func_239418_a_(VxItems.clock.get(), ClockItem.TIME_PREDICATE, CLOCK_PROPERTY);
     }
 }

@@ -15,8 +15,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
-public class Jackhammer extends Item implements ILeftClicker.OnBlock {
-    public Jackhammer(Properties properties) {
+public class JackhammerItem extends Item implements ILeftClicker.OnBlock {
+    public JackhammerItem(Properties properties) {
         super(properties);
     }
 

@@ -19,8 +19,8 @@ import sciwhiz12.voxeltools.VxConfig;
 import sciwhiz12.voxeltools.VxTags;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
-public class Shovel extends Item implements ILeftClicker.OnBlock {
-    public Shovel(Properties properties) {
+public class ShovelItem extends Item implements ILeftClicker.OnBlock {
+    public ShovelItem(Properties properties) {
         super(properties);
     }
 

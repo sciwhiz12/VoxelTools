@@ -11,7 +11,7 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import sciwhiz12.voxeltools.VoxelTools;
-import sciwhiz12.voxeltools.item.Clock;
+import sciwhiz12.voxeltools.item.ClockItem;
 
 @EventBusSubscriber(value = Dist.CLIENT, bus = Bus.FORGE, modid = VoxelTools.MODID)
 public class TimeInterceptor {
@@ -27,8 +27,8 @@ public class TimeInterceptor {
             ItemStack clockStack = ItemStack.EMPTY;
             for (int i = 0; i < event.player.inventory.getSizeInventory(); ++i) {
                 ItemStack stack = event.player.inventory.getStackInSlot(i);
-                if (stack.getItem() instanceof Clock && stack.getCount() > 0) {
-                    if (Clock.isActive(stack)) {
+                if (stack.getItem() instanceof ClockItem && stack.getCount() > 0) {
+                    if (ClockItem.isActive(stack)) {
                         hasClock = true;
                         clockStack = stack;
                         break;
@@ -36,8 +36,8 @@ public class TimeInterceptor {
                 }
             }
             ItemStack stack = event.player.inventory.getItemStack();
-            if (stack.getItem() instanceof Clock && stack.getCount() > 0) {
-                if (Clock.isActive(stack)) {
+            if (stack.getItem() instanceof ClockItem && stack.getCount() > 0) {
+                if (ClockItem.isActive(stack)) {
                     hasClock = true;
                     clockStack = stack;
                 }
@@ -45,7 +45,7 @@ public class TimeInterceptor {
             if (hasClock) {
                 if (!freezeTime) {
                     freezeTime = true;
-                    frozenTime = (event.player.world.getDayTime() / 24000L) + Clock.getStoredTime(clockStack);
+                    frozenTime = (event.player.world.getDayTime() / 24000L) + ClockItem.getStoredTime(clockStack);
                 }
             } else {
                 freezeTime = false;

@@ -9,7 +9,7 @@ import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.fml.RegistryObject;
-import sciwhiz12.voxeltools.item.Clock;
+import sciwhiz12.voxeltools.item.ClockItem;
 import sciwhiz12.voxeltools.item.VxItems;
 
 import static sciwhiz12.voxeltools.VoxelTools.MODID;
@@ -30,10 +30,10 @@ public class ItemModels extends ItemModelProvider {
         toolItem(VxItems.shovel);
         toolItem(VxItems.chainsaw);
 
-        clockItem(VxItems.clock, Clock.TIME_PREDICATE);
+        clockItem(VxItems.clock, ClockItem.TIME_PREDICATE);
     }
 
-    void toolItem(RegistryObject<Item> i) {
+    void toolItem(RegistryObject<? extends Item> i) {
         singleTextureItem(i.getId(), factory.apply(mcLoc("item/handheld")));
     }
 
@@ -43,7 +43,7 @@ public class ItemModels extends ItemModelProvider {
         generatedModels.put(location, builder.texture("layer0", location));
     }
 
-    void clockItem(RegistryObject<Item> item, ResourceLocation overrideName) {
+    void clockItem(RegistryObject<? extends Item> item, ResourceLocation overrideName) {
         final ResourceLocation itemLoc = item.getId();
         // TODO: datagen the main clock model
         for (int iter = 1; iter < 64; iter++) {

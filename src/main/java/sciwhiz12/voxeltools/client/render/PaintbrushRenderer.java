@@ -17,7 +17,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.model.data.EmptyModelData;
-import sciwhiz12.voxeltools.item.Paintbrush;
+import sciwhiz12.voxeltools.item.PaintbrushItem;
 
 import java.util.Random;
 
@@ -30,7 +30,7 @@ public class PaintbrushRenderer extends ItemStackTileEntityRenderer {
         boolean renderItem = true;
         IBakedModel brushModel = itemRenderer.getItemModelWithOverrides(itemStack, null, null);
         if (transform == TransformType.GUI) {
-            CompoundNBT tag = itemStack.getChildTag(Paintbrush.TAG_ID_STOREDBLOCK);
+            CompoundNBT tag = itemStack.getChildTag(PaintbrushItem.TAG_ID_STOREDBLOCK);
             if (tag != null) {
                 matrixStack.push();
                 matrixStack.rotate(Vector3f.XP.rotationDegrees(30));

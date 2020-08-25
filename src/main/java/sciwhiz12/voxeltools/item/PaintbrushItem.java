@@ -36,10 +36,10 @@ import java.util.List;
 
 import static sciwhiz12.voxeltools.util.BlockUtil.toStringFromState;
 
-public class Paintbrush extends Item implements ILeftClicker.OnBlock {
+public class PaintbrushItem extends Item implements ILeftClicker.OnBlock {
     public static final String TAG_ID_STOREDBLOCK = "StoredBlock";
 
-    public Paintbrush(Properties properties) {
+    public PaintbrushItem(Properties properties) {
         super(properties.setISTER(() -> PaintbrushRenderer::new));
     }
 

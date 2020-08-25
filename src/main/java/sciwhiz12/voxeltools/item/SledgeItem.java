@@ -14,8 +14,8 @@ import net.minecraft.world.World;
 import sciwhiz12.voxeltools.util.BlockUtil;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
-public class Sledge extends Item implements ILeftClicker.OnBlock {
-    public Sledge(Properties properties) {
+public class SledgeItem extends Item implements ILeftClicker.OnBlock {
+    public SledgeItem(Properties properties) {
         super(properties);
     }
 

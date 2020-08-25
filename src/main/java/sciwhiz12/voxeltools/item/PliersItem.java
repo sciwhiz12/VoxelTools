@@ -12,8 +12,8 @@ import net.minecraft.world.World;
 import sciwhiz12.voxeltools.util.BlockUtil;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
-public class Pliers extends Item implements ILeftClicker.OnBlock {
-    public Pliers(Properties properties) {
+public class PliersItem extends Item implements ILeftClicker.OnBlock {
+    public PliersItem(Properties properties) {
         super(properties);
     }
 

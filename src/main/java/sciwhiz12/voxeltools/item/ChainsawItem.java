@@ -17,8 +17,8 @@ import sciwhiz12.voxeltools.util.PermissionUtil;
 
 import java.util.Collections;
 
-public class Chainsaw extends Item implements ILeftClicker.OnBlock {
-    public Chainsaw(Properties properties) {
+public class ChainsawItem extends Item implements ILeftClicker.OnBlock {
+    public ChainsawItem(Properties properties) {
         super(properties);
     }
 

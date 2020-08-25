@@ -12,8 +12,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import sciwhiz12.voxeltools.util.PermissionUtil;
 
-public class Dooplicator extends Item {
-    public Dooplicator(Properties properties) {
+public class DooplicatorItem extends Item {
+    public DooplicatorItem(Properties properties) {
         super(properties);
     }
 
