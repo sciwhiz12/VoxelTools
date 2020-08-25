@@ -9,7 +9,7 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
-        classpath group: 'org.ajoberstar.grgit', name: 'grgit-gradle', 'version': '3.1.1'
+        classpath group: 'org.ajoberstar.grgit', name: 'grgit-gradle', 'version': '4.0.2'
     }
 }
 apply plugin: 'org.ajoberstar.grgit'
@@ -18,19 +18,8 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'maven-publish'
 
-def mod_version = "unknown"
-if (System.hasProperty("MOD_VERSION")) {
-    println("MOD_VERSION property")
-    mod_version = System.getProperty("MOD_VERSION", "unknown")
-} else {
-    if (grgit == null || Boolean.getBoolean("FORCE_GIT_COMMAND")) {
-        print("Grgit not found, using command")
-        modversion = "git describe --tags".execute().text.trim()
-    } else {
-        print("Grgit found")
-        mod_version = grgit.describe(longDescr: false, tags: true)
-    }
-}
+def mod_version = grgit.describe(longDescr: false, tags: true)
+if (mod_version == null) mod_version = "unknown"
 version = "${mc_version}-${mod_version}"
 group = 'sciwhiz12.voxeltools'
 archivesBaseName = 'voxeltools'
