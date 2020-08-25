@@ -32,9 +32,13 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Get \'git describe\' output
+        id: git-describe
+        run: 'git describe --tags'
+
       - name: Build using Gradle
         env:
-          FORCE_GIT_COMMAND: true
+          MOD_VERSION: ${{ steps.git-describe.outputs.* }}
         run: ./gradlew build
 
       - name: Upload artifacts
@@ -57,7 +61,7 @@ jobs:
           myToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create release
-        id: create_release
+        id: create-release
         uses: actions/create-release@v1
         with:
           tag_name: ${{ github.ref }}
@@ -70,7 +74,7 @@ jobs:
         id: upload-artifact-main
         uses: actions/upload-release-asset@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
           asset_path: 'build/libs/[a-zA-Z0-9]+-[a-zA-Z0-9]+.jar'
           asset_name: "Main mod JAR"
           asset_content_type: application/java-archive
@@ -79,7 +83,7 @@ jobs:
         id: upload-artifact-source
         uses: actions/upload-release-asset@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
           asset_path: 'build/libs/[a-zA-Z0-9]+-[a-zA-Z0-9]+-sources.jar'
           asset_name: "Sources JAR"
           asset_content_type: application/java-archive
