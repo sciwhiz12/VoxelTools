@@ -34,7 +34,7 @@ jobs:
 
       - name: Get 'git describe' output
         id: git-describe
-        run: cd $GITHUB_WORKSPACE && git describe --tags
+        run: cd $GITHUB_WORKSPACE && git fetch && git describe --tags
 
       - name: Build using Gradle
         env:
