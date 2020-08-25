@@ -20,6 +20,7 @@ apply plugin: 'maven-publish'
 
 println(grgit.head())
 def mod_version = grgit.describe(longDescr: false, tags: true)
+if (mod_version == null) mod_version = "git describe --tags".execute().text.trim()
 if (mod_version == null) mod_version = "unknown"
 version = "${mc_version}-${mod_version}"
 group = 'sciwhiz12.voxeltools'
