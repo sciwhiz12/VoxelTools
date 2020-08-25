@@ -3,8 +3,6 @@ package sciwhiz12.voxeltools.item;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTier;
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -18,8 +16,8 @@ public class VxItems {
         }
     }).setTabPath("voxel_tools");
 
-    private static final Item.Properties TOOL_PROPERTIES = new Item.Properties().setNoRepair()
-            .addToolType(ToolType.PICKAXE, ItemTier.DIAMOND.getHarvestLevel()).defaultMaxDamage(0).maxStackSize(1)
+    private static final Item.Properties TOOL_PROPERTIES = new Item.Properties().setNoRepair().defaultMaxDamage(0)
+            .maxStackSize(1)
             .group(VxItems.CREATIVE_TAB);
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, VoxelTools.MODID);
