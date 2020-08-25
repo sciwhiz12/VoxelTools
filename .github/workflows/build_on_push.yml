@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 0
 
       - name: Fetch all tags
-        run: git fetch --all --tags
+        run: git fetch origin +refs/tags/*:refs/tags/*
 
       - name: Gradle caching
         uses: actions/cache@v2
