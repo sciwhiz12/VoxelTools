@@ -12,6 +12,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.server.permission.PermissionAPI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import sciwhiz12.voxeltools.item.VxItems;
 import sciwhiz12.voxeltools.net.VxNetwork;
 
@@ -20,6 +22,7 @@ public class VoxelTools {
     public static final String MODID = "voxeltools";
 
     public static final Logger LOGGER = LogManager.getLogger();
+    public static final Marker COMMON = MarkerManager.getMarker("COMMON");
 
     public VoxelTools() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -29,7 +32,7 @@ public class VoxelTools {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        LOGGER.info("Setting up common...");
+        LOGGER.info(COMMON, "Setting up common...");
 
         VxNetwork.registerPackets();
         MinecraftForge.EVENT_BUS.register(this);

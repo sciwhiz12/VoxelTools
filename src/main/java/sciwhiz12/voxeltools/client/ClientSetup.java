@@ -9,12 +9,17 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import sciwhiz12.voxeltools.VoxelTools;
 import sciwhiz12.voxeltools.item.ClockItem;
 import sciwhiz12.voxeltools.item.VxItems;
 
+import static sciwhiz12.voxeltools.VoxelTools.LOGGER;
+
 @EventBusSubscriber(value = Dist.CLIENT, modid = VoxelTools.MODID, bus = Bus.MOD)
 public class ClientSetup {
+    public static final Marker CLIENT = MarkerManager.getMarker("CLIENT");
 
     public static final IItemPropertyGetter CLOCK_PROPERTY = (stack, clientWorld, livingEntity) -> {
         double value = 0F;
@@ -32,7 +37,7 @@ public class ClientSetup {
 
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
-        VoxelTools.LOGGER.debug("Setting up client...");
+        LOGGER.debug(CLIENT, "Setting up client...");
         ItemModelsProperties.func_239418_a_(VxItems.clock.get(), ClockItem.TIME_PREDICATE, CLOCK_PROPERTY);
     }
 }
