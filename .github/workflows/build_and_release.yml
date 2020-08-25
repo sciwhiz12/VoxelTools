@@ -46,6 +46,17 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: Build artifacts
+          path: artifacts
+
       - name: Generate changelog
         id: changelog
         uses: metcalfc/changelog-generator@v0.4.1
@@ -67,7 +78,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: 'build/libs/[a-zA-Z0-9]+-[a-zA-Z0-9]+.jar'
+          asset_path: 'artifacts/[a-zA-Z0-9]+-[a-zA-Z0-9]+.jar'
           asset_name: "Main mod JAR"
           asset_content_type: application/java-archive
 
@@ -76,6 +87,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: 'build/libs/[a-zA-Z0-9]+-[a-zA-Z0-9]+-sources.jar'
+          asset_path: 'artifacts/[a-zA-Z0-9]+-[a-zA-Z0-9]+-sources.jar'
           asset_name: "Sources JAR"
           asset_content_type: application/java-archive
