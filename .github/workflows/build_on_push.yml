@@ -1,0 +1,45 @@
+name: build_on_push
+on:
+  push:
+    branches:
+      - '[0-9]+.[0-9]+.x'
+      - '!noci-[0-9a-zA-Z]*'
+    tags-ignore:
+      - '**'
+  pull_request:
+    branches:
+      - '[0-9]+.[0-9]+.x'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest commit
+        uses: actions/checkout@v2
+
+      - name: Gradle caching
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build using Gradle
+        run: ./gradlew build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Build artifacts
+          path: build/libs/
