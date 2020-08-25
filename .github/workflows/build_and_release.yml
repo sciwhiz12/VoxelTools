@@ -67,20 +67,11 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload main artifact
-        id: upload-artifact-main
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: 'artifacts/[a-zA-Z0-9]+-[a-zA-Z0-9]+.jar'
-          asset_name: "Main mod JAR"
-          asset_content_type: application/java-archive
-
-      - name: Upload source artifact
+      - name: Upload release assets
         id: upload-artifact-source
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: 'artifacts/[a-zA-Z0-9]+-[a-zA-Z0-9]+-sources.jar'
-          asset_name: "Sources JAR"
+          asset_path: 'artifacts'
+          asset_name: "Artifacts"
           asset_content_type: application/java-archive
