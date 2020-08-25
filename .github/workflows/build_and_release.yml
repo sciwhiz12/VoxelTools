@@ -11,7 +11,8 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
         with:
-          fetch-depth: '0'
+          ref: ${{ github.ref }}
+          fetch-depth: 0
 
       - name: Gradle caching
         uses: actions/cache@v2
