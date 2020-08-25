@@ -38,6 +38,8 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build using Gradle
+        env:
+          FORCE_GIT_COMMAND: true
         run: ./gradlew build
 
       - name: Upload artifacts
