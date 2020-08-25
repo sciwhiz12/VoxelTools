@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:leaves",
+    "#minecraft:logs",
+    "#minecraft:saplings",
+    "minecraft:nether_wart_block",
+    "minecraft:shroomlight",
+    "minecraft:warped_wart_block"
+  ]
+}
