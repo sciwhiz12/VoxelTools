@@ -1,27 +1,22 @@
 package sciwhiz12.voxeltools.datagen;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.ForgeBlockTagsProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import sciwhiz12.voxeltools.VxTags;
-
-import java.nio.file.Path;
 
 import static sciwhiz12.voxeltools.VoxelTools.MODID;
 
-public class TagsBlock extends ForgeBlockTagsProvider {
-    public TagsBlock(DataGenerator dataGenerator) {
-        super(dataGenerator);
-        this.modId = MODID;
+public class TagsBlock extends BlockTagsProvider {
+    public TagsBlock(DataGenerator dataGenerator, ExistingFileHelper existingFileHelper) {
+        super(dataGenerator, MODID, existingFileHelper);
     }
 
     @Override
     public void registerTags() {
-        super.registerTags();
-
         getOrCreateBuilder(VxTags.GROUND)
                 .addTag(Tags.Blocks.COBBLESTONE)
                 .addTag(Tags.Blocks.DIRT)
@@ -91,12 +86,6 @@ public class TagsBlock extends ForgeBlockTagsProvider {
                 .add(Blocks.TALL_SEAGRASS)
                 .add(Blocks.VINE)
                 .add(Blocks.WHEAT);
-    }
-
-    @Override
-    protected Path makePath(ResourceLocation id) {
-        if (!id.getNamespace().equals(modId)) return null;
-        return super.makePath(id);
     }
 
     @Override
