@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[33,)"
+loaderVersion="[34,)"
 license="MIT License"
 
 [[mods]]
@@ -14,11 +14,11 @@ Adds powerful tools from the Voxel Box.
 [[dependencies.voxeltools]]
     modId="forge"
     mandatory=true
-    versionRange="[33.0.0,)"
+    versionRange="[34.0.0,)"
     side="BOTH"
     
 [[dependencies.voxeltools]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.2]"
+    versionRange="[1.16.3]"
     side="BOTH"

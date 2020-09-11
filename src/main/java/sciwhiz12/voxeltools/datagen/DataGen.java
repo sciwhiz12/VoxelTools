@@ -1,6 +1,7 @@
 package sciwhiz12.voxeltools.datagen;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -19,15 +20,16 @@ public class DataGen {
     static void onGatherData(GatherDataEvent event) {
         LOGGER.debug(DATAGEN, "Gathering data for data generation");
         DataGenerator gen = event.getGenerator();
+        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
         if (event.includeClient()) {
             LOGGER.debug(DATAGEN, "Adding data providers for client assets");
             gen.addProvider(new Languages(gen));
-            gen.addProvider(new ItemModels(gen, event.getExistingFileHelper()));
+            gen.addProvider(new ItemModels(gen, existingFileHelper));
         }
         if (event.includeServer()) {
             LOGGER.debug(DATAGEN, "Adding data providers for server data");
-            gen.addProvider(new TagsBlock(gen));
+            gen.addProvider(new TagsBlock(gen, existingFileHelper));
         }
     }
 }

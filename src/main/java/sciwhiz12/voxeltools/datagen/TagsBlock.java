@@ -5,6 +5,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeBlockTagsProvider;
 import sciwhiz12.voxeltools.VxTags;
 
@@ -13,8 +14,10 @@ import java.nio.file.Path;
 import static sciwhiz12.voxeltools.VoxelTools.MODID;
 
 public class TagsBlock extends ForgeBlockTagsProvider {
-    public TagsBlock(DataGenerator dataGenerator) {
-        super(dataGenerator);
+    protected String modId;
+
+    public TagsBlock(DataGenerator dataGenerator, ExistingFileHelper existingFileHelper) {
+        super(dataGenerator, existingFileHelper);
         this.modId = MODID;
     }
 
