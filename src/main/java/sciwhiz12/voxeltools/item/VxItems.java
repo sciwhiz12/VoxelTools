@@ -11,14 +11,14 @@ import sciwhiz12.voxeltools.VoxelTools;
 public class VxItems {
     public static final ItemGroup CREATIVE_TAB = (new ItemGroup("voxelTools") {
         @Override
-        public ItemStack createIcon() {
+        public ItemStack makeIcon() {
             return new ItemStack(VxItems.dooplicator.get());
         }
-    }).setGroupPath("voxel_tools");
+    }).setRecipeFolderName("voxel_tools");
 
-    private static final Item.Properties TOOL_PROPERTIES = new Item.Properties().setNoRepair().defaultMaxDamage(0)
-            .maxStackSize(1)
-            .group(VxItems.CREATIVE_TAB);
+    private static final Item.Properties TOOL_PROPERTIES = new Item.Properties().setNoRepair().defaultDurability(0)
+            .stacksTo(1)
+            .tab(VxItems.CREATIVE_TAB);
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, VoxelTools.MODID);
 

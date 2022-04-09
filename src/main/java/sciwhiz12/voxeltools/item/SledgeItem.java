@@ -21,9 +21,9 @@ public class SledgeItem extends Item implements ILeftClicker.OnBlock {
 
     @Override
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction face) {
-        if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
-            BlockPos target = pos.offset(face.getOpposite());
-            BlockUtil.moveBlock(world, pos, target, (w, p) -> player.isCrouching() || w.isAirBlock(p) || w.getBlockState(p)
+        if (player.isEffectiveAi() && PermissionUtil.checkForPermission(player)) {
+            BlockPos target = pos.relative(face.getOpposite());
+            BlockUtil.moveBlock(world, pos, target, (w, p) -> player.isCrouching() || w.isEmptyBlock(p) || w.getBlockState(p)
                     .getBlock() instanceof FlowingFluidBlock, (w, p) -> true);
         }
     }
@@ -33,18 +33,18 @@ public class SledgeItem extends Item implements ILeftClicker.OnBlock {
         return true;
     }
 
-    public boolean canPlayerBreakBlockWhileHolding(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
+    public boolean canAttackBlock(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
         return false;
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-        World world = context.getWorld();
+    public ActionResultType useOn(ItemUseContext context) {
+        World world = context.getLevel();
         PlayerEntity player = context.getPlayer();
-        if (!world.isRemote && PermissionUtil.checkForPermission(player)) {
-            BlockPos pos = context.getPos();
-            BlockPos target = pos.offset(context.getFace());
-            BlockUtil.moveBlock(world, pos, target, (w, p) -> player.isCrouching() || w.isAirBlock(p) || w.getBlockState(p)
+        if (!world.isClientSide && PermissionUtil.checkForPermission(player)) {
+            BlockPos pos = context.getClickedPos();
+            BlockPos target = pos.relative(context.getClickedFace());
+            BlockUtil.moveBlock(world, pos, target, (w, p) -> player.isCrouching() || w.isEmptyBlock(p) || w.getBlockState(p)
                     .getBlock() instanceof FlowingFluidBlock, (w, p) -> true);
             return ActionResultType.SUCCESS;
         }

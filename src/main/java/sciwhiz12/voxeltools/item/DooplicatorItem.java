@@ -18,20 +18,20 @@ public class DooplicatorItem extends Item {
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-        World world = context.getWorld();
+    public ActionResultType useOn(ItemUseContext context) {
+        World world = context.getLevel();
         PlayerEntity player = context.getPlayer();
-        if (!world.isRemote && player != null && PermissionUtil.checkForPermission(player)) {
-            BlockState state = world.getBlockState(context.getPos());
+        if (!world.isClientSide && player != null && PermissionUtil.checkForPermission(player)) {
+            BlockState state = world.getBlockState(context.getClickedPos());
             Item i = state.getBlock().asItem();
             ItemStack stack = new ItemStack(state.getBlock().asItem());
             stack.setCount(stack.getMaxStackSize());
-            if (player.inventory.addItemStackToInventory(stack)) {
-                player.sendStatusMessage(new TranslationTextComponent("status.voxeltools.dooplicator.dooped",
+            if (player.inventory.add(stack)) {
+                player.displayClientMessage(new TranslationTextComponent("status.voxeltools.dooplicator.dooped",
                         new StringTextComponent(String.valueOf(stack.getMaxStackSize()))
-                                .mergeStyle(TextFormatting.DARK_PURPLE),
-                        new TranslationTextComponent(state.getBlock().getTranslationKey()).mergeStyle(TextFormatting.GREEN))
-                        .mergeStyle(TextFormatting.BLUE), false);
+                                .withStyle(TextFormatting.DARK_PURPLE),
+                        new TranslationTextComponent(state.getBlock().getDescriptionId()).withStyle(TextFormatting.GREEN))
+                        .withStyle(TextFormatting.BLUE), false);
                 return ActionResultType.SUCCESS;
             }
         }

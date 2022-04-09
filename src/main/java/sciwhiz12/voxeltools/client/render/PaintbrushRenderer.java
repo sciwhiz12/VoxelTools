@@ -23,18 +23,18 @@ import java.util.Random;
 
 public class PaintbrushRenderer extends ItemStackTileEntityRenderer {
     @Override
-    public void func_239207_a_(ItemStack itemStack, TransformType transform, MatrixStack matrixStack,
+    public void renderByItem(ItemStack itemStack, TransformType transform, MatrixStack matrixStack,
             IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
         final Minecraft mc = Minecraft.getInstance();
         final ItemRenderer itemRenderer = mc.getItemRenderer();
         boolean renderItem = true;
-        IBakedModel brushModel = itemRenderer.getItemModelWithOverrides(itemStack, null, null);
+        IBakedModel brushModel = itemRenderer.getModel(itemStack, null, null);
         if (transform == TransformType.GUI) {
-            CompoundNBT tag = itemStack.getChildTag(PaintbrushItem.TAG_ID_STOREDBLOCK);
+            CompoundNBT tag = itemStack.getTagElement(PaintbrushItem.TAG_ID_STOREDBLOCK);
             if (tag != null) {
-                matrixStack.push();
-                matrixStack.rotate(Vector3f.XP.rotationDegrees(30));
-                matrixStack.rotate(Vector3f.YP.rotationDegrees(225));
+                matrixStack.pushPose();
+                matrixStack.mulPose(Vector3f.XP.rotationDegrees(30));
+                matrixStack.mulPose(Vector3f.YP.rotationDegrees(225));
                 if (Screen.hasShiftDown()) {
                     renderItem = false;
                     matrixStack.translate(-0.66D, 0.25D, -0.66D);
@@ -43,25 +43,25 @@ public class PaintbrushRenderer extends ItemStackTileEntityRenderer {
                     matrixStack.scale(0.35F, 0.35F, 0.35F);
                     matrixStack.translate(-2D, 0.5D, -2D);
                 }
-                RenderHelper.setupGui3DDiffuseLighting();
+                RenderHelper.setupFor3DItems();
                 BlockState state = NBTUtil.readBlockState(tag);
-                IRenderTypeBuffer.Impl specialBuffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
-                Minecraft.getInstance().getBlockRendererDispatcher()
+                IRenderTypeBuffer.Impl specialBuffer = Minecraft.getInstance().renderBuffers().bufferSource();
+                Minecraft.getInstance().getBlockRenderer()
                         .renderBlock(state, matrixStack, specialBuffer, combinedLight, combinedOverlay,
                                 EmptyModelData.INSTANCE);
-                specialBuffer.finish();
-                RenderHelper.setupGuiFlatDiffuseLighting();
-                matrixStack.pop();
+                specialBuffer.endBatch();
+                RenderHelper.setupForFlatItems();
+                matrixStack.popPose();
             }
         }
         if (renderItem) {
-            matrixStack.push();
+            matrixStack.pushPose();
             IVertexBuilder builder = ItemRenderer
-                    .getBuffer(buffer, RenderTypeLookup.func_239219_a_(itemStack, true), true, itemStack.hasEffect());
-            itemRenderer.renderQuads(matrixStack, builder,
+                    .getFoilBuffer(buffer, RenderTypeLookup.getRenderType(itemStack, true), true, itemStack.hasFoil());
+            itemRenderer.renderQuadList(matrixStack, builder,
                     brushModel.getQuads(null, null, new Random(42L), EmptyModelData.INSTANCE), itemStack, combinedLight,
                     combinedOverlay);
-            matrixStack.pop();
+            matrixStack.popPose();
         }
     }
 }

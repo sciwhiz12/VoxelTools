@@ -18,17 +18,17 @@ public class ScrollPacket {
     }
 
     public static void encode(ScrollPacket pkt, PacketBuffer buf) {
-        buf.writeEnumValue(pkt.hand);
+        buf.writeEnum(pkt.hand);
         buf.writeDouble(pkt.scrollDelta);
     }
 
     public static ScrollPacket decode(PacketBuffer buf) {
-        return new ScrollPacket(buf.readEnumValue(Hand.class), buf.readDouble());
+        return new ScrollPacket(buf.readEnum(Hand.class), buf.readDouble());
     }
 
     public static void handlePacket(ScrollPacket pkt, Supplier<Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            ItemStack stack = ctx.get().getSender().getHeldItem(pkt.hand);
+            ItemStack stack = ctx.get().getSender().getItemInHand(pkt.hand);
             if (stack.getItem() instanceof IScrollListener) {
                 ((IScrollListener) stack.getItem()).onScroll(stack, ctx.get().getSender(), pkt.scrollDelta);
             }

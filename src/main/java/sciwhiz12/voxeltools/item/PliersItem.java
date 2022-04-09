@@ -19,22 +19,22 @@ public class PliersItem extends Item implements ILeftClicker.OnBlock {
 
     @Override
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction face) {
-        if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
-            BlockPos target = pos.offset(face.getOpposite());
-            BlockUtil.moveBlock(world, pos, target, (w, p) -> player.isCrouching() || w.isAirBlock(p) || w.getBlockState(p)
+        if (player.isEffectiveAi() && PermissionUtil.checkForPermission(player)) {
+            BlockPos target = pos.relative(face.getOpposite());
+            BlockUtil.moveBlock(world, pos, target, (w, p) -> player.isCrouching() || w.isEmptyBlock(p) || w.getBlockState(p)
                     .getBlock() instanceof FlowingFluidBlock, (w, p) -> false);
         }
         return;
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-        World world = context.getWorld();
-        if (!world.isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
-            BlockPos pos = context.getPos();
-            BlockPos target = pos.offset(context.getFace());
+    public ActionResultType useOn(ItemUseContext context) {
+        World world = context.getLevel();
+        if (!world.isClientSide && PermissionUtil.checkForPermission(context.getPlayer())) {
+            BlockPos pos = context.getClickedPos();
+            BlockPos target = pos.relative(context.getClickedFace());
             BlockUtil.moveBlock(world, pos, target,
-                    (w, p) -> context.getPlayer().isCrouching() || w.isAirBlock(p) || w.getBlockState(p)
+                    (w, p) -> context.getPlayer().isCrouching() || w.isEmptyBlock(p) || w.getBlockState(p)
                             .getBlock() instanceof FlowingFluidBlock, (w, p) -> false);
             return ActionResultType.SUCCESS;
         }

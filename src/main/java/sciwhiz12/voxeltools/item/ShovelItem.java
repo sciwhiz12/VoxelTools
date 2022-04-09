@@ -26,10 +26,10 @@ public class ShovelItem extends Item implements ILeftClicker.OnBlock {
 
     @Override
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction face) {
-        if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
+        if (player.isEffectiveAi() && PermissionUtil.checkForPermission(player)) {
             for (BlockPos targetPos : getDigRadius(pos)) {
                 if (VxTags.GROUND.contains(world.getBlockState(targetPos).getBlock())) {
-                    world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
+                    world.setBlockAndUpdate(targetPos, Blocks.AIR.defaultBlockState());
                 }
             }
         }
@@ -41,16 +41,16 @@ public class ShovelItem extends Item implements ILeftClicker.OnBlock {
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-        World world = context.getWorld();
+    public ActionResultType useOn(ItemUseContext context) {
+        World world = context.getLevel();
         PlayerEntity player = context.getPlayer();
-        if (!world.isRemote && player != null && PermissionUtil
+        if (!world.isClientSide && player != null && PermissionUtil
                 .checkForPermission(player) && VxConfig.Server.shovelFlattenRadius != 0) {
-            BlockPos pos = context.getPos();
+            BlockPos pos = context.getClickedPos();
             if (player.isCrouching()) {
                 for (BlockPos targetPos : getFlattenRadius(pos)) {
                     if (VxTags.GROUND.contains(world.getBlockState(targetPos).getBlock())) {
-                        world.setBlockState(targetPos, Blocks.AIR.getDefaultState());
+                        world.setBlockAndUpdate(targetPos, Blocks.AIR.defaultBlockState());
                     }
                 }
                 return ActionResultType.SUCCESS;
@@ -63,17 +63,17 @@ public class ShovelItem extends Item implements ILeftClicker.OnBlock {
         int x = VxConfig.Server.shovelDigRadiusX;
         int y = VxConfig.Server.shovelDigRadiusY;
         int z = VxConfig.Server.shovelDigRadiusZ;
-        BlockPos cornerOne = origin.add(x, y, z);
-        BlockPos cornerTwo = origin.add(-x, -y, -z);
-        return BlockPos.getAllInBoxMutable(cornerOne, cornerTwo);
+        BlockPos cornerOne = origin.offset(x, y, z);
+        BlockPos cornerTwo = origin.offset(-x, -y, -z);
+        return BlockPos.betweenClosed(cornerOne, cornerTwo);
     }
 
     private Iterable<BlockPos> getFlattenRadius(BlockPos origin) {
         int radius = VxConfig.Server.shovelFlattenRadius;
         int height = VxConfig.Server.shovelFlattenHeight;
         int offset = VxConfig.Server.shovelFlattenHeightOffset;
-        BlockPos cornerOne = origin.add(radius, offset, radius);
-        BlockPos cornerTwo = origin.add(-radius, offset + height, -radius);
-        return BlockPos.getAllInBoxMutable(cornerOne, cornerTwo);
+        BlockPos cornerOne = origin.offset(radius, offset, radius);
+        BlockPos cornerTwo = origin.offset(-radius, offset + height, -radius);
+        return BlockPos.betweenClosed(cornerOne, cornerTwo);
     }
 }

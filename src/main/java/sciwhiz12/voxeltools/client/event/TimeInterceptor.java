@@ -25,8 +25,8 @@ public class TimeInterceptor {
         if (event.phase == Phase.START && event.side == LogicalSide.CLIENT) {
             boolean hasClock = false;
             ItemStack clockStack = ItemStack.EMPTY;
-            for (int i = 0; i < event.player.inventory.getSizeInventory(); ++i) {
-                ItemStack stack = event.player.inventory.getStackInSlot(i);
+            for (int i = 0; i < event.player.inventory.getContainerSize(); ++i) {
+                ItemStack stack = event.player.inventory.getItem(i);
                 if (stack.getItem() instanceof ClockItem && stack.getCount() > 0) {
                     if (ClockItem.isActive(stack)) {
                         hasClock = true;
@@ -35,7 +35,7 @@ public class TimeInterceptor {
                     }
                 }
             }
-            ItemStack stack = event.player.inventory.getItemStack();
+            ItemStack stack = event.player.inventory.getCarried();
             if (stack.getItem() instanceof ClockItem && stack.getCount() > 0) {
                 if (ClockItem.isActive(stack)) {
                     hasClock = true;
@@ -45,7 +45,7 @@ public class TimeInterceptor {
             if (hasClock) {
                 if (!freezeTime) {
                     freezeTime = true;
-                    frozenTime = (event.player.world.getDayTime() / 24000L) + ClockItem.getStoredTime(clockStack);
+                    frozenTime = (event.player.level.getDayTime() / 24000L) + ClockItem.getStoredTime(clockStack);
                 }
             } else {
                 freezeTime = false;
@@ -56,12 +56,12 @@ public class TimeInterceptor {
     @SuppressWarnings("resource")
     @SubscribeEvent
     public static void onRenderTick(RenderTickEvent event) {
-        if (Minecraft.getInstance().world != null && freezeTime) {
+        if (Minecraft.getInstance().level != null && freezeTime) {
             if (event.phase == Phase.START) {
-                previousTime = Minecraft.getInstance().world.getDayTime();
-                Minecraft.getInstance().world.setDayTime(frozenTime);
+                previousTime = Minecraft.getInstance().level.getDayTime();
+                Minecraft.getInstance().level.setDayTime(frozenTime);
             } else if (event.phase == Phase.END) {
-                Minecraft.getInstance().world.setDayTime(previousTime);
+                Minecraft.getInstance().level.setDayTime(previousTime);
             }
         }
     }

@@ -45,39 +45,39 @@ public class PaintbrushItem extends Item implements ILeftClicker.OnBlock {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (!stack.hasTag() || !stack.getOrCreateTag().contains(TAG_ID_STOREDBLOCK)) {
-            tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.empty").mergeStyle(TextFormatting.GRAY));
+            tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.empty").withStyle(TextFormatting.GRAY));
             return;
         }
-        BlockState state = NBTUtil.readBlockState(stack.getOrCreateChildTag(TAG_ID_STOREDBLOCK));
+        BlockState state = NBTUtil.readBlockState(stack.getOrCreateTagElement(TAG_ID_STOREDBLOCK));
         tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.block.name",
-                new TranslationTextComponent(state.getBlock().getTranslationKey()).mergeStyle(TextFormatting.GREEN))
-                .mergeStyle(TextFormatting.GRAY));
-        if (!state.getBlock().getStateContainer().getProperties().isEmpty()) {
+                new TranslationTextComponent(state.getBlock().getDescriptionId()).withStyle(TextFormatting.GREEN))
+                .withStyle(TextFormatting.GRAY));
+        if (!state.getBlock().getStateDefinition().getProperties().isEmpty()) {
             if (Screen.hasShiftDown()) {
                 tooltip.add(new TranslationTextComponent("tooltip.voxeltools.paintbrush.block.state",
-                        new StringTextComponent(toStringFromState(state)).mergeStyle(TextFormatting.GREEN))
-                        .mergeStyle(TextFormatting.GRAY));
+                        new StringTextComponent(toStringFromState(state)).withStyle(TextFormatting.GREEN))
+                        .withStyle(TextFormatting.GRAY));
             } else {
                 tooltip.add(
-                        new TranslationTextComponent("tooltip.voxeltools.paintbrush.sneak").mergeStyle(TextFormatting.GRAY));
+                        new TranslationTextComponent("tooltip.voxeltools.paintbrush.sneak").withStyle(TextFormatting.GRAY));
             }
         }
     }
 
     @Override
     public void onLeftClickBlock(PlayerEntity player, World world, Hand hand, BlockPos pos, Direction face) {
-        if (player.isServerWorld() && PermissionUtil.checkForPermission(player)) {
-            ItemStack stack = player.getHeldItem(hand);
+        if (player.isEffectiveAi() && PermissionUtil.checkForPermission(player)) {
+            ItemStack stack = player.getItemInHand(hand);
             if (player.isCrouching()) {
-                stack.removeChildTag(TAG_ID_STOREDBLOCK);
+                stack.removeTagKey(TAG_ID_STOREDBLOCK);
                 sendStatus(player, "status.voxeltools.paintbrush.clear", TextFormatting.BLUE);
             } else {
-                BlockState state = player.world.getBlockState(pos);
-                stack.setTagInfo(TAG_ID_STOREDBLOCK, NBTUtil.writeBlockState(state));
+                BlockState state = player.level.getBlockState(pos);
+                stack.addTagElement(TAG_ID_STOREDBLOCK, NBTUtil.writeBlockState(state));
                 sendStatus(player, "status.voxeltools.paintbrush.saved", TextFormatting.BLUE,
-                        state.getBlock().getTranslationKey());
+                        state.getBlock().getDescriptionId());
             }
         }
     }
@@ -88,30 +88,30 @@ public class PaintbrushItem extends Item implements ILeftClicker.OnBlock {
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-        World world = context.getWorld();
-        if (!world.isRemote && PermissionUtil.checkForPermission(context.getPlayer())) {
-            ItemStack stack = context.getItem();
+    public ActionResultType useOn(ItemUseContext context) {
+        World world = context.getLevel();
+        if (!world.isClientSide && PermissionUtil.checkForPermission(context.getPlayer())) {
+            ItemStack stack = context.getItemInHand();
             if (!stack.hasTag() || !stack.getOrCreateTag().contains(TAG_ID_STOREDBLOCK)) {
                 sendEmptyStatus(context.getPlayer());
                 return ActionResultType.PASS;
             }
-            BlockState state = NBTUtil.readBlockState(stack.getOrCreateChildTag(TAG_ID_STOREDBLOCK));
-            world.setBlockState(context.getPos(), state);
+            BlockState state = NBTUtil.readBlockState(stack.getOrCreateTagElement(TAG_ID_STOREDBLOCK));
+            world.setBlockAndUpdate(context.getClickedPos(), state);
             return ActionResultType.SUCCESS;
         }
         return ActionResultType.PASS;
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        ItemStack stack = player.getHeldItem(hand);
-        if (!world.isRemote && PermissionUtil.checkForPermission(player)) {
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (!world.isClientSide && PermissionUtil.checkForPermission(player)) {
             if (!stack.hasTag() || !stack.getOrCreateTag().contains(TAG_ID_STOREDBLOCK)) {
                 sendEmptyStatus(player);
-                return ActionResult.resultPass(stack);
+                return ActionResult.pass(stack);
             }
-            BlockState state = NBTUtil.readBlockState(stack.getOrCreateChildTag(TAG_ID_STOREDBLOCK));
+            BlockState state = NBTUtil.readBlockState(stack.getOrCreateTagElement(TAG_ID_STOREDBLOCK));
             double reach = 5.0F;
             ModifiableAttributeInstance reachAttr = player.getAttribute(ForgeMod.REACH_DISTANCE.get());
             if (reachAttr != null) {
@@ -122,16 +122,16 @@ public class PaintbrushItem extends Item implements ILeftClicker.OnBlock {
             }
             RayTraceResult trace = BlockUtil.rangedRayTrace(world, player, RayTraceContext.FluidMode.ANY, reach);
             if (trace.getType() == Type.BLOCK) {
-                BlockPos pos = ((BlockRayTraceResult) trace).getPos();
-                world.setBlockState(pos, state);
+                BlockPos pos = ((BlockRayTraceResult) trace).getBlockPos();
+                world.setBlockAndUpdate(pos, state);
                 player.swing(hand, true);
             } else if (trace.getType() == Type.MISS) {
                 sendStatus(player, "status.voxeltools.paintbrush.current", TextFormatting.GRAY,
-                        state.getBlock().getTranslationKey());
+                        state.getBlock().getDescriptionId());
             }
-            return ActionResult.resultSuccess(stack);
+            return ActionResult.success(stack);
         }
-        return ActionResult.resultPass(stack);
+        return ActionResult.pass(stack);
     }
 
     private static void sendEmptyStatus(PlayerEntity player) {
@@ -145,8 +145,8 @@ public class PaintbrushItem extends Item implements ILeftClicker.OnBlock {
     private static void sendStatus(PlayerEntity player, String translationKey, TextFormatting customColor, String extraKey) {
         ITextComponent extra = null;
         if (extraKey != null) {
-            extra = new TranslationTextComponent(extraKey).mergeStyle(TextFormatting.GREEN);
+            extra = new TranslationTextComponent(extraKey).withStyle(TextFormatting.GREEN);
         }
-        player.sendStatusMessage(new TranslationTextComponent(translationKey, extra).mergeStyle(customColor), true);
+        player.displayClientMessage(new TranslationTextComponent(translationKey, extra).withStyle(customColor), true);
     }
 }

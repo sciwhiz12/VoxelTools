@@ -34,44 +34,44 @@ public class TestItem extends Item implements ILeftClicker.OnBoth {
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
+    public ActionResultType useOn(ItemUseContext context) {
         if (context.getPlayer() != null) {
-            printInfo("onItemUse: RightClick on Block", context.getPlayer(), context.getWorld(), context.getHand(),
-                    context.getPos(), context.getFace());
+            printInfo("onItemUse: RightClick on Block", context.getPlayer(), context.getLevel(), context.getHand(),
+                    context.getClickedPos(), context.getClickedFace());
         }
         return ActionResultType.SUCCESS;
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         printInfo("onItemRightClick: RightClick on Empty", player, world, hand, null, null);
-        return ActionResult.resultSuccess(player.getHeldItem(hand));
+        return ActionResult.success(player.getItemInHand(hand));
     }
 
     public static void printInfo(String infoString, PlayerEntity player, World world, Hand hand, @Nullable BlockPos pos,
             @Nullable Direction face) {
-        UnaryOperator<Style> whiteBold = style -> style.setBold(true).applyFormatting(TextFormatting.WHITE);
+        UnaryOperator<Style> whiteBold = style -> style.withBold(true).applyFormat(TextFormatting.WHITE);
         IFormattableTextComponent text = new StringTextComponent("")
-                .appendSibling(new StringTextComponent("[TEST_ITEM] ").mergeStyle(TextFormatting.GREEN, TextFormatting.BOLD)
-                        .appendSibling(new StringTextComponent(infoString).modifyStyle(whiteBold))).appendString("\n")
-                .appendSibling(new StringTextComponent("  logical side: ").mergeStyle(TextFormatting.DARK_AQUA)
-                        .appendSibling(new StringTextComponent(world.isRemote ? "CLIENT" : "SERVER")
-                                .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE))).appendString("\n")
-                .appendSibling(new StringTextComponent("  player: ").mergeStyle(TextFormatting.DARK_AQUA)
-                        .appendSibling(player.getName().copyRaw().mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
+                .append(new StringTextComponent("[TEST_ITEM] ").withStyle(TextFormatting.GREEN, TextFormatting.BOLD)
+                        .append(new StringTextComponent(infoString).withStyle(whiteBold))).append("\n")
+                .append(new StringTextComponent("  logical side: ").withStyle(TextFormatting.DARK_AQUA)
+                        .append(new StringTextComponent(world.isClientSide ? "CLIENT" : "SERVER")
+                                .withStyle(TextFormatting.ITALIC, TextFormatting.WHITE))).append("\n")
+                .append(new StringTextComponent("  player: ").withStyle(TextFormatting.DARK_AQUA)
+                        .append(player.getName().plainCopy().withStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
         if (hand != null) {
-            text.appendString("\n").appendSibling(new StringTextComponent("  hand: ").mergeStyle(TextFormatting.DARK_AQUA)
-                    .appendSibling(new StringTextComponent(hand.toString())
-                            .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
+            text.append("\n").append(new StringTextComponent("  hand: ").withStyle(TextFormatting.DARK_AQUA)
+                    .append(new StringTextComponent(hand.toString())
+                            .withStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
         }
         if (pos != null) {
-            text.appendString("\n").appendSibling(new StringTextComponent("  pos: ").mergeStyle(TextFormatting.DARK_AQUA)
-                    .appendSibling(new StringTextComponent(pos.toString())
-                            .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
+            text.append("\n").append(new StringTextComponent("  pos: ").withStyle(TextFormatting.DARK_AQUA)
+                    .append(new StringTextComponent(pos.toString())
+                            .withStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
         }
-        text.appendString("\n").appendSibling(new StringTextComponent("  dimension: ").mergeStyle(TextFormatting.DARK_AQUA)
-                .appendSibling(new StringTextComponent(player.world.getDimensionKey().getLocation().toString())
-                        .mergeStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
-        player.sendStatusMessage(text, false);
+        text.append("\n").append(new StringTextComponent("  dimension: ").withStyle(TextFormatting.DARK_AQUA)
+                .append(new StringTextComponent(player.level.dimension().location().toString())
+                        .withStyle(TextFormatting.ITALIC, TextFormatting.WHITE)));
+        player.displayClientMessage(text, false);
     }
 }

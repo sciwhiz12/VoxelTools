@@ -35,28 +35,28 @@ public class ClockItem extends Item implements IScrollListener {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        ItemStack stack = player.getHeldItem(hand);
-        if (!world.isRemote && PermissionUtil.checkForPermission(player)) {
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (!world.isClientSide && PermissionUtil.checkForPermission(player)) {
             if (player.isCrouching()) {
                 boolean newState = !isActive(stack);
                 stack.getOrCreateTag().putBoolean(TAG_ENABLED, newState);
                 float pitch = newState ? 1.1F : 0.9F;
-                world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(),
-                        SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.3F, pitch);
+                world.playSound(null, player.getX(), player.getY(), player.getZ(),
+                        SoundEvents.EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.3F, pitch);
                 checkConflicts(stack, player);
                 checkActiveAndUpdate(stack, player);
             }
             printStatus(player, stack);
-            return ActionResult.resultSuccess(stack);
+            return ActionResult.success(stack);
         }
-        return ActionResult.resultPass(stack);
+        return ActionResult.pass(stack);
     }
 
     // Client side only
     @Override
     public boolean shouldSendScrollEvent(ClientPlayerEntity player, double scrollDelta) {
-        return player.isSneaking() && !player.isSpectator();
+        return player.isShiftKeyDown() && !player.isSpectator();
     }
 
     @Override
@@ -65,7 +65,7 @@ public class ClockItem extends Item implements IScrollListener {
         time = (long) (time + TIME_SCROLL_INCREMENT * Math.copySign(1.0D, scrollDelta));
         setStoredTime(stack, time);
         checkActiveAndUpdate(stack, player);
-        player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.UI_BUTTON_CLICK,
+        player.level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.UI_BUTTON_CLICK,
                 SoundCategory.PLAYERS, 0.25F, 0.8F);
         printStatus(player, stack);
     }
@@ -89,25 +89,25 @@ public class ClockItem extends Item implements IScrollListener {
     }
 
     @Override
-    public boolean hasEffect(ItemStack stack) {
+    public boolean isFoil(ItemStack stack) {
         return isActive(stack);
     }
 
     public void printStatus(PlayerEntity player, ItemStack stack) {
         IFormattableTextComponent status;
         if (isActive(stack)) {
-            status = new TranslationTextComponent("status.voxeltools.clock.active").mergeStyle(TextFormatting.GREEN);
+            status = new TranslationTextComponent("status.voxeltools.clock.active").withStyle(TextFormatting.GREEN);
         } else {
-            status = new TranslationTextComponent("status.voxeltools.clock.inactive").mergeStyle(TextFormatting.RED);
+            status = new TranslationTextComponent("status.voxeltools.clock.inactive").withStyle(TextFormatting.RED);
         }
         IFormattableTextComponent worldTime = new StringTextComponent(
-                String.valueOf(parseTime(player.world.getDayTime() % 24000L)))
-                .mergeStyle(TextFormatting.BLUE, TextFormatting.BOLD);
+                String.valueOf(parseTime(player.level.getDayTime() % 24000L)))
+                .withStyle(TextFormatting.BLUE, TextFormatting.BOLD);
         IFormattableTextComponent storedTime = new StringTextComponent(String.valueOf(parseTime(getStoredTime(stack))))
-                .mergeStyle(TextFormatting.GOLD, TextFormatting.BOLD);
+                .withStyle(TextFormatting.GOLD, TextFormatting.BOLD);
 
-        player.sendStatusMessage(new TranslationTextComponent("status.voxeltools.clock", worldTime, storedTime,
-                status.mergeStyle(TextFormatting.BOLD)).mergeStyle(TextFormatting.DARK_GRAY), true);
+        player.displayClientMessage(new TranslationTextComponent("status.voxeltools.clock", worldTime, storedTime,
+                status.withStyle(TextFormatting.BOLD)).withStyle(TextFormatting.DARK_GRAY), true);
     }
 
     public static void setStoredTime(ItemStack stack, long time) {
@@ -131,14 +131,14 @@ public class ClockItem extends Item implements IScrollListener {
     public static void checkActiveAndUpdate(ItemStack stack, PlayerEntity player) {
         boolean freeze = isActive(stack);
         long time = 0;
-        if (freeze) { time = (player.world.getDayTime() / 24000L) + getStoredTime(stack); }
+        if (freeze) { time = (player.level.getDayTime() / 24000L) + getStoredTime(stack); }
         VxNetwork.CHANNEL.send(PacketDistributor.PLAYER.with(() -> ((ServerPlayerEntity) player)),
                 new SetFreezeTimePacket(freeze, time));
     }
 
     public static void checkConflicts(ItemStack stack, PlayerEntity player) {
         for (NonNullList<ItemStack> inv : ImmutableList
-                .of(player.inventory.mainInventory, player.inventory.offHandInventory)) {
+                .of(player.inventory.items, player.inventory.offhand)) {
             for (ItemStack invStack : inv) {
                 if (!invStack.isEmpty() && invStack != stack && invStack.getItem() == VxItems.clock.get()) {
                     setActive(invStack, false);

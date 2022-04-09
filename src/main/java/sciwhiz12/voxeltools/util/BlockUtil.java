@@ -47,8 +47,8 @@ public class BlockUtil {
 
     public static RayTraceResult rangedRayTrace(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode,
             double range) {
-        float f = player.rotationPitch;
-        float f1 = player.rotationYaw;
+        float f = player.xRot;
+        float f1 = player.yRot;
         Vector3d vec3d = player.getEyePosition(1.0F);
         float f2 = MathHelper.cos(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
         float f3 = MathHelper.sin(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
@@ -58,7 +58,7 @@ public class BlockUtil {
         float f7 = f2 * f4;
         Vector3d vec3d1 = vec3d.add((double) f6 * range, (double) f5 * range, (double) f7 * range);
         return worldIn
-                .rayTraceBlocks(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
+                .clip(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
     }
 
     /**
@@ -78,22 +78,22 @@ public class BlockUtil {
         boolean moveSuccess = false;
         if (allowMove.test(world, target)) {
             BlockState originState = world.getBlockState(origin);
-            TileEntity originTile = world.getTileEntity(origin);
+            TileEntity originTile = world.getBlockEntity(origin);
 
-            moveSuccess = world.setBlockState(target, originState, Constants.BlockFlags.DEFAULT);
+            moveSuccess = world.setBlock(target, originState, Constants.BlockFlags.DEFAULT);
 
             if (moveSuccess) {
                 if (deleteOrigin.test(world, origin)) {
-                    world.setBlockState(origin, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT);
-                    if (originTile != null) { world.setTileEntity(origin, null); }
+                    world.setBlock(origin, Blocks.AIR.defaultBlockState(), Constants.BlockFlags.DEFAULT);
+                    if (originTile != null) { world.setBlockEntity(origin, null); }
                 }
                 if (originTile != null) {
-                    originTile.setPos(target);
-                    originTile.validate();
-                    originTile.markDirty();
-                    world.setTileEntity(target, originTile);
+                    originTile.setPosition(target);
+                    originTile.clearRemoved();
+                    originTile.setChanged();
+                    world.setBlockEntity(target, originTile);
                 }
-                world.playEvent(Constants.WorldEvents.BREAK_BLOCK_EFFECTS, target, Block.getStateId(originState));
+                world.levelEvent(Constants.WorldEvents.BREAK_BLOCK_EFFECTS, target, Block.getId(originState));
             }
         }
         return moveSuccess;

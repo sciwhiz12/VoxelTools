@@ -14,16 +14,16 @@ public class PermissionUtil {
 
     public static boolean checkForPermission(PlayerEntity player) {
         if (!VxConfig.Server.enableItems) {
-            if (player.isServerWorld() && player.shouldReceiveErrors() && player.shouldReceiveFeedback()) {
-                player.sendMessage(new TranslationTextComponent("error.voxeltools.disabled").mergeStyle(TextFormatting.RED),
-                        Util.DUMMY_UUID);
+            if (player.isEffectiveAi() && player.acceptsFailure() && player.acceptsSuccess()) {
+                player.sendMessage(new TranslationTextComponent("error.voxeltools.disabled").withStyle(TextFormatting.RED),
+                        Util.NIL_UUID);
             }
             return false;
         } else if (!PermissionAPI.hasPermission(player, VxConfig.ITEM_USE_PERMISSION)) {
-            if (player.isServerWorld() && player.shouldReceiveErrors() && player.shouldReceiveFeedback()) {
+            if (player.isEffectiveAi() && player.acceptsFailure() && player.acceptsSuccess()) {
                 player.sendMessage(
-                        new TranslationTextComponent("error.voxeltools.no_permission").mergeStyle(TextFormatting.RED),
-                        Util.DUMMY_UUID);
+                        new TranslationTextComponent("error.voxeltools.no_permission").withStyle(TextFormatting.RED),
+                        Util.NIL_UUID);
             }
             return false;
         }

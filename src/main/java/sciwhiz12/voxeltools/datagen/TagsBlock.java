@@ -22,10 +22,10 @@ public class TagsBlock extends ForgeBlockTagsProvider {
     }
 
     @Override
-    public void registerTags() {
-        super.registerTags();
+    public void addTags() {
+        super.addTags();
 
-        getOrCreateBuilder(VxTags.GROUND)
+        tag(VxTags.GROUND)
                 .addTag(Tags.Blocks.COBBLESTONE)
                 .addTag(Tags.Blocks.DIRT)
                 .addTag(Tags.Blocks.END_STONES)
@@ -49,7 +49,7 @@ public class TagsBlock extends ForgeBlockTagsProvider {
                 .add(Blocks.SOUL_SAND)
                 .add(Blocks.SOUL_SOIL);
 
-        getOrCreateBuilder(VxTags.TREE_MATTER)
+        tag(VxTags.TREE_MATTER)
                 .addTag(BlockTags.LEAVES)
                 .addTag(BlockTags.LOGS)
                 .addTag(BlockTags.SAPLINGS)
@@ -57,7 +57,7 @@ public class TagsBlock extends ForgeBlockTagsProvider {
                 .add(Blocks.SHROOMLIGHT)
                 .add(Blocks.WARPED_WART_BLOCK);
 
-        getOrCreateBuilder(VxTags.NETHER_VEGETATION)
+        tag(VxTags.NETHER_VEGETATION)
                 .add(Blocks.CRIMSON_FUNGUS)
                 .add(Blocks.CRIMSON_ROOTS)
                 .add(Blocks.MUSHROOM_STEM)
@@ -70,7 +70,7 @@ public class TagsBlock extends ForgeBlockTagsProvider {
                 .add(Blocks.WEEPING_VINES)
                 .add(Blocks.WEEPING_VINES_PLANT);
 
-        getOrCreateBuilder(VxTags.VEGETATION)
+        tag(VxTags.VEGETATION)
                 .addTag(VxTags.NETHER_VEGETATION)
                 .addTag(VxTags.TREE_MATTER)
                 .addTag(BlockTags.CROPS)
@@ -97,9 +97,9 @@ public class TagsBlock extends ForgeBlockTagsProvider {
     }
 
     @Override
-    protected Path makePath(ResourceLocation id) {
+    protected Path getPath(ResourceLocation id) {
         if (!id.getNamespace().equals(modId)) return null;
-        return super.makePath(id);
+        return super.getPath(id);
     }
 
     @Override

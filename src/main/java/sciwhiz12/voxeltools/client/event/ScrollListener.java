@@ -23,7 +23,7 @@ public class ScrollListener {
         @SuppressWarnings("resource")
         ClientPlayerEntity player = Minecraft.getInstance().player;
         for (Hand hand : Hand.values()) {
-            ItemStack stack = player.getHeldItem(hand);
+            ItemStack stack = player.getItemInHand(hand);
             if (stack.getItem() instanceof IScrollListener && !event.isCanceled()) {
                 boolean sendPacket = ((IScrollListener) stack.getItem())
                         .shouldSendScrollEvent(player, event.getScrollDelta());

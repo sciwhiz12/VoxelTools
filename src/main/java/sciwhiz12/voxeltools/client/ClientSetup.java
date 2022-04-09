@@ -23,13 +23,13 @@ public class ClientSetup {
 
     public static final IItemPropertyGetter CLOCK_PROPERTY = (stack, clientWorld, livingEntity) -> {
         double value = 0F;
-        Entity entity = livingEntity != null ? livingEntity : stack.getAttachedEntity();
+        Entity entity = livingEntity != null ? livingEntity : stack.getEntityRepresentation();
         if (entity != null) {
-            if (clientWorld == null && entity.world instanceof ClientWorld) {
-                clientWorld = (ClientWorld) entity.world;
+            if (clientWorld == null && entity.level instanceof ClientWorld) {
+                clientWorld = (ClientWorld) entity.level;
             }
             if (clientWorld != null) {
-                value = clientWorld.getDimensionType().getCelestrialAngleByTime(stack.getOrCreateTag().getLong(ClockItem.TAG_FIXED_TIME));
+                value = clientWorld.dimensionType().timeOfDay(stack.getOrCreateTag().getLong(ClockItem.TAG_FIXED_TIME));
             }
         }
         return (float) value;
@@ -38,6 +38,6 @@ public class ClientSetup {
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
         LOGGER.debug(CLIENT, "Setting up client...");
-        ItemModelsProperties.registerProperty(VxItems.clock.get(), ClockItem.TIME_PREDICATE, CLOCK_PROPERTY);
+        ItemModelsProperties.register(VxItems.clock.get(), ClockItem.TIME_PREDICATE, CLOCK_PROPERTY);
     }
 }

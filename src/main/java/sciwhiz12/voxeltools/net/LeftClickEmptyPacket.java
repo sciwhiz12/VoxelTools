@@ -18,22 +18,22 @@ public class LeftClickEmptyPacket {
     }
 
     public static void encode(LeftClickEmptyPacket pkt, PacketBuffer buf) {
-        buf.writeEnumValue(pkt.hand);
+        buf.writeEnum(pkt.hand);
     }
 
     public static LeftClickEmptyPacket decode(PacketBuffer buf) {
-        return new LeftClickEmptyPacket(buf.readEnumValue(Hand.class));
+        return new LeftClickEmptyPacket(buf.readEnum(Hand.class));
     }
 
     public static void handlePacket(LeftClickEmptyPacket pkt, Supplier<Context> ctx) {
         ctx.get().enqueueWork(() -> {
             ServerPlayerEntity player = ctx.get().getSender();
-            ItemStack stack = player.getHeldItem(pkt.hand);
+            ItemStack stack = player.getItemInHand(pkt.hand);
             if (stack != null && !stack.isEmpty()) {
                 Item item = stack.getItem();
                 if (item instanceof ILeftClicker.OnEmpty) {
                     ILeftClicker.OnEmpty tool = (ILeftClicker.OnEmpty) item;
-                    tool.onLeftClickEmpty(player, player.world, pkt.hand);
+                    tool.onLeftClickEmpty(player, player.level, pkt.hand);
                 }
             }
         });
