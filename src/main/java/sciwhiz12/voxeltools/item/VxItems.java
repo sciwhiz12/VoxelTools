@@ -14,7 +14,7 @@ public class VxItems {
         public ItemStack createIcon() {
             return new ItemStack(VxItems.dooplicator.get());
         }
-    }).setTabPath("voxel_tools");
+    }).setGroupPath("voxel_tools");
 
     private static final Item.Properties TOOL_PROPERTIES = new Item.Properties().setNoRepair().defaultMaxDamage(0)
             .maxStackSize(1)

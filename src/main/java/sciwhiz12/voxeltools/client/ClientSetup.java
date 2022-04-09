@@ -29,7 +29,7 @@ public class ClientSetup {
                 clientWorld = (ClientWorld) entity.world;
             }
             if (clientWorld != null) {
-                value = clientWorld.func_230315_m_().func_236032_b_(stack.getOrCreateTag().getLong(ClockItem.TAG_FIXED_TIME));
+                value = clientWorld.getDimensionType().getCelestrialAngleByTime(stack.getOrCreateTag().getLong(ClockItem.TAG_FIXED_TIME));
             }
         }
         return (float) value;
@@ -38,6 +38,6 @@ public class ClientSetup {
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
         LOGGER.debug(CLIENT, "Setting up client...");
-        ItemModelsProperties.func_239418_a_(VxItems.clock.get(), ClockItem.TIME_PREDICATE, CLOCK_PROPERTY);
+        ItemModelsProperties.registerProperty(VxItems.clock.get(), ClockItem.TIME_PREDICATE, CLOCK_PROPERTY);
     }
 }
